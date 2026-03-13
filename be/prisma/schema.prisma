@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id          String @id @default(uuid())
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  isActive    Boolean   @default(true)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  products    Product[]
+}
+
+model Product {
+  id          String @id @default(uuid())
+  name        String
+  slug        String    @unique
+  description String?
+  thumbnail   String?
+
+  categoryId  String
+  category    Category  @relation(fields: [categoryId], references: [id])
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  images      ProductImage[]
+  specs       ProductSpec[]
+  quotes      QuoteRequest[]
+}
+
+model ProductImage {
+  id        String @id @default(uuid())
+  imageUrl  String
+  sortOrder Int?     @default(0)
+
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+model ProductSpec {
+  id        String  @id @default(uuid())
+  specName  String
+  specValue String
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model QuoteRequest {
+  id        String   @id @default(uuid())
+  name      String
+  phone     String
+  area      Float?
+
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  location    String?
+  area        Float?
+
+  createdAt   DateTime @default(now())
+
+  images      ProjectImage[]
+}
+
+model ProjectImage {
+  id        String  @id @default(uuid())
+  imageUrl  String
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Contact {
+  id        String   @id @default(uuid())
+  name      String?
+  phone     String?
+  email     String?
+  message   String?
+
+  createdAt DateTime @default(now())
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+
+  createdAt DateTime @default(now())
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
