@@ -1,9 +1,8 @@
 
-
 services:
   db:
-    image: postgres
-    container_name: flooring_db_prod
+    image: postgres:16
+    container_name: flooring_db
     restart: always
     environment:
       
