@@ -1,12 +1,13 @@
 'use client';
 
 import Image from 'next/image';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Container } from '@/components/Container';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { ServiceContactRequestForm } from '@/components/service/ServiceContactRequestForm';
+import { favoritesApi } from '@/api';
 
 type Service = {
   id: string;
@@ -57,12 +58,40 @@ function uniqVariants(list: ProductVariant[]) {
 
 export function ServiceDetailClient({ service, products }: Props) {
   const router = useRouter();
+  const [favoritePermalinks, setFavoritePermalinks] = useState<Set<string>>(new Set());
+  const [favoritesLoading, setFavoritesLoading] = useState(false);
+  const [togglingPermalink, setTogglingPermalink] = useState<string | null>(null);
+
   const initialSelectedId =
     products?.[0]?.currentVariant?.id ?? products?.[0]?.variants?.[0]?.id ?? null;
   const [selectedVariantId, setSelectedVariantId] =
     useState<string | null>(initialSelectedId);
   const [query, setQuery] = useState('');
   const [sortBy, setSortBy] = useState<'name-asc' | 'name-desc'>('name-asc');
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadFavorites() {
+      setFavoritesLoading(true);
+      try {
+        const res = await favoritesApi.getFavoritePermalinks();
+        if (cancelled) return;
+        setFavoritePermalinks(new Set(res.data.permalinks));
+      } catch {
+        if (cancelled) return;
+        // If not authenticated or favorites not available, keep set empty.
+        setFavoritePermalinks(new Set());
+      } finally {
+        if (!cancelled) setFavoritesLoading(false);
+      }
+    }
+
+    void loadFavorites();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const filteredProducts = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -208,12 +237,14 @@ export function ServiceDetailClient({ service, products }: Props) {
                       item.image ||
                       null;
                     const productHref = item.permalink ? `/products/${item.permalink}` : null;
+                    const permalink = item.permalink ?? null;
+                    const isFav = permalink ? favoritePermalinks.has(permalink) : false;
 
                     return (
                       <article
                         key={item.id}
                         className={[
-                          'overflow-hidden rounded-md border p-2 transition',
+                          'group overflow-hidden rounded-md border p-2 transition',
                           selectedInCard?.id === selectedVariantId
                             ? 'border-emerald-500 bg-emerald-50/40'
                             : 'border-zinc-200 bg-white',
@@ -245,6 +276,51 @@ export function ServiceDetailClient({ service, products }: Props) {
                             ) : (
                               <div className="absolute inset-0 bg-gradient-to-br from-zinc-200 via-zinc-100 to-zinc-50" />
                             )}
+
+                          {permalink ? (
+                            <button
+                              type="button"
+                              aria-label={isFav ? 'Bỏ yêu thích' : 'Yêu thích'}
+                              title={isFav ? 'Bỏ yêu thích' : 'Yêu thích'}
+                              onClick={async (e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                if (togglingPermalink === permalink) return;
+
+                                setTogglingPermalink(permalink);
+                                try {
+                                  const res = await favoritesApi.toggleFavorite(permalink);
+                                  const nextIsFav = res.data.isFavorite;
+                                  setFavoritePermalinks((prev) => {
+                                    const next = new Set(prev);
+                                    if (nextIsFav) next.add(permalink);
+                                    else next.delete(permalink);
+                                    return next;
+                                  });
+                                } catch {
+                                  // keep UI unchanged if request fails (e.g. not authenticated)
+                                } finally {
+                                  setTogglingPermalink(null);
+                                }
+                              }}
+                              className={[
+                                'absolute right-2 top-2 z-20 inline-flex size-9 items-center justify-center rounded-full border bg-white/85 shadow-sm backdrop-blur transition',
+                                'opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 hover:bg-white',
+                                isFav ? 'border-rose-200 text-rose-600 bg-rose-50/80' : 'border-zinc-200 text-zinc-700',
+                              ].join(' ')}
+                            >
+                              <svg
+                                viewBox="0 0 24 24"
+                                fill={isFav ? 'currentColor' : 'none'}
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                className="size-5"
+                                aria-hidden="true"
+                              >
+                                <path d="M19.5 12.1L12 19.6l-7.5-7.5a5.2 5.2 0 0 1 0-7.4 5.2 5.2 0 0 1 7.4 0L12 4.8l.1-.1a5.2 5.2 0 0 1 7.4 0 5.2 5.2 0 0 1 0 7.4Z" />
+                              </svg>
+                            </button>
+                          ) : null}
 
                             <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition group-hover:opacity-100 group-hover:bg-black/35">
                               <div

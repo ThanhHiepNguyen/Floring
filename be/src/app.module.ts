@@ -10,6 +10,7 @@ import { ServiceModule } from './modules/service/service.module';
 import { ProductModule } from './modules/product/product.module';
 import { ContactRequestModule } from './modules/contact-request/contact-request.module';
 import { HomepageSlideModule } from './modules/homepage-slide/homepage-slide.module';
+import { FavoritesModule } from './modules/favorites/favorites.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { HomepageSlideModule } from './modules/homepage-slide/homepage-slide.mod
     ProductModule,
     ContactRequestModule,
     HomepageSlideModule,
+    FavoritesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

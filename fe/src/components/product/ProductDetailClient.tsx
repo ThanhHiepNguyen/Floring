@@ -2,11 +2,12 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Container } from '@/components/Container';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { ServiceContactRequestForm } from '@/components/service/ServiceContactRequestForm';
+import { favoritesApi } from '@/api';
 
 type ProductVariant = {
     id: string;
@@ -36,6 +37,8 @@ export function ProductDetailClient({
     relatedProducts?: Product[];
 }) {
     const railRef = useRef<HTMLDivElement | null>(null);
+    const [favoritePermalinks, setFavoritePermalinks] = useState<Set<string>>(new Set());
+    const [togglingPermalink, setTogglingPermalink] = useState<string | null>(null);
     const initialVariantId =
         product.currentVariant?.id ?? product.variants?.[0]?.id ?? null;
     const [selectedVariantId, setSelectedVariantId] = useState<string | null>(initialVariantId);
@@ -52,11 +55,34 @@ export function ProductDetailClient({
 
     const serviceId = product.serviceId ?? null;
 
+    const permalink = product.permalink ?? null;
+    const isFav = !!permalink && favoritePermalinks.has(permalink);
+
     const scrollRail = (dir: -1 | 1) => {
         const el = railRef.current;
         if (!el) return;
         el.scrollBy({ left: dir * Math.max(260, Math.floor(el.clientWidth * 0.85)), behavior: 'smooth' });
     };
+
+    useEffect(() => {
+        let cancelled = false;
+
+        async function loadFavorites() {
+            try {
+                const res = await favoritesApi.getFavoritePermalinks();
+                if (cancelled) return;
+                setFavoritePermalinks(new Set(res.data.permalinks));
+            } catch {
+                if (cancelled) return;
+                setFavoritePermalinks(new Set());
+            }
+        }
+
+        void loadFavorites();
+        return () => {
+            cancelled = true;
+        };
+    }, []);
 
     return (
         <main className="min-h-screen bg-background text-foreground">
@@ -73,7 +99,7 @@ export function ProductDetailClient({
             </section>
 
             <section className="relative">
-                <div className="relative aspect-[16/7] w-full overflow-hidden bg-zinc-900">
+                <div className="group relative aspect-[16/7] w-full overflow-hidden bg-zinc-900">
                     {heroImage ? (
                         <Image
                             src={heroImage}
@@ -88,6 +114,49 @@ export function ProductDetailClient({
                     )}
 
                     <div className="absolute inset-0 bg-black/45" />
+                    {permalink ? (
+                        <button
+                            type="button"
+                            aria-label={isFav ? 'Bỏ yêu thích' : 'Yêu thích'}
+                            title={isFav ? 'Bỏ yêu thích' : 'Yêu thích'}
+                            onClick={async (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                if (togglingPermalink === permalink) return;
+                                setTogglingPermalink(permalink);
+                                try {
+                                    const res = await favoritesApi.toggleFavorite(permalink);
+                                    const nextIsFav = res.data.isFavorite;
+                                    setFavoritePermalinks((prev) => {
+                                        const next = new Set(prev);
+                                        if (nextIsFav) next.add(permalink);
+                                        else next.delete(permalink);
+                                        return next;
+                                    });
+                                } catch {
+                                    // keep UI unchanged if request fails
+                                } finally {
+                                    setTogglingPermalink(null);
+                                }
+                            }}
+                            className={[
+                                'absolute right-4 top-4 z-[11] inline-flex size-10 items-center justify-center rounded-full border bg-white/85 shadow-sm backdrop-blur transition',
+                                'opacity-0 group-hover:opacity-100',
+                                isFav ? 'border-rose-200 text-rose-600 bg-rose-50/80' : 'border-zinc-200 text-zinc-700 hover:bg-white',
+                            ].join(' ')}
+                        >
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill={isFav ? 'currentColor' : 'none'}
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                className="size-5"
+                                aria-hidden="true"
+                            >
+                                <path d="M19.5 12.1L12 19.6l-7.5-7.5a5.2 5.2 0 0 1 0-7.4 5.2 5.2 0 0 1 7.4 0L12 4.8l.1-.1a5.2 5.2 0 0 1 7.4 0 5.2 5.2 0 0 1 0 7.4Z" />
+                            </svg>
+                        </button>
+                    ) : null}
                     <div className="absolute inset-0 z-10 flex items-center justify-center p-6 text-center">
                         <div className="max-w-4xl">
                             <h1 className="text-4xl font-semibold leading-tight tracking-tight text-white sm:text-5xl">

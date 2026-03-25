@@ -87,8 +87,15 @@ export function ServiceContactRequestForm({
 
         if (cancelled) return;
         setServices(all);
+
+        if (mode === 'dialog' && !serviceId && selectedServiceId == null && all.length > 0) {
+          setSelectedServiceId(all[0].id);
+          setSelectedProductId(null);
+          setSelectedVariantId(null);
+          setProducts([]);
+        }
       } catch (err: unknown) {
-        // If services load fails, just keep form usable for caller-provided serviceId.
+
         if (cancelled) return;
         setError(err instanceof Error ? err.message : 'Unable to load services');
       }
@@ -348,32 +355,7 @@ export function ServiceContactRequestForm({
           </select>
         </label>
 
-        <label className="space-y-1 text-sm font-medium text-zinc-700">
-          Upload apartment/site condition photos (optional)
-          <div className="text-xs font-normal text-zinc-500">
-            Please upload photos of the current apartment condition and the area that needs to be installed.
-          </div>
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={(e) => uploadSelectedImages(e.target.files)}
-            disabled={uploadingImages || state === 'submitting'}
-            className="block w-full text-xs text-zinc-700 file:mr-2 file:rounded-lg file:border-0 file:bg-emerald-50 file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-emerald-700 hover:file:bg-emerald-100"
-          />
-          {uploadingImages ? <div className="text-xs text-zinc-500">Uploading images...</div> : null}
-          {uploadError ? <div className="text-xs text-rose-700">{uploadError}</div> : null}
-          {imageUrls.length ? (
-            <div className="mt-2 flex flex-wrap gap-2">
-              {imageUrls.map((url) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img key={url} src={url} alt="preview" className="h-16 w-16 rounded-lg border border-zinc-200 object-cover" />
-              ))}
-            </div>
-          ) : null}
-        </label>
-
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2 mt-4">
           <label className="space-y-1 text-sm font-medium text-zinc-700">
             Full name
             <input
@@ -383,6 +365,41 @@ export function ServiceContactRequestForm({
               className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 shadow-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
               placeholder="Enter your full name"
             />
+          </label>
+
+          <label className="space-y-2 text-sm font-medium text-zinc-700">
+            <div className="  gap-2 lg:flex-row lg:items-start lg:justify-between">
+              <div className="min-w-0 flex-1">
+                Upload ảnh hiện trạng (tuỳ chọn)
+                <div className="mt-1 text-xs font-normal text-zinc-500">
+                  Tải ảnh tình trạng & khu vực cần thi công.
+                </div>
+              </div>
+
+              <div className="lg:w-[240px]">
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={(e) => uploadSelectedImages(e.target.files)}
+                  disabled={uploadingImages || state === 'submitting'}
+                  className="block w-full text-xs text-zinc-700 file:mr-2 file:rounded-lg file:border-0 file:bg-emerald-50 file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-emerald-700 hover:file:bg-emerald-100"
+                />
+              </div>
+            </div>
+
+            {uploadingImages ? (
+              <div className="text-xs text-zinc-500">Uploading images...</div>
+            ) : null}
+            {uploadError ? <div className="text-xs text-rose-700">{uploadError}</div> : null}
+            {imageUrls.length ? (
+              <div className="mt-2 flex flex-wrap gap-2">
+                {imageUrls.map((url) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img key={url} src={url} alt="preview" className="h-16 w-16 rounded-lg border border-zinc-200 object-cover" />
+                ))}
+              </div>
+            ) : null}
           </label>
         </div>
 

@@ -1,32 +1,43 @@
-import { Metadata } from 'next';
-import FavoritesClient from './FavoritesClient';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Yêu thích | Floring',
-  description: 'Danh sách sản phẩm yêu thích (sắp có).',
+import type { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
+
+import { favoritesApi } from '@/api';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { Container } from '@/components/Container';
+import { backendGet } from '@/lib/backend';
+
+type ApiProduct = {
+  id: string;
+  title: string;
+  permalink?: string | null;
+  image?: string | null;
+  currentVariant?: {
+    id: string;
+    primaryImage?: string | null;
+    image?: string | null;
+    swatchImage?: string | null;
+    title?: string | null;
+  } | null;
 };
 
-export default function FavoritesPage() {
-  return <FavoritesClient />;
-  /*
-  type ApiProduct = {
-    id: string;
-    title: string;
-    permalink?: string | null;
-    image?: string | null;
-    currentVariant?: {
-      id: string;
-      primaryImage?: string | null;
-      image?: string | null;
-      swatchImage?: string | null;
-      title?: string | null;
-    } | null;
-  };
+type ProductBySlugResponse = {
+  data: { products: ApiProduct[] };
+};
 
-  type ProductBySlugResponse = {
-    data: { products: ApiProduct[] };
-  };
+const getCover = (p: ApiProduct) =>
+  p.currentVariant?.primaryImage ||
+  p.currentVariant?.image ||
+  p.currentVariant?.swatchImage ||
+  p.image ||
+  null;
 
+export default function FavoritesClient() {
+  const router = useRouter();
   const [permalinks, setPermalinks] = useState<string[]>([]);
   const [products, setProducts] = useState<ApiProduct[]>([]);
   const [loading, setLoading] = useState(true);
@@ -83,26 +94,21 @@ export default function FavoritesPage() {
     };
   }, [uniquePermalinks]);
 
-  const getCover = (p: ApiProduct) =>
-    p.currentVariant?.primaryImage ||
-    p.currentVariant?.image ||
-    p.currentVariant?.swatchImage ||
-    p.image ||
-    null;
-
   const toggleRemove = async (permalink: string) => {
     try {
       const res = await favoritesApi.toggleFavorite(permalink);
       const nextIsFav = res.data.isFavorite;
+
       setPermalinks((prev) => {
         const next = new Set(prev);
         if (nextIsFav) next.add(permalink);
         else next.delete(permalink);
         return Array.from(next);
       });
+
       setProducts((prev) => prev.filter((p) => p.permalink !== permalink));
     } catch {
-      // keep UI unchanged if request fails
+      // keep UI unchanged on errors (not authenticated, redis down, etc.)
     }
   };
 
@@ -125,7 +131,10 @@ export default function FavoritesPage() {
           {loading ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="overflow-hidden rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
+                <div
+                  key={i}
+                  className="overflow-hidden rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm"
+                >
                   <div className="h-44 w-full animate-pulse rounded-xl bg-zinc-100" />
                   <div className="mt-3 h-4 w-2/3 animate-pulse rounded bg-zinc-100" />
                   <div className="mt-2 h-3 w-1/2 animate-pulse rounded bg-zinc-100" />
@@ -137,14 +146,36 @@ export default function FavoritesPage() {
               {products.map((p) => {
                 const cover = getCover(p);
                 const slug = p.permalink ?? '';
+                const href = p.permalink ? `/products/${p.permalink}` : null;
+
                 return (
                   <article
                     key={p.id}
                     className="group overflow-hidden rounded-2xl border border-zinc-200 bg-white/80 shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-md"
+                    role="link"
+                    tabIndex={0}
+                    aria-label={p.title}
+                    onClick={() => {
+                      if (!href) return;
+                      router.push(href);
+                    }}
+                    onKeyDown={(e) => {
+                      if (!href) return;
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        router.push(href);
+                      }
+                    }}
                   >
                     <div className="relative aspect-[4/3] bg-zinc-100">
                       {cover ? (
-                        <Image src={cover} alt={p.title} fill className="object-cover transition group-hover:scale-[1.03]" unoptimized />
+                        <Image
+                          src={cover}
+                          alt={p.title}
+                          fill
+                          className="object-cover transition group-hover:scale-[1.03]"
+                          unoptimized
+                        />
                       ) : (
                         <div className="absolute inset-0 bg-gradient-to-br from-zinc-200 via-zinc-100 to-zinc-50" />
                       )}
@@ -153,8 +184,11 @@ export default function FavoritesPage() {
                         type="button"
                         aria-label="Bỏ yêu thích"
                         title="Bỏ yêu thích"
-                        onClick={() => {
-                          if (slug) void toggleRemove(slug);
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          if (!slug) return;
+                          void toggleRemove(slug);
                         }}
                         className="absolute right-3 top-3 z-10 inline-flex size-10 items-center justify-center rounded-full border border-rose-200 bg-rose-50/80 text-rose-600 shadow-sm backdrop-blur transition hover:bg-white"
                       >
@@ -167,10 +201,8 @@ export default function FavoritesPage() {
                     <div className="p-5">
                       <h3 className="line-clamp-2 text-base font-semibold tracking-tight text-zinc-900">{p.title}</h3>
                       {p.permalink ? (
-                        <div className="mt-4">
-                          <Link href={`/products/${p.permalink}`} className="inline-flex items-center text-sm font-semibold text-emerald-700 hover:text-emerald-800">
-                            Xem chi tiết <span className="ml-2">→</span>
-                          </Link>
+                        <div className="mt-4 text-sm font-semibold text-zinc-600">
+                          {p.title}
                         </div>
                       ) : null}
                     </div>
@@ -201,6 +233,5 @@ export default function FavoritesPage() {
       </section>
     </main>
   );
-  */
 }
 

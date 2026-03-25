@@ -13,7 +13,7 @@ export default function AboutPage() {
     <main className="min-h-screen bg-transparent text-foreground">
       <section className="bg-gradient-to-b from-transparent via-slate-50/60 to-transparent py-14">
         <Container>
-          <div className="mx-auto max-w-4xl text-center">
+          <div className="mx-auto max-w-6xl text-center">
             <p className="text-sm font-semibold uppercase tracking-widest text-amber-600">
               Giới thiệu Floring
             </p>
@@ -128,7 +128,7 @@ export default function AboutPage() {
 
       <section className="bg-gradient-to-b from-transparent via-slate-50/70 to-transparent py-16">
         <Container>
-          <header className="mx-auto max-w-3xl text-center">
+          <header className="mx-auto max-w-4xl text-center">
             <h2 className="text-2xl font-semibold tracking-tight text-zinc-900">
               Tiêu chuẩn dịch vụ
             </h2>
@@ -200,7 +200,7 @@ export default function AboutPage() {
       {/* CTA */}
       <section className="bg-gradient-to-r from-slate-100/70 via-emerald-50/50 to-slate-100/70 py-16">
         <Container>
-          <div className="mx-auto max-w-4xl rounded-3xl border border-zinc-200/70 bg-white/70 p-8 shadow-sm backdrop-blur">
+          <div className="mx-auto max-w-6xl rounded-3xl border border-zinc-200/70 bg-white/70 p-8 shadow-sm backdrop-blur">
             <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
               <div className="text-center md:text-left">
                 <p className="text-sm font-semibold uppercase tracking-widest text-emerald-700">
@@ -233,7 +233,7 @@ export default function AboutPage() {
 
       <section className="bg-gradient-to-b from-transparent via-white to-transparent py-16">
         <Container>
-          <div className="mx-auto max-w-3xl text-center">
+          <div className="mx-auto max-w-4xl text-center">
             <h2 className="text-2xl font-semibold tracking-tight text-zinc-900">
               Vì sao khách hàng chọn Floring
             </h2>

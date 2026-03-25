@@ -56,7 +56,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   if (checking) {
     return (
       <div className="min-h-screen bg-zinc-50">
-        <div className="mx-auto max-w-6xl px-6 py-10">
+          <div className="mx-auto max-w-7xl px-6 py-10">
           <div className="h-8 w-48 animate-pulse rounded-lg bg-zinc-200" />
           <div className="mt-6 grid gap-4 lg:grid-cols-12">
             <div className="lg:col-span-3">
@@ -73,7 +73,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-zinc-50 text-zinc-900">
-      <div className="mx-auto max-w-6xl px-6 py-8">
+      <div className="mx-auto max-w-7xl px-6 py-8">
         <div className="flex items-center justify-between gap-4">
           <div>
             <div className="text-sm text-zinc-600">Admin</div>

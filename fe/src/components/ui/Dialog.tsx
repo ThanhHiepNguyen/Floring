@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 
 type DialogProps = {
     open: boolean;
@@ -49,7 +50,11 @@ export function Dialog({ open, onClose, title, children, className }: DialogProp
 
     if (!open) return null;
 
-    return (
+    // Render qua portal để đảm bảo `position: fixed` luôn bám vào viewport,
+    // tránh bị lệch khi component cha có `transform`.
+    if (typeof document === 'undefined') return null;
+
+    return createPortal(
         <div
             role="dialog"
             aria-modal="true"
@@ -86,7 +91,8 @@ export function Dialog({ open, onClose, title, children, className }: DialogProp
 
                 <div className="p-5">{children}</div>
             </div>
-        </div>
+        </div>,
+        document.body,
     );
 }
 
