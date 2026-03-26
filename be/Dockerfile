@@ -28,4 +28,4 @@ EXPOSE 8000
 
 # Railway sẽ gọi service sau khi container "listen" OK.
 # "db push" chạy trước để schema sẵn sàng.
-CMD ["sh", "-c", "npx prisma db push && node dist/main"]
+CMD ["sh", "-c", "npx prisma db push && node dist/src/main"]
