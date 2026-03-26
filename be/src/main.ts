@@ -8,9 +8,23 @@ import * as express from 'express';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: true,
+    origin: (origin, callback) => {
+      // Allow server-to-server / curl / health checks (no Origin header)
+      if (!origin) return callback(null, true);
+
+      const allowList = [
+        /^https:\/\/.*\.vercel\.app$/i,
+        /^https:\/\/floring\.vercel\.app$/i,
+        /^http:\/\/localhost:\d+$/i,
+      ];
+
+      const ok = allowList.some((rule) => rule.test(origin));
+      return callback(ok ? null : new Error(`CORS blocked for origin: ${origin}`), ok);
+    },
     methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Guest-Id'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Guest-Id', 'x-guest-id'],
+    credentials: true,
+    optionsSuccessStatus: 204,
   });
 
   app.setGlobalPrefix('api/v1');
@@ -22,16 +36,17 @@ async function bootstrap() {
     }),
   );
 
-  app.use('/uploads', express.static(join(process.cwd(), 'be', 'uploads')));
+  // Serve uploaded files.
+  // Note: WORKDIR trong Docker backend là /app (root của project `be`), nên uploads nằm ở /app/uploads.
+  // Tránh join thêm 'be' vì sẽ thành /app/be/uploads (không tồn tại) => 404.
+  app.use('/uploads', express.static(join(process.cwd(), 'uploads')));
 
   const port = process.env.PORT || 8000;
 
-  console.log(` Server đang khởi chạy trên cổng: ${port}`);
-
-
+  console.log(`🚀 Server đang khởi chạy trên cổng: ${port}`);
   await app.listen(port, '0.0.0.0');
 }
 bootstrap().catch((err) => {
-  console.error(' Lỗi khởi động:', err);
-
+  console.error('❌ Lỗi khởi động:', err);
+  // Không dùng process.exit(1) để Railway có thể thử restart lại
 });
