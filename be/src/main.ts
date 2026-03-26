@@ -24,14 +24,14 @@ async function bootstrap() {
 
   app.use('/uploads', express.static(join(process.cwd(), 'be', 'uploads')));
 
-  const portRaw = process.env.PORT;
-  const port = Number(portRaw);
-  if (!portRaw || !Number.isFinite(port)) {
-    throw new Error('Missing or invalid PORT in .env');
-  }
-  await app.listen(port);
+  const port = process.env.PORT || 8000;
+
+  console.log(` Server đang khởi chạy trên cổng: ${port}`);
+
+
+  await app.listen(port, '0.0.0.0');
 }
 bootstrap().catch((err) => {
-  console.error('Lỗi khởi động ứng dụng:', err);
-  process.exit(1);
+  console.error(' Lỗi khởi động:', err);
+
 });
