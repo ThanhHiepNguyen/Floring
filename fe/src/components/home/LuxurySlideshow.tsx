@@ -106,7 +106,7 @@ export function LuxurySlideshow({
 
   return (
     <div
-      className="relative overflow-hidden"
+      className="relative overflow-hidden group"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
@@ -174,7 +174,11 @@ export function LuxurySlideshow({
                 </p>
                 {current.cta ? (
                   <div className="mt-6">
-                    <ButtonLink href={current.cta.href} variant="primary">
+                    <ButtonLink
+                      href={current.cta.href}
+                      variant="primary"
+                      className="bg-emerald-600 text-white hover:bg-emerald-700"
+                    >
                       {current.cta.label}
                     </ButtonLink>
                   </div>
@@ -206,7 +210,7 @@ export function LuxurySlideshow({
           type="button"
           aria-label="Slide trước"
           onClick={() => go(-1)}
-          className="pointer-events-auto inline-flex size-10 items-center justify-center rounded-full border border-emerald-300/70 bg-emerald-600/70 text-white backdrop-blur transition hover:bg-emerald-600/90"
+          className="pointer-events-auto inline-flex size-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur transition opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible hover:bg-white/20"
         >
           <svg
             viewBox="0 0 24 24"
@@ -225,7 +229,7 @@ export function LuxurySlideshow({
           type="button"
           aria-label="Slide tiếp theo"
           onClick={() => go(1)}
-          className="pointer-events-auto inline-flex size-10 items-center justify-center rounded-full border border-emerald-300/70 bg-emerald-600/70 text-white backdrop-blur transition hover:bg-emerald-600/90"
+          className="pointer-events-auto inline-flex size-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur transition opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible hover:bg-white/20"
         >
           <svg
             viewBox="0 0 24 24"
