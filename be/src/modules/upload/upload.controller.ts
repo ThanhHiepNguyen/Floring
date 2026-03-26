@@ -66,7 +66,7 @@ export class UploadController {
             },
         }),
     )
-    uploadImage(@UploadedFile() file: UploadedFileType) {
+    async uploadImage(@UploadedFile() file: UploadedFileType) {
         if (!file) {
             throw new BadRequestException('Không có file upload');
         }
@@ -76,7 +76,7 @@ export class UploadController {
         }
 
         return {
-            url: uploadBufferToCloudinary(file.buffer, 'floring/uploads'),
+            url: await uploadBufferToCloudinary(file.buffer, 'floring/uploads'),
         };
     }
 
@@ -89,7 +89,7 @@ export class UploadController {
             },
         }),
     )
-    uploadContactRequestImage(@UploadedFile() file: UploadedFileType) {
+    async uploadContactRequestImage(@UploadedFile() file: UploadedFileType) {
         if (!file) {
             throw new BadRequestException('Không có file upload');
         }
@@ -99,7 +99,7 @@ export class UploadController {
         }
 
         return {
-            url: uploadBufferToCloudinary(file.buffer, 'floring/contact-requests'),
+            url: await uploadBufferToCloudinary(file.buffer, 'floring/contact-requests'),
         };
     }
 }
