@@ -1,38 +1,56 @@
 import {
     BadRequestException,
     Controller,
-    InternalServerErrorException,
     Post,
     UploadedFile,
     UseGuards,
     UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
+import { memoryStorage } from 'multer';
+import { v2 as cloudinary } from 'cloudinary';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { extname, join } from 'path';
-import { mkdirSync } from 'fs';
-import { randomUUID } from 'crypto';
 
 
 type UploadedFileType = {
-    filename?: string;
     originalname?: string;
+    buffer?: Buffer;
 };
 
-type DestinationCallback = (error: Error | null, destination: string) => void;
-type FilenameCallback = (error: Error | null, filename: string) => void;
-
-function toError(err: unknown) {
-    return err instanceof Error
-        ? err
-        : new Error('Failed to create upload directory');
+function mustGetEnv(key: string): string {
+    const v = process.env[key];
+    if (!v) throw new Error(`Missing env var: ${key}`);
+    return v.trim();
 }
 
-function getOriginalName(file: unknown): string {
-    if (typeof file !== 'object' || file === null) return '';
-    const withName = file as { originalname?: unknown };
-    return typeof withName.originalname === 'string' ? withName.originalname : '';
+async function uploadBufferToCloudinary(buffer: Buffer, folder: string): Promise<string> {
+    const cloudName = mustGetEnv('CLOUDINARY_CLOUD_NAME');
+    const apiKey = mustGetEnv('CLOUDINARY_API_KEY');
+    const apiSecret = mustGetEnv('CLOUDINARY_API_SECRET');
+
+    cloudinary.config({
+        cloud_name: cloudName,
+        api_key: apiKey,
+        api_secret: apiSecret,
+    });
+
+    const result = await new Promise<{ secure_url?: string }>((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+            {
+                folder,
+                resource_type: 'image',
+            },
+            (error, res) => {
+                if (error) reject(error);
+                else resolve(res as { secure_url?: string });
+            },
+        );
+
+        stream.end(buffer);
+    });
+
+    if (!result.secure_url) throw new Error('Cloudinary upload failed (missing secure_url)');
+    return result.secure_url;
 }
 
 @Controller('upload')
@@ -42,22 +60,7 @@ export class UploadController {
     @UseInterceptors(
         FileInterceptor('file', {
 
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            storage: diskStorage({
-                destination: (_req: unknown, _file: unknown, cb: DestinationCallback) => {
-                    try {
-                        const uploadDir = join(process.cwd(), 'be', 'uploads');
-                        mkdirSync(uploadDir, { recursive: true });
-                        cb(null, uploadDir);
-                    } catch (err: unknown) {
-                        cb(toError(err), '');
-                    }
-                },
-                filename: (_req: unknown, file: unknown, cb: FilenameCallback) => {
-                    const safeExt = extname(getOriginalName(file)).toLowerCase() || '.bin';
-                    cb(null, `${randomUUID()}${safeExt}`);
-                },
-            }),
+            storage: memoryStorage(),
             limits: {
                 fileSize: 5 * 1024 * 1024,
             },
@@ -68,36 +71,19 @@ export class UploadController {
             throw new BadRequestException('Không có file upload');
         }
 
-
-        const filename = file.filename;
-        if (!filename) {
-            throw new InternalServerErrorException('Upload thất bại (không có filename)');
+        if (!file.buffer) {
+            throw new BadRequestException('Không có buffer file upload');
         }
 
         return {
-            url: `/uploads/${filename}`,
+            url: uploadBufferToCloudinary(file.buffer, 'floring/uploads'),
         };
     }
 
     @Post('contact-request-image')
     @UseInterceptors(
         FileInterceptor('file', {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            storage: diskStorage({
-                destination: (_req: unknown, _file: unknown, cb: DestinationCallback) => {
-                    try {
-                        const uploadDir = join(process.cwd(), 'be', 'uploads');
-                        mkdirSync(uploadDir, { recursive: true });
-                        cb(null, uploadDir);
-                    } catch (err: unknown) {
-                        cb(toError(err), '');
-                    }
-                },
-                filename: (_req: unknown, file: unknown, cb: FilenameCallback) => {
-                    const safeExt = extname(getOriginalName(file)).toLowerCase() || '.bin';
-                    cb(null, `${randomUUID()}${safeExt}`);
-                },
-            }),
+            storage: memoryStorage(),
             limits: {
                 fileSize: 5 * 1024 * 1024,
             },
@@ -108,13 +94,12 @@ export class UploadController {
             throw new BadRequestException('Không có file upload');
         }
 
-        const filename = file.filename;
-        if (!filename) {
-            throw new InternalServerErrorException('Upload thất bại (không có filename)');
+        if (!file.buffer) {
+            throw new BadRequestException('Không có buffer file upload');
         }
 
         return {
-            url: `/uploads/${filename}`,
+            url: uploadBufferToCloudinary(file.buffer, 'floring/contact-requests'),
         };
     }
 }
