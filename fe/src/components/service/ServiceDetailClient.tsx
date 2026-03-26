@@ -8,6 +8,7 @@ import { Container } from '@/components/Container';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { ServiceContactRequestForm } from '@/components/service/ServiceContactRequestForm';
 import { favoritesApi } from '@/api';
+import { normalizeImageUrl } from '@/lib/asset';
 
 type Service = {
   id: string;
@@ -145,7 +146,7 @@ export function ServiceDetailClient({ service, products }: Props) {
         <div className="relative aspect-[16/7] w-full overflow-hidden bg-zinc-900">
           {heroImage ? (
             <Image
-              src={heroImage}
+              src={normalizeImageUrl(heroImage)}
               alt={selectedState?.variant.title || service.name}
               fill
               priority

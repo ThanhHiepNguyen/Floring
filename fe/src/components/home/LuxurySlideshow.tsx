@@ -6,6 +6,7 @@ import { AnimatePresence, motion, useMotionValue, useTransform } from 'framer-mo
 
 import { ButtonLink } from '@/components/ButtonLink';
 import { API_BASE_URL } from '@/api/http';
+import { normalizeImageUrl } from '@/lib/asset';
 
 type Slide = {
   id?: string;
@@ -57,7 +58,7 @@ export function LuxurySlideshow({
         if (Array.isArray(data) && data.length > 0) {
           const mapped: Slide[] = (data as SlideApiRow[]).map((s) => ({
             id: s.id,
-            src: s.imageUrl,
+            src: normalizeImageUrl(s.imageUrl) ?? '',
             title: s.title,
             description: s.description ?? '',
             cta:
@@ -67,7 +68,9 @@ export function LuxurySlideshow({
           }));
 
           if (mapped.length) {
-            setSlides(mapped);
+            // Remove empty src to avoid Next/Image requesting invalid URLs.
+            const cleaned = mapped.filter((x) => !!x.src);
+            setSlides(cleaned);
             setActive(0);
           }
         }

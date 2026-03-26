@@ -2,6 +2,7 @@ import { Container } from '@/components/Container';
 import Link from 'next/link';
 import Image from 'next/image';
 import { backendGet } from '@/lib/backend';
+import { normalizeImageUrl } from '@/lib/asset';
 import type { SearchPageProps, SearchResponse } from '@/types/search';
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
@@ -42,7 +43,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                                     <div className="relative aspect-[4/3] bg-zinc-100 dark:bg-zinc-900">
                                         {p.imageUrl ? (
                                             <Image
-                                                src={p.imageUrl}
+                                                src={normalizeImageUrl(p.imageUrl)}
                                                 alt={p.name}
                                                 fill
                                                 className="object-cover"

@@ -6,6 +6,7 @@ import { getBlogPostBySlug, getBlogPosts, type BlogPost } from '@/api/blog.api';
 import { Container } from '@/components/Container';
 import { formatDateVn } from '@/lib/blog/format';
 import { markdownToHtml } from '@/lib/blog/markdown';
+import { normalizeImageUrl } from '@/lib/asset';
 import type { BlogPostPageProps, TocItem } from '@/types/blog';
 
 const ARTICLE_PROSE_CLASS =
@@ -219,7 +220,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   <figure className="mt-8 overflow-hidden rounded-[28px] border border-zinc-200 bg-white shadow-sm">
                     <div className="relative aspect-[16/9]">
                       <Image
-                        src={post.imageUrl}
+                        src={normalizeImageUrl(post.imageUrl)}
                         alt={post.title}
                         fill
                         priority
@@ -251,7 +252,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                           <div className="relative h-[70px] w-[112px] shrink-0 overflow-hidden rounded-md bg-zinc-100">
                             {item.imageUrl ? (
                               <Image
-                                src={item.imageUrl}
+                                src={normalizeImageUrl(item.imageUrl)}
                                 alt={item.title}
                                 fill
                                 className="object-cover transition duration-500 group-hover:scale-[1.04]"

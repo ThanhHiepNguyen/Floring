@@ -20,6 +20,7 @@ import type {
   Testimonial,
 } from '@/types/home';
 import { TestimonialsSection } from '@/components/home/TestimonialsSection';
+import { normalizeImageUrl } from '@/lib/asset';
 
 const PROCESS_STEPS: ProcessStep[] = [
   {
@@ -251,7 +252,7 @@ export default async function Home() {
           <div className={`relative w-full ${aspectClass} bg-zinc-100`}>
             {cover ? (
               <Image
-                src={cover}
+                src={normalizeImageUrl(cover)}
                 alt={p.title}
                 fill
                 className="object-cover transition duration-500 group-hover:scale-[1.03]"

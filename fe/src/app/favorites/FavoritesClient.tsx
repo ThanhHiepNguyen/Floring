@@ -10,6 +10,7 @@ import { favoritesApi } from '@/api';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { Container } from '@/components/Container';
 import { backendGet } from '@/lib/backend';
+import { normalizeImageUrl } from '@/lib/asset';
 
 type ApiProduct = {
   id: string;
@@ -170,7 +171,7 @@ export default function FavoritesClient() {
                     <div className="relative aspect-[4/3] bg-zinc-100">
                       {cover ? (
                         <Image
-                          src={cover}
+                          src={normalizeImageUrl(cover)}
                           alt={p.title}
                           fill
                           className="object-cover transition group-hover:scale-[1.03]"

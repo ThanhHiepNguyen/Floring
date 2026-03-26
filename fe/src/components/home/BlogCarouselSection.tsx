@@ -4,6 +4,8 @@ import { useMemo, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
+import { normalizeImageUrl } from '@/lib/asset';
+
 type BlogCard = {
     id: string;
     slug: string;
@@ -121,7 +123,7 @@ export function BlogCarouselSection({
                                     <div className="relative aspect-[16/9]">
                                         {p.imageUrl ? (
                                             <Image
-                                                src={p.imageUrl}
+                                                src={normalizeImageUrl(p.imageUrl)}
                                                 alt={p.title}
                                                 fill
                                                 className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"

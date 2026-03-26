@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import type { HomeService } from '@/types/home';
+import { normalizeImageUrl } from '@/lib/asset';
 
 export function ServicesTabsSection({
     services,
@@ -55,7 +56,7 @@ export function ServicesTabsSection({
                             <div className="relative aspect-[16/11] bg-zinc-100">
                                 {active.imageUrl ? (
                                     <Image
-                                        src={active.imageUrl}
+                                        src={normalizeImageUrl(active.imageUrl)}
                                         alt={active.name}
                                         fill
                                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.045]"

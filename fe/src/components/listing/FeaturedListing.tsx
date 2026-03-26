@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Container } from '@/components/Container';
+import { normalizeImageUrl } from '@/lib/asset';
 
 import type { FeaturedItem } from '@/types/listing';
 
@@ -21,7 +22,7 @@ function Thumb({ title, imageUrl, sizes }: { title: string; imageUrl?: string | 
     }
     return (
         <Image
-            src={imageUrl}
+            src={normalizeImageUrl(imageUrl)}
             alt={title}
             fill
             className="object-cover transition duration-500 group-hover:scale-[1.03]"

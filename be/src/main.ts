@@ -41,6 +41,25 @@ async function bootstrap() {
   // Tránh join thêm 'be' vì sẽ thành /app/be/uploads (không tồn tại) => 404.
   app.use('/uploads', express.static(join(process.cwd(), 'uploads')));
 
+  // Compatibility: some older DB records may still store image paths like "/uploads/<uuid>.png"
+  // while the current upload flow saves to Cloudinary.
+  // If the local file doesn't exist, redirect to the corresponding Cloudinary URL.
+  const cloudName = process.env.CLOUDINARY_CLOUD_NAME?.trim();
+  if (cloudName) {
+    app.get('/uploads/*', (req, res) => {
+      const filePath = (req.params as any)[0] as string | undefined;
+      if (!filePath) return res.sendStatus(404);
+
+      const encoded = filePath
+        .split('/')
+        .map((seg) => encodeURIComponent(seg))
+        .join('/');
+
+      const cloudUrl = `https://res.cloudinary.com/${cloudName}/image/upload/floring/uploads/${encoded}`;
+      return res.redirect(302, cloudUrl);
+    });
+  }
+
   const port = process.env.PORT || 8000;
 
   console.log(`🚀 Server đang khởi chạy trên cổng: ${port}`);

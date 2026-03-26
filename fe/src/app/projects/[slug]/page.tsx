@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { Container } from '@/components/Container';
 import { backendGet } from '@/lib/backend';
+import { normalizeImageUrl } from '@/lib/asset';
 import { ServiceContactRequestForm } from '@/components/service/ServiceContactRequestForm';
 import type { Project, ProjectPageProps, ProjectsResponse } from '@/types/projects';
 
@@ -175,7 +176,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                   {cover ? (
                     <div className="relative aspect-[16/7] sm:aspect-[16/8]">
                       <Image
-                        src={cover}
+                        src={normalizeImageUrl(cover)}
                         alt={project.title}
                         fill
                         priority
@@ -275,7 +276,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                           <div className="relative h-[85px] w-[85px] shrink-0 overflow-hidden rounded-[18px] bg-zinc-100 border border-zinc-200">
                             {item.images?.[0]?.imageUrl ? (
                               <Image
-                                src={item.images[0].imageUrl}
+                                src={normalizeImageUrl(item.images[0].imageUrl)}
                                 alt={item.title}
                                 fill
                                 className="object-cover transition duration-500 group-hover:scale-[1.04]"

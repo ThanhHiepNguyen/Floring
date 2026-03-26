@@ -8,6 +8,7 @@ import { Container } from '@/components/Container';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { ServiceContactRequestForm } from '@/components/service/ServiceContactRequestForm';
 import { favoritesApi } from '@/api';
+import { normalizeImageUrl } from '@/lib/asset';
 
 type ProductVariant = {
     id: string;
@@ -106,7 +107,7 @@ export function ProductDetailClient({
                 <div className="group relative aspect-[16/7] w-full overflow-hidden bg-zinc-900">
                     {heroImage ? (
                         <Image
-                            src={heroImage}
+                            src={normalizeImageUrl(heroImage)}
                             alt={selectedVariant?.title ?? product.title}
                             fill
                             priority
