@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
-import { backendGet } from '@/lib/backend';
+import { api } from '@/api/http';
+import { toApiErrorMessage } from '@/api/http';
 import { ProductDetailClient } from '@/components/product/ProductDetailClient';
 
 type ProductVariant = {
@@ -27,6 +28,9 @@ type ProductApiResponse = {
   data: {
     products: Product[];
   };
+  meta?: {
+    hasMoreItems?: boolean;
+  };
 };
 
 type ProductSlugPageProps = {
@@ -35,7 +39,7 @@ type ProductSlugPageProps = {
 
 export async function generateMetadata({ params }: ProductSlugPageProps): Promise<Metadata> {
   const p = await params;
-  const res = await backendGet<ProductApiResponse>(`/product/by-slug/${p.slug}`).catch(() => null);
+  const res = await api.get<ProductApiResponse>(`/product/by-slug/${p.slug}`).then((r) => r.data).catch(() => null);
   const product = res?.data?.products?.[0];
 
   if (!product) {
@@ -53,7 +57,7 @@ export async function generateMetadata({ params }: ProductSlugPageProps): Promis
 
 export default async function ProductDetailPage({ params }: ProductSlugPageProps) {
   const p = await params;
-  const res = await backendGet<ProductApiResponse>(`/product/by-slug/${p.slug}`).catch(() => null);
+  const res = await api.get<ProductApiResponse>(`/product/by-slug/${p.slug}`).then((r) => r.data).catch(() => null);
   const product = res?.data?.products?.[0];
 
   if (!product) {
@@ -68,34 +72,33 @@ export default async function ProductDetailPage({ params }: ProductSlugPageProps
   }
 
   let relatedProducts: Product[] = [];
-  if (product?.serviceId) {
-    // Fetch all products for this service so the carousel can be "đủ hàng" without pagination.
-    const limitPerPage = 50;
-    let page = 1;
-    let hasMore = true;
+  // Fetch all products (not only same service) for the horizontal rail.
+  const limitPerPage = 50;
+  let page = 1;
+  let hasMore = true;
 
-    while (hasMore) {
-      const relatedRes = await backendGet<ProductApiResponse>('/product', {
-        searchParams: { serviceId: product.serviceId, page, limit: limitPerPage },
-      }).catch(() => null);
+  while (hasMore) {
+    const relatedRes = await api
+      .get<ProductApiResponse>('/product', { params: { page, limit: limitPerPage } })
+      .then((r) => r.data)
+      .catch(() => null);
 
-      const batch = relatedRes?.data?.products ?? [];
-      relatedProducts.push(...batch.filter((x) => x.id !== product.id));
+    const batch = relatedRes?.data?.products ?? [];
+    relatedProducts.push(...batch.filter((x) => x.id !== product.id));
 
-      // If BE didn't return meta, fallback to stop when batch is smaller than limit.
-      const meta = (relatedRes as any)?.meta;
-      if (meta?.hasMoreItems === false) {
-        hasMore = false;
-      } else if (batch.length < limitPerPage) {
-        hasMore = false;
-      } else {
-        page += 1;
-      }
+    // If BE didn't return meta, fallback to stop when batch is smaller than limit.
+    const meta = relatedRes?.meta;
+    if (meta?.hasMoreItems === false) {
+      hasMore = false;
+    } else if (batch.length < limitPerPage) {
+      hasMore = false;
+    } else {
+      page += 1;
     }
-
-    // Remove potential duplicates from multi-page fetch.
-    relatedProducts = Array.from(new Map(relatedProducts.map((p) => [p.id, p])).values());
   }
+
+  // Remove potential duplicates from multi-page fetch.
+  relatedProducts = Array.from(new Map(relatedProducts.map((p) => [p.id, p])).values());
 
   return <ProductDetailClient product={product} relatedProducts={relatedProducts} />;
 }

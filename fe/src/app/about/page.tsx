@@ -204,14 +204,14 @@ export default function AboutPage() {
             <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
               <div className="text-center md:text-left">
                 <p className="text-sm font-semibold uppercase tracking-widest text-emerald-700">
-                      Yêu cầu khảo sát & nhận báo giá
+                  Liên hệ
                 </p>
                 <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900">
-                      Cho chúng tôi biết nhu cầu — Floring sẽ hướng dẫn bước tiếp theo.
+                  Cho chúng tôi biết nhu cầu — Floring sẽ hướng dẫn bước tiếp theo.
                 </h2>
                 <p className="mt-4 text-base leading-relaxed text-zinc-600">
-                      Chia sẻ thông tin về nhu cầu của bạn và (nếu cần) upload ảnh hiện trạng để đội ngũ đánh giá công trình
-                      và lên kế hoạch rõ ràng.
+                  Chia sẻ thông tin về nhu cầu của bạn và (nếu cần) upload ảnh hiện trạng để đội ngũ đánh giá công trình
+                  và lên kế hoạch rõ ràng.
                 </p>
               </div>
 
@@ -221,7 +221,7 @@ export default function AboutPage() {
                   serviceId={null}
                   serviceName={null}
                   productVariantId={null}
-                  triggerLabel="Yêu cầu khảo sát & báo giá"
+                  triggerLabel="Liên hệ"
                   triggerVariant="form"
                   triggerClassName="inline-flex w-full items-center justify-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 md:w-auto"
                 />

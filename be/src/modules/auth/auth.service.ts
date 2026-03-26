@@ -15,7 +15,7 @@ const DATA = {
 } as const;
 
 @Injectable()
-export class AuthService {
+export class AuthService {x
     constructor(
         private prisma: PrismaService,
         private jwtService: JwtService,

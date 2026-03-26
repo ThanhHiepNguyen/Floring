@@ -9,7 +9,7 @@ import { markdownToHtml } from '@/lib/blog/markdown';
 import type { BlogPostPageProps, TocItem } from '@/types/blog';
 
 const ARTICLE_PROSE_CLASS =
-  'mt-10 [&_a]:text-blue-600 [&_a]:underline-offset-2 hover:[&_a]:underline [&_figure]:my-6 [&_h1]:mt-12 [&_h1]:text-3xl [&_h1]:font-semibold [&_h1]:tracking-tight [&_h1]:text-[#0f172a] [&_h2]:mt-12 [&_h2]:text-[1.9rem] [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:text-[#0f172a] [&_h3]:mt-8 [&_h3]:text-[1.45rem] [&_h3]:font-semibold [&_h3]:tracking-tight [&_h3]:text-[#0f172a] [&_img]:rounded-2xl [&_ol]:mt-5 [&_ol]:space-y-3 [&_ol]:pl-6 [&_ol]:text-zinc-700 [&_p]:mt-6 [&_p]:text-[16px] [&_p]:leading-8 [&_p]:text-zinc-700 [&_strong]:font-semibold [&_strong]:text-zinc-950 [&_ul]:mt-5 [&_ul]:space-y-3 [&_ul]:pl-6 [&_ul]:text-zinc-700';
+  'mt-10 max-w-none [&_a]:text-emerald-700 [&_a]:underline-offset-2 hover:[&_a]:underline [&_blockquote]:my-8 [&_blockquote]:rounded-2xl [&_blockquote]:border-l-4 [&_blockquote]:border-emerald-500 [&_blockquote]:bg-emerald-50/40 [&_blockquote]:px-5 [&_blockquote]:py-4 [&_blockquote]:text-zinc-700 [&_figure]:my-8 [&_h1]:mt-12 [&_h1]:text-3xl [&_h1]:font-semibold [&_h1]:tracking-tight [&_h1]:text-zinc-900 [&_h2]:mt-12 [&_h2]:text-[1.75rem] [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:text-zinc-900 [&_h3]:mt-8 [&_h3]:text-[1.35rem] [&_h3]:font-semibold [&_h3]:tracking-tight [&_h3]:text-zinc-900 [&_img]:rounded-2xl [&_ol]:mt-5 [&_ol]:space-y-3 [&_ol]:pl-6 [&_ol]:text-zinc-700 [&_p]:mt-6 [&_p]:text-[16px] [&_p]:leading-8 [&_p]:text-zinc-700 [&_strong]:font-semibold [&_strong]:text-zinc-950 [&_ul]:mt-5 [&_ul]:space-y-3 [&_ul]:pl-6 [&_ul]:text-zinc-700';
 
 function estimateReadingMinutes(content: string): number {
   const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
@@ -155,20 +155,25 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <Container>
           <div className="grid gap-8 lg:grid-cols-[250px_minmax(0,1fr)] xl:grid-cols-[280px_minmax(0,1fr)_380px] xl:gap-8">
             <aside className="hidden lg:block">
-              <div className="sticky top-6 max-h-[calc(100vh-2rem)] overflow-y-auto border-r border-zinc-200 pr-4">
+              <div className="sticky top-6 max-h-[calc(100vh-2rem)] overflow-y-auto rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-sm">
+                <div className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                  Mục lục
+                </div>
                 <div className="space-y-2">
                   {tocItems.length ? (
                     tocItems.map((item) => (
                       <a
                         key={item.id}
                         href={`#${item.id}`}
-                        className={`block truncate text-sm leading-8 text-zinc-800 transition hover:text-zinc-950 ${getTocItemClass(item.level)}`}
+                        className={`block truncate rounded-lg px-2 py-1.5 text-sm leading-6 text-zinc-700 transition hover:bg-zinc-100 hover:text-zinc-950 ${getTocItemClass(item.level)}`}
                       >
                         {item.label}
                       </a>
                     ))
                   ) : (
-                    <p className="text-sm leading-6 text-zinc-500">Chua co muc luc.</p>
+                    <p className="text-sm leading-6 text-zinc-500">
+                      Chưa có mục lục .
+                    </p>
                   )}
                 </div>
               </div>
@@ -186,30 +191,28 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </Link>
 
               <header className="mt-5">
-                <h1 className="max-w-4xl text-4xl font-semibold leading-[1.05] tracking-tight text-[#05005d] sm:text-5xl lg:text-[3.4rem]">
+                <div className="mb-4 inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700 ring-1 ring-emerald-100">
+                  Blog Floring
+                </div>
+                <h1 className="max-w-4xl text-4xl font-semibold leading-tight tracking-tight text-zinc-900 sm:text-5xl lg:text-[3.15rem]">
                   {post.title}
                 </h1>
 
-                <div className="mt-6 flex flex-wrap items-center gap-4">
-                  <Link
-                    href="/"
-                    className="flex h-14 w-14 items-center justify-center rounded-full border border-orange-400 bg-white text-xs font-semibold uppercase tracking-[0.16em] text-[#171c57]"
-                  >
-                    FL
-                  </Link>
-
-                  <div>
-                    <div className="text-lg font-semibold leading-none text-zinc-900">Floring</div>
-                    <div className="mt-1 text-sm leading-none text-zinc-700">
-                      {formatDateVn(post.createdAt)} • {readingMinutes} phút đọc
-                    </div>
-                  </div>
+                <div className="mt-6 flex flex-wrap items-center gap-3 text-sm text-zinc-600">
+                  <span className="inline-flex items-center rounded-full bg-zinc-100 px-3 py-1.5 font-medium text-zinc-800">
+                    Floring
+                  </span>
+                  <span>{formatDateVn(post.createdAt)}</span>
+                  <span aria-hidden="true" className="text-zinc-300">•</span>
+                  <span>{readingMinutes} phút đọc</span>
                 </div>
               </header>
 
               <div className="mt-10 pb-10 lg:pb-16">
                 {post.excerpt ? (
-                  <p className="text-[1.9rem] leading-[1.5] text-[#0f2451]">{post.excerpt}</p>
+                  <p className="max-w-4xl border-l-2 border-emerald-300 pl-4 text-lg leading-relaxed text-zinc-700 sm:text-xl">
+                    {post.excerpt}
+                  </p>
                 ) : null}
 
                 {post.imageUrl ? (
@@ -228,20 +231,22 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   </figure>
                 ) : null}
 
-                <div
-                  className={ARTICLE_PROSE_CLASS}
-                  dangerouslySetInnerHTML={{ __html: articleHtml }}
-                />
+                <div className="mt-8 sm:px-1">
+                  <div
+                    className={ARTICLE_PROSE_CLASS}
+                    dangerouslySetInnerHTML={{ __html: articleHtml }}
+                  />
+                </div>
               </div>
             </article>
 
             <aside className="hidden xl:block">
               <div className="sticky top-6">
-                <h2 className="text-3xl font-semibold leading-none text-zinc-950">Related Posts</h2>
-                <div className="mt-6 max-h-[76vh] space-y-2 overflow-y-auto pr-2">
+                <h2 className="text-2xl font-semibold leading-none text-zinc-950">Bài viết liên quan</h2>
+                <div className="mt-6 max-h-[76vh] space-y-3 overflow-y-auto pr-2">
                   {relatedPosts.length ? (
                     relatedPosts.map((item) => (
-                      <article key={item.id} className="group rounded-xl p-1 transition hover:bg-zinc-50">
+                      <article key={item.id} className="group rounded-2xl border border-zinc-200/70 bg-white p-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-sm">
                         <Link href={`/blogs/${item.slug}`} className="flex items-start gap-3">
                           <div className="relative h-[70px] w-[112px] shrink-0 overflow-hidden rounded-md bg-zinc-100">
                             {item.imageUrl ? (
@@ -259,9 +264,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                           </div>
 
                           <div className="min-w-0">
-                            <h3 className="line-clamp-2 text-[2rem] font-medium leading-[1.22] text-zinc-900 transition group-hover:text-emerald-700">
+                            <h3 className="line-clamp-2 text-base font-semibold leading-6 text-zinc-900 transition group-hover:text-emerald-700">
                               {item.title}
                             </h3>
+                            <p className="mt-1 text-xs text-zinc-500">
+                              {formatDateVn(item.createdAt)}
+                            </p>
                           </div>
                         </Link>
                       </article>

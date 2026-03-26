@@ -8,8 +8,11 @@ import { backendGet } from '@/lib/backend';
 import { getBlogPosts } from '@/api/blog.api';
 import { ContactRequestForm } from '@/components/contact/ContactRequestForm';
 import { RevealOnScroll } from '@/components/animation/RevealOnScroll';
+import { BlogCarouselSection } from '@/components/home/BlogCarouselSection';
+import { ServicesTabsSection } from '@/components/home/ServicesTabsSection';
 import type {
   FAQItem,
+  HomeProject,
   HomeProjectsResponse,
   HomeServiceListResponse,
   ProcessStep,
@@ -225,17 +228,58 @@ export default async function Home() {
   }).catch(() => null);
   const services = servicesRes?.data ?? [];
 
-  const blogRes = await getBlogPosts(1, 3).catch(() => null);
+  // Lấy nhiều bài để carousel lướt qua được toàn bộ
+  const blogRes = await getBlogPosts(1, 12).catch(() => null);
   const blogPosts = blogRes?.data ?? [];
 
   const projectsRes = await backendGet<HomeProjectsResponse>('/project', {
-    searchParams: { page: 1, limit: 3 },
-  }).catch(() => null);
-  const projects = projectsRes?.data ?? [];
 
-  // Nếu chỉ có 1-2 dịch vụ thì dùng grid 2 cột để không bị “lép” do cấu hình luôn có cột thứ 3.
+    searchParams: { page: 1, limit: 5 },
+  }).catch(() => null);
+  const projects = (projectsRes?.data ?? []).slice(0, 5);
+
+
   const servicesGridCols =
     services.length <= 2 ? 'sm:grid-cols-2 lg:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3';
+
+  const renderProjectMosaicCard = (p: HomeProject, aspectClass: string) => {
+    const cover = p.images?.[0]?.imageUrl;
+
+    return (
+      <article className="group w-full overflow-hidden rounded-2xl">
+        <Link href={`/projects/${p.slug}`} className="block">
+          <div className={`relative w-full ${aspectClass} bg-zinc-100`}>
+            {cover ? (
+              <Image
+                src={cover}
+                alt={p.title}
+                fill
+                className="object-cover transition duration-500 group-hover:scale-[1.03]"
+                sizes="(max-width: 768px) 100vw, 33vw"
+                unoptimized
+              />
+            ) : (
+              <div className="absolute inset-0 bg-zinc-200" />
+            )}
+
+
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0" />
+
+            <div className="absolute bottom-0 left-0 right-0 p-4">
+              <h3 className="text-sm font-semibold tracking-tight text-white/95">
+                {p.title}
+              </h3>
+              {p.location ? (
+                <p className="mt-1 text-xs font-medium text-white/80">
+                  {p.location}
+                </p>
+              ) : null}
+            </div>
+          </div>
+        </Link>
+      </article>
+    );
+  };
 
   return (
     <main className="min-h-screen bg-transparent text-foreground">
@@ -243,7 +287,7 @@ export default async function Home() {
         <LuxurySlideshow intervalMs={4200} variant="hero" />
       </RevealOnScroll>
 
-      {/* Featured services */}
+
       <section className="bg-gradient-to-b from-transparent via-slate-50/60 to-transparent py-16">
         <RevealOnScroll effect="up">
           <Container>
@@ -260,116 +304,14 @@ export default async function Home() {
             </header>
 
             {services.length ? (
-              <div className={`mt-12 mx-auto grid max-w-4xl gap-6 sm:gap-6 ${servicesGridCols}`}>
-                {services.map((s) => (
-                  <article
-                    key={s.id}
-                    className="group flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200/60 bg-white/80 shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-md"
-                  >
-                    <Link
-                      href={`/services/${s.slug}`}
-                      className="flex h-full flex-col"
-                    >
-                      <div className="relative aspect-[4/3] bg-emerald-50">
-                        {s.imageUrl ? (
-                          <Image
-                            src={s.imageUrl}
-                            alt={s.name}
-                            fill
-                            className="object-cover transition duration-500 group-hover:scale-[1.03]"
-                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                            unoptimized
-                          />
-                        ) : (
-                          <div className="absolute inset-0 bg-emerald-100" />
-                        )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/0 to-black/0 opacity-0 transition group-hover:opacity-100" />
-                      </div>
-
-                      <div className="flex flex-1 flex-col justify-between p-5">
-                        <h3 className="text-base font-semibold tracking-tight text-zinc-900">
-                          {s.name}
-                        </h3>
-                        <p className="mt-3 line-clamp-2 text-sm leading-6 text-zinc-600">
-                          {s.description || 'Xem chi tiết dịch vụ & mẫu màu.'}
-                        </p>
-
-                        <div className="mt-4">
-                          <span className="inline-flex items-center text-sm font-semibold text-emerald-700">
-                            Xem chi tiết <span className="ml-2">→</span>
-                          </span>
-                        </div>
-                      </div>
-                    </Link>
-                  </article>
-                ))}
+              <div className="mt-12">
+                <ServicesTabsSection services={services} />
               </div>
             ) : (
               <div className="mt-12 rounded-xl border border-zinc-200 bg-white p-8 text-sm text-zinc-700">
                 Hiện chưa có dịch vụ để hiển thị.
               </div>
             )}
-          </Container>
-        </RevealOnScroll>
-      </section>
-
-      {/* Featured blog posts */}
-      <section className="bg-gradient-to-b from-transparent via-white to-transparent py-16">
-        <RevealOnScroll effect="left" delayMs={120}>
-          <Container>
-            <header className="mx-auto max-w-3xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-widest text-rose-700">
-                Blog & kiến thức
-              </p>
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
-                Tin tức hữu ích cho người chọn sàn
-              </h2>
-            </header>
-
-            {blogPosts.length ? (
-              <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {blogPosts.map((p) => (
-                  <article
-                    key={p.id}
-                    className="group overflow-hidden rounded-2xl border border-zinc-200/60 bg-white/80 shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-md"
-                  >
-                    <Link href={`/blogs/${p.slug}`}>
-                      <div className="relative aspect-[16/10] bg-rose-50">
-                        {p.imageUrl ? (
-                          <Image
-                            src={p.imageUrl}
-                            alt={p.title}
-                            fill
-                            className="object-cover transition duration-500 group-hover:scale-[1.03]"
-                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                            unoptimized
-                          />
-                        ) : (
-                          <div className="absolute inset-0 bg-rose-100" />
-                        )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/0 to-black/0 opacity-0 transition group-hover:opacity-100" />
-                      </div>
-
-                      <div className="p-5">
-                        <h3 className="line-clamp-2 text-base font-semibold tracking-tight text-zinc-900">
-                          {p.title}
-                        </h3>
-                        {p.excerpt ? (
-                          <p className="mt-3 line-clamp-3 text-sm leading-6 text-zinc-600">
-                            {p.excerpt}
-                          </p>
-                        ) : null}
-                        <div className="mt-4">
-                          <span className="inline-flex items-center text-sm font-semibold text-rose-700">
-                            Đọc bài <span className="ml-2">→</span>
-                          </span>
-                        </div>
-                      </div>
-                    </Link>
-                  </article>
-                ))}
-              </div>
-            ) : null}
           </Container>
         </RevealOnScroll>
       </section>
@@ -391,46 +333,26 @@ export default async function Home() {
             </header>
 
             {projects.length ? (
-              <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {projects.slice(0, 3).map((p) => {
-                  const cover = p.images?.[0]?.imageUrl;
-                  return (
-                    <article
-                      key={p.id}
-                      className="group overflow-hidden rounded-2xl border border-zinc-200/60 bg-white/80 shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-md"
-                    >
-                      <Link href={`/projects/${p.slug}`}>
-                        <div className="relative aspect-[4/3] bg-indigo-50">
-                          {cover ? (
-                            <Image
-                              src={cover}
-                              alt={p.title}
-                              fill
-                              className="object-cover transition duration-500 group-hover:scale-[1.03]"
-                              sizes="(max-width: 768px) 100vw, 33vw"
-                              unoptimized
-                            />
-                          ) : (
-                            <div className="absolute inset-0 bg-indigo-100" />
-                          )}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/0 to-black/0 opacity-0 transition group-hover:opacity-100" />
-                        </div>
+              <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3 sm:grid-rows-2 sm:gap-6">
+                <div className="sm:col-start-1 sm:row-start-1">
+                  {projects[0] ? renderProjectMosaicCard(projects[0], 'aspect-[16/10]') : null}
+                </div>
 
-                        <div className="p-5">
-                          <h3 className="text-base font-semibold tracking-tight text-zinc-900">
-                            {p.title}
-                          </h3>
-                          <p className="mt-3 line-clamp-2 text-sm leading-6 text-zinc-600">
-                            {p.description || 'Xem chi tiết dự án.'}
-                          </p>
-                          <div className="mt-4 flex items-center gap-2 text-sm font-semibold text-indigo-700">
-                            Xem dự án <span className="ml-1">→</span>
-                          </div>
-                        </div>
-                      </Link>
-                    </article>
-                  );
-                })}
+                <div className="sm:col-start-1 sm:row-start-2">
+                  {projects[1] ? renderProjectMosaicCard(projects[1], 'aspect-[16/11]') : null}
+                </div>
+
+                <div className="sm:col-start-2 sm:row-start-1 sm:row-span-2 flex w-full items-center">
+                  {projects[2] ? renderProjectMosaicCard(projects[2], 'aspect-[4/5]') : null}
+                </div>
+
+                <div className="sm:col-start-3 sm:row-start-1">
+                  {projects[3] ? renderProjectMosaicCard(projects[3], 'aspect-[16/10]') : null}
+                </div>
+
+                <div className="sm:col-start-3 sm:row-start-2">
+                  {projects[4] ? renderProjectMosaicCard(projects[4], 'aspect-[16/12]') : null}
+                </div>
               </div>
             ) : (
               <div className="mt-12 rounded-xl border border-zinc-200 bg-white p-8 text-sm text-zinc-700">
@@ -451,7 +373,7 @@ export default async function Home() {
       </section>
 
       {/* Process */}
-      <section className="bg-gradient-to-b from-transparent via-emerald-50/40 to-transparent py-16">
+      <section className="bg-gradient-to-b from-transparent via-indigo-50/40 to-transparent py-16">
         <RevealOnScroll effect="left" delayMs={120}>
           <Container>
             <header className="mx-auto max-w-3xl text-center">
@@ -459,35 +381,80 @@ export default async function Home() {
                 Quy trình thi công
               </p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
-                Minh bạch từ khảo sát đến bàn giao
+                Quy Trình Làm Việc Hiệu Quả
               </h2>
-              <p className="mt-4 text-base leading-relaxed text-zinc-600">
+              <p className="mt-4 text-base font-medium leading-relaxed text-zinc-700">
+                Minh bạch từ khảo sát đến bàn giao
+              </p>
+              <p className="mt-3 text-base leading-relaxed text-zinc-600">
                 Mọi bước đều được lên kế hoạch rõ ràng để bạn yên tâm về tiến độ và chất lượng.
               </p>
             </header>
 
-            <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {PROCESS_STEPS.map((item) => (
-                <article
-                  key={item.step}
-                  className="rounded-3xl border border-zinc-200/60 bg-white/80 p-8 shadow-sm backdrop-blur"
-                >
-                  <div className="text-sm font-semibold text-cyan-700">{item.step}</div>
-                  <h3 className="mt-3 text-lg font-semibold text-zinc-900">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-zinc-600">{item.desc}</p>
-                </article>
-              ))}
+            <div className="mt-12 relative">
+              {/* Background accent (subtle) */}
+              <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+                <div className="absolute -top-10 left-0 h-72 w-72 rounded-full bg-indigo-200/18 blur-3xl" />
+                <div className="absolute -bottom-16 right-0 h-80 w-80 rounded-full bg-blue-200/14 blur-3xl" />
+              </div>
+
+              {/* Connector lines removed per request */}
+
+              <ol className="relative grid gap-10 pt-10 lg:grid-cols-3 lg:grid-rows-2 lg:gap-10">
+                {PROCESS_STEPS.map((item) => (
+                  <li
+                    key={item.step}
+                    className="group relative lg:justify-self-center lg:max-w-[320px]"
+                  >
+
+                    <div
+                      className={[
+                        'absolute top-0 z-10',
+                        'left-1/2 -translate-x-1/2',
+                        'h-14 w-14 -translate-y-1/2',
+                        'rounded-full bg-gradient-to-br from-indigo-500 via-violet-500 to-sky-400',
+                        'flex items-center justify-center',
+                        'text-white font-bold text-base',
+                        'shadow-[0_18px_55px_-28px_rgba(99,102,241,0.75)]',
+                        'ring-1 ring-white/30',
+                        'transition-transform duration-300 ease-out',
+                        'group-hover:scale-[1.06]',
+                      ].join(' ')}
+                      aria-label={`Bước ${item.step}`}
+                    >
+                      {item.step}
+                    </div>
+
+                    <article
+                      className={[
+                        'rounded-2xl bg-white/90 backdrop-blur',
+                        'border border-white/60 shadow-sm',
+                        'px-6 pb-6 pt-12',
+                        'transition-all duration-300 ease-out',
+                        'group-hover:-translate-y-1 group-hover:shadow-lg',
+                      ].join(' ')}
+                    >
+                      <h3 className="text-base font-semibold text-zinc-900 lg:text-lg whitespace-nowrap overflow-hidden text-ellipsis text-center">
+                        {item.title}
+                      </h3>
+                      <p className="mt-3 min-h-[4.5rem] text-sm leading-6 text-zinc-600 text-center">
+                        {item.desc}
+                      </p>
+                    </article>
+                  </li>
+                ))}
+              </ol>
             </div>
           </Container>
         </RevealOnScroll>
       </section>
 
       {/* Quality guarantees */}
-      <section className="bg-gradient-to-b from-transparent via-slate-50/60 to-transparent py-16">
+      <section className="relative overflow-hidden bg-gradient-to-b from-transparent via-slate-50/60 to-transparent py-16">
         <RevealOnScroll effect="right" delayMs={120}>
           <Container>
             <header className="mx-auto max-w-3xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-widest text-zinc-500">
+              <p className="text-sm font-semibold uppercase tracking-widest text-indigo-700">
                 Cam kết chất lượng
               </p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
@@ -495,15 +462,46 @@ export default async function Home() {
               </h2>
             </header>
 
-            <div className="mt-12 grid gap-6 md:grid-cols-3">
-              {QUALITY_ITEMS.map((item) => (
+            {/* Soft background shapes */}
+            <div className="pointer-events-none absolute inset-0 -z-10">
+              <div className="absolute -top-14 left-10 h-72 w-72 rounded-full bg-indigo-200/15 blur-3xl" />
+              <div className="absolute -bottom-20 right-0 h-80 w-80 rounded-full bg-sky-200/15 blur-3xl" />
+            </div>
+
+            <div className="mt-12 grid gap-8 md:grid-cols-3 md:gap-10">
+              {QUALITY_ITEMS.map((item, idx) => (
                 <article
                   key={item.title}
-                  className="rounded-3xl border border-zinc-200/60 bg-white/80 p-8 shadow-sm backdrop-blur"
+                  className={[
+                    'group relative overflow-hidden rounded-2xl',
+                    'border border-white/60 bg-white/85 backdrop-blur',
+                    'shadow-sm transition-all duration-300 ease-out',
+                    'hover:-translate-y-1 hover:shadow-xl',
+                    idx === 1 ? 'md:-translate-y-2' : '',
+                  ].join(' ')}
                 >
-                  <h3 className="text-lg font-semibold text-zinc-900">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-zinc-600">{item.desc}</p>
-                  <div className="mt-6 h-px w-12 bg-emerald-600" />
+                  {/* subtle top highlight */}
+                  <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-emerald-50/60 to-transparent opacity-80" />
+
+                  <div className="p-8">
+                    <div className="flex items-center gap-3">
+                      <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 via-violet-500 to-sky-400 text-white shadow-[0_18px_55px_-28px_rgba(99,102,241,0.65)]">
+                        ✓
+                      </span>
+                      <h3 className="text-lg font-semibold tracking-tight text-zinc-900">
+                        {item.title}
+                      </h3>
+                    </div>
+
+                    <p className="mt-4 text-sm leading-7 text-zinc-600">{item.desc}</p>
+
+                    <div className="mt-6 flex items-center justify-between">
+                      <div className="h-px w-14 bg-gradient-to-r from-indigo-500/80 to-sky-400/70" />
+                      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-400">
+                        Guarantee
+                      </span>
+                    </div>
+                  </div>
                 </article>
               ))}
             </div>
@@ -515,30 +513,48 @@ export default async function Home() {
       <section className="bg-gradient-to-b from-transparent via-emerald-50/30 to-transparent py-16">
         <RevealOnScroll effect="fade" delayMs={80}>
           <Container>
-            <header className="mx-auto max-w-3xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-widest text-teal-700">
-                Câu hỏi thường gặp
-              </p>
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
-                Bạn đang thắc mắc điều gì?
-              </h2>
-            </header>
+            <div className="grid items-start gap-10 lg:grid-cols-12">
+              {/* Left illustration (SVG) */}
+              <div className="relative hidden h-[440px] lg:col-span-5 lg:block">
+                <div className="absolute left-0 top-0 h-full w-full">
+                  <Image
+                    src="/FAQ.png"
+                    alt="Minh hoạ tư vấn"
+                    fill
+                    className="object-contain"
+                    priority
+                  />
+                </div>
+              </div>
 
-            <div className="mx-auto mt-12 max-w-3xl space-y-4">
-              {FAQ_ITEMS.map((item) => (
-                <details
-                  key={item.q}
-                  className="group rounded-2xl border border-zinc-200/60 bg-white/80 px-6 py-4 shadow-sm backdrop-blur"
-                >
-                  <summary className="cursor-pointer list-none text-base font-semibold text-zinc-900">
-                    {item.q}
-                    <span className="ml-2 text-teal-700 group-open:rotate-180 transition-transform">
-                      ↓
-                    </span>
-                  </summary>
-                  <p className="mt-3 text-sm leading-6 text-zinc-600">{item.a}</p>
-                </details>
-              ))}
+              {/* Right content */}
+              <div className="lg:col-span-7">
+                <header className="mx-auto max-w-3xl text-center">
+                  <p className="text-sm font-semibold uppercase tracking-widest text-teal-700">
+                    Câu hỏi thường gặp
+                  </p>
+                  <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
+                    Bạn đang thắc mắc điều gì?
+                  </h2>
+                </header>
+
+                <div className="mx-auto mt-12 max-w-3xl space-y-4">
+                  {FAQ_ITEMS.map((item) => (
+                    <details
+                      key={item.q}
+                      className="group rounded-2xl border border-zinc-200/60 bg-white/80 px-6 py-4 shadow-sm backdrop-blur"
+                    >
+                      <summary className="cursor-pointer list-none text-base font-semibold text-zinc-900">
+                        {item.q}
+                        <span className="ml-2 text-teal-700 group-open:rotate-180 transition-transform">
+                          ↓
+                        </span>
+                      </summary>
+                      <p className="mt-3 text-sm leading-6 text-zinc-600">{item.a}</p>
+                    </details>
+                  ))}
+                </div>
+              </div>
             </div>
           </Container>
         </RevealOnScroll>
@@ -604,6 +620,35 @@ export default async function Home() {
                 </div>
               </div>
             </div>
+          </Container>
+        </RevealOnScroll>
+      </section>
+
+      {/* Featured blog posts */}
+      <section className="bg-gradient-to-b from-slate-50 via-white to-transparent py-16">
+        <RevealOnScroll effect="left" delayMs={120}>
+          <Container>
+            <header className="mx-auto max-w-3xl text-center">
+              <div className="inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-700 shadow-sm ring-1 ring-zinc-200/60 backdrop-blur">
+                <span aria-hidden="true">▦</span>
+                Tin tức
+              </div>
+            </header>
+
+            {blogPosts.length ? (
+              <BlogCarouselSection
+                posts={blogPosts.map((p) => ({
+                  id: p.id,
+                  slug: p.slug,
+                  title: p.title,
+                  excerpt: p.excerpt,
+                  imageUrl: p.imageUrl,
+                  createdAt: p.createdAt,
+                  author: 'Floring',
+                  category: 'Tin tức',
+                }))}
+              />
+            ) : null}
           </Container>
         </RevealOnScroll>
       </section>

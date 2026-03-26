@@ -36,7 +36,7 @@ export function ProductDetailClient({
     product: Product;
     relatedProducts?: Product[];
 }) {
-    const railRef = useRef<HTMLDivElement | null>(null);
+    const [isRelatedPaused, setIsRelatedPaused] = useState(false);
     const [favoritePermalinks, setFavoritePermalinks] = useState<Set<string>>(new Set());
     const [togglingPermalink, setTogglingPermalink] = useState<string | null>(null);
     const initialVariantId =
@@ -58,11 +58,15 @@ export function ProductDetailClient({
     const permalink = product.permalink ?? null;
     const isFav = !!permalink && favoritePermalinks.has(permalink);
 
-    const scrollRail = (dir: -1 | 1) => {
-        const el = railRef.current;
-        if (!el) return;
-        el.scrollBy({ left: dir * Math.max(260, Math.floor(el.clientWidth * 0.85)), behavior: 'smooth' });
-    };
+    const relatedVisible = useMemo(() => relatedProducts ?? [], [relatedProducts]);
+    const relatedDoubled = useMemo(() => {
+        if (relatedVisible.length <= 1) return relatedVisible;
+        return [...relatedVisible, ...relatedVisible];
+    }, [relatedVisible]);
+    const relatedDurationSec = useMemo(() => {
+        // tốc độ tương tự section "Khách hàng chia sẻ": ít item thì vẫn mượt, nhiều item thì không quá nhanh
+        return Math.max(18, relatedVisible.length * 3.8);
+    }, [relatedVisible.length]);
 
     useEffect(() => {
         let cancelled = false;
@@ -246,52 +250,48 @@ export function ProductDetailClient({
                                     <h2 className="text-2xl font-semibold text-zinc-900">Sản phẩm cùng dịch vụ</h2>
                                     <p className="mt-1 text-sm text-zinc-600">Lướt ngang để xem thêm các mẫu.</p>
                                 </div>
-
-                                <div className="hidden items-center gap-2 md:flex">
-                                    <button
-                                        type="button"
-                                        onClick={() => scrollRail(-1)}
-                                        className="inline-flex items-center justify-center rounded-lg border border-zinc-200 bg-white p-2 text-zinc-700 shadow-sm hover:bg-zinc-50"
-                                        aria-label="Trượt sang trái"
-                                    >
-                                        ‹
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => scrollRail(1)}
-                                        className="inline-flex items-center justify-center rounded-lg border border-zinc-200 bg-white p-2 text-zinc-700 shadow-sm hover:bg-zinc-50"
-                                        aria-label="Trượt sang phải"
-                                    >
-                                        ›
-                                    </button>
-                                </div>
                             </div>
 
-                            <div ref={railRef} className="mt-6 flex gap-4 overflow-x-auto pb-2">
-                                {relatedProducts.map((p) => {
-                                    const v = p.currentVariant ?? p.variants?.[0] ?? null;
-                                    const img = v?.primaryImage || v?.swatchImage || v?.image || p.image || null;
-                                    const href = p.permalink ? `/products/${p.permalink}` : '#';
-                                    return (
-                                        <Link
-                                            key={p.id}
-                                            href={href}
-                                            className="min-w-[220px] flex-shrink-0 rounded-xl border border-zinc-200 bg-white p-3 transition hover:border-zinc-300"
-                                        >
-                                            <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-zinc-100">
-                                                {img ? (
-                                                    <Image src={img} alt={p.title} fill className="object-cover" unoptimized />
-                                                ) : null}
-                                            </div>
-                                            <div className="mt-3">
-                                                <div className="line-clamp-2 text-sm font-semibold text-zinc-900">{p.title}</div>
-                                                {v?.title ? (
-                                                    <div className="mt-1 text-xs text-zinc-500">Màu: {v.title}</div>
-                                                ) : null}
-                                            </div>
-                                        </Link>
-                                    );
-                                })}
+                            <div
+                                className="mt-6 overflow-hidden pb-2"
+                                onMouseEnter={() => setIsRelatedPaused(true)}
+                                onMouseLeave={() => setIsRelatedPaused(false)}
+                                onTouchStart={() => setIsRelatedPaused(true)}
+                                onTouchEnd={() => setIsRelatedPaused(false)}
+                            >
+                                <div
+                                    className="flex w-max flex-nowrap gap-4 motion-reduce:animate-none"
+                                    style={{
+                                        animation: `marquee ${relatedDurationSec}s linear infinite`,
+                                        animationPlayState: isRelatedPaused ? 'paused' : 'running',
+                                        willChange: 'transform',
+                                    }}
+                                >
+                                    {relatedDoubled.map((p, idx) => {
+                                        const v = p.currentVariant ?? p.variants?.[0] ?? null;
+                                        const img = v?.primaryImage || v?.swatchImage || v?.image || p.image || null;
+                                        const href = p.permalink ? `/products/${p.permalink}` : '#';
+                                        return (
+                                            <Link
+                                                key={`${p.id}-${idx}`}
+                                                href={href}
+                                                className="w-[220px] flex-shrink-0 rounded-xl border border-zinc-200 bg-white p-3 transition hover:border-zinc-300"
+                                            >
+                                                <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-zinc-100">
+                                                    {img ? (
+                                                        <Image src={img} alt={p.title} fill className="object-cover" unoptimized />
+                                                    ) : null}
+                                                </div>
+                                                <div className="mt-3">
+                                                    <div className="line-clamp-2 text-sm font-semibold text-zinc-900">{p.title}</div>
+                                                    {v?.title ? (
+                                                        <div className="mt-1 text-xs text-zinc-500">Màu: {v.title}</div>
+                                                    ) : null}
+                                                </div>
+                                            </Link>
+                                        );
+                                    })}
+                                </div>
                             </div>
                         </div>
                     ) : null}
