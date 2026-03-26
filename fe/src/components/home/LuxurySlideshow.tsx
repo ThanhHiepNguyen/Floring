@@ -206,7 +206,7 @@ export function LuxurySlideshow({
           type="button"
           aria-label="Slide trước"
           onClick={() => go(-1)}
-          className="pointer-events-auto inline-flex size-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur transition hover:bg-white/20"
+          className="pointer-events-auto inline-flex size-10 items-center justify-center rounded-full border border-emerald-300/70 bg-emerald-600/70 text-white backdrop-blur transition hover:bg-emerald-600/90"
         >
           <svg
             viewBox="0 0 24 24"
@@ -225,7 +225,7 @@ export function LuxurySlideshow({
           type="button"
           aria-label="Slide tiếp theo"
           onClick={() => go(1)}
-          className="pointer-events-auto inline-flex size-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur transition hover:bg-white/20"
+          className="pointer-events-auto inline-flex size-10 items-center justify-center rounded-full border border-emerald-300/70 bg-emerald-600/70 text-white backdrop-blur transition hover:bg-emerald-600/90"
         >
           <svg
             viewBox="0 0 24 24"
@@ -242,7 +242,7 @@ export function LuxurySlideshow({
       </div>
 
       <div className="absolute inset-x-0 bottom-0 z-20 flex items-center justify-center pb-4">
-        <div className="flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 backdrop-blur">
+        <div className="flex items-center gap-2 rounded-full border border-emerald-300/30 bg-emerald-950/20 px-3 py-1.5 backdrop-blur">
           {slides.map((_, i) => (
             <button
               key={i}
@@ -252,8 +252,8 @@ export function LuxurySlideshow({
               className={[
                 'h-2.5 w-2.5 rounded-full border border-white/30 transition',
                 i === active
-                  ? 'bg-white'
-                  : 'bg-white/30 hover:bg-white/50',
+                  ? 'border-emerald-300 bg-emerald-400'
+                  : 'border-emerald-200/50 bg-emerald-500/20 hover:bg-emerald-500/40',
               ].join(' ')}
             />
           ))}
