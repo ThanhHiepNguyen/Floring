@@ -44,8 +44,8 @@ export async function generateMetadata({ params }: ProductSlugPageProps): Promis
 
   if (!product) {
     return {
-      title: 'Sản phẩm không tìm thấy | Floring',
-      description: 'Sản phẩm bạn tìm không tồn tại. Vui lòng quay lại trang khác.',
+      title: 'Product not found | Floring',
+      description: 'The product you are looking for does not exist. Please return to another page.',
     };
   }
 
@@ -64,8 +64,8 @@ export default async function ProductDetailPage({ params }: ProductSlugPageProps
     return (
       <main className="min-h-screen bg-background text-foreground">
         <div className="mx-auto max-w-5xl px-4 py-20">
-          <h1 className="text-3xl font-semibold text-zinc-900">Sản phẩm không tìm thấy</h1>
-          <p className="mt-3 text-zinc-600">Sản phẩm bạn tìm không tồn tại.</p>
+          <h1 className="text-3xl font-semibold text-zinc-900">Product not found</h1>
+          <p className="mt-3 text-zinc-600">The product you are looking for does not exist.</p>
         </div>
       </main>
     );

@@ -42,6 +42,7 @@ export default function FavoritesClient() {
   const [permalinks, setPermalinks] = useState<string[]>([]);
   const [products, setProducts] = useState<ApiProduct[]>([]);
   const [loading, setLoading] = useState(true);
+  const [removingPermalink, setRemovingPermalink] = useState<string | null>(null);
 
   const uniquePermalinks = useMemo(() => {
     const set = new Set(permalinks.map((x) => x.trim()).filter(Boolean));
@@ -96,6 +97,8 @@ export default function FavoritesClient() {
   }, [uniquePermalinks]);
 
   const toggleRemove = async (permalink: string) => {
+    if (removingPermalink === permalink) return;
+    setRemovingPermalink(permalink);
     try {
       const res = await favoritesApi.toggleFavorite(permalink);
       const nextIsFav = res.data.isFavorite;
@@ -110,6 +113,8 @@ export default function FavoritesClient() {
       setProducts((prev) => prev.filter((p) => p.permalink !== permalink));
     } catch {
       // keep UI unchanged on errors (not authenticated, redis down, etc.)
+    } finally {
+      setRemovingPermalink((prev) => (prev === permalink ? null : prev));
     }
   };
 
@@ -117,12 +122,9 @@ export default function FavoritesClient() {
     <main className="min-h-screen bg-background text-foreground">
       <section className="border-b border-zinc-200 bg-white py-10">
         <Container>
-          <Breadcrumbs items={[{ label: 'Trang chủ', href: '/' }, { label: 'Yêu thích' }]} />
+          <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Favorites' }]} />
           <header className="mt-6">
-            <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">Yêu thích</h1>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-zinc-600">
-              Danh sách sản phẩm bạn đã lưu (tự hết hạn sau 1 tháng).
-            </p>
+            <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">Favorites</h1>
           </header>
         </Container>
       </section>
@@ -148,6 +150,7 @@ export default function FavoritesClient() {
                 const cover = getCover(p);
                 const slug = p.permalink ?? '';
                 const href = p.permalink ? `/products/${p.permalink}` : null;
+                const isRemoving = !!slug && removingPermalink === slug;
 
                 return (
                   <article
@@ -183,17 +186,30 @@ export default function FavoritesClient() {
 
                       <button
                         type="button"
-                        aria-label="Bỏ yêu thích"
-                        title="Bỏ yêu thích"
+                        aria-label="Remove from favorites"
+                        title="Remove from favorites"
+                        disabled={isRemoving}
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
                           if (!slug) return;
                           void toggleRemove(slug);
                         }}
-                        className="absolute right-3 top-3 z-10 inline-flex size-10 items-center justify-center rounded-full border border-rose-200 bg-rose-50/80 text-rose-600 shadow-sm backdrop-blur transition hover:bg-white"
+                        className={[
+                          'absolute right-3 top-3 z-10 inline-flex size-10 items-center justify-center rounded-full border border-rose-200 bg-rose-50/80 text-rose-600 shadow-sm backdrop-blur transition-all duration-300 ease-out',
+                          'transform-gpu active:scale-90 disabled:cursor-not-allowed',
+                          isRemoving ? 'scale-95' : 'hover:scale-105 hover:bg-white',
+                        ].join(' ')}
                       >
-                        <svg viewBox="0 0 24 24" fill="currentColor" className="size-5" aria-hidden="true">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          className={[
+                            'size-5 transition-transform duration-300 ease-out',
+                            isRemoving ? 'scale-110 animate-pulse' : 'scale-100',
+                          ].join(' ')}
+                          aria-hidden="true"
+                        >
                           <path d="M19.5 12.1L12 19.6l-7.5-7.5a5.2 5.2 0 0 1 0-7.4 5.2 5.2 0 0 1 7.4 0L12 4.8l.1-.1a5.2 5.2 0 0 1 7.4 0 5.2 5.2 0 0 1 0 7.4Z" />
                         </svg>
                       </button>
@@ -213,19 +229,19 @@ export default function FavoritesClient() {
             </div>
           ) : (
             <div className="rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm">
-              <div className="text-sm text-zinc-700">Chưa có sản phẩm yêu thích.</div>
+              <div className="text-sm text-zinc-700">No favorite products yet.</div>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
                   href="/"
                   className="inline-flex h-10 items-center justify-center rounded-full bg-emerald-600 px-5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700"
                 >
-                  Về trang chủ
+                  Back to home
                 </Link>
                 <Link
                   href="/search"
                   className="inline-flex h-10 items-center justify-center rounded-full border border-zinc-200 bg-white px-5 text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
                 >
-                  Tìm sản phẩm
+                  Search products
                 </Link>
               </div>
             </div>

@@ -37,8 +37,6 @@ export class ServiceService {
         description: true,
         imageUrl: true,
         isActive: true,
-        createdAt: true,
-        updatedAt: true,
       },
     });
   }
@@ -63,8 +61,6 @@ export class ServiceService {
           description: true,
           imageUrl: true,
           isActive: true,
-          createdAt: true,
-          updatedAt: true,
         },
       }),
       this.prisma.service.count({ where }),
@@ -89,8 +85,6 @@ export class ServiceService {
         description: true,
         imageUrl: true,
         isActive: true,
-        createdAt: true,
-        updatedAt: true,
       },
     });
 
@@ -99,7 +93,8 @@ export class ServiceService {
       throw new NotFoundException('Dịch vụ không tồn tại');
     }
 
-    return service;
+    const { isActive: _isActive, ...output } = service;
+    return output;
   }
 
   async update(id: string, dto: UpdateServiceDto) {
@@ -132,8 +127,6 @@ export class ServiceService {
         description: true,
         imageUrl: true,
         isActive: true,
-        createdAt: true,
-        updatedAt: true,
       },
     });
   }

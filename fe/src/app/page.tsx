@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+﻿import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -25,67 +25,67 @@ import { normalizeImageUrl } from '@/lib/asset';
 const PROCESS_STEPS: ProcessStep[] = [
   {
     step: '01',
-    title: 'Tiếp nhận nhu cầu',
-    desc: 'Bạn gửi yêu cầu và lựa chọn dịch vụ/mẫu màu. Floring xác nhận thông tin để lên kế hoạch khảo sát.',
+    title: 'Receive request',
+    desc: 'Share your request and preferred service/color samples. Floring confirms details to prepare the site survey.',
   },
   {
     step: '02',
-    title: 'Khảo sát & tư vấn giải pháp',
-    desc: 'Đội ngũ kỹ thuật xem hiện trạng, đề xuất phương án thi công phù hợp với điều kiện sàn và không gian.',
+    title: 'Site survey & consultation',
+    desc: 'Our technical team reviews current conditions and recommends the best installation plan for your space.',
   },
   {
     step: '03',
-    title: 'Lên phương án & báo giá',
-    desc: 'Chốt scope, vật liệu và timeline. Bạn nắm rõ tiến độ, chi phí và các hạng mục phát sinh (nếu có).',
+    title: 'Plan & quotation',
+    desc: 'Finalize scope, materials, and timeline. You get clear visibility on milestones, costs, and possible extras.',
   },
   {
     step: '04',
-    title: 'Thi công theo tiêu chuẩn',
-    desc: 'Thi công đúng kỹ thuật, kiểm soát chất lượng trong từng giai đoạn để đảm bảo độ bền và độ hoàn thiện.',
+    title: 'Standardized installation',
+    desc: 'Work is executed to technical standards with quality checks at each stage for durability and finish.',
   },
   {
     step: '05',
-    title: 'Bàn giao & bảo hành',
-    desc: 'Hướng dẫn vệ sinh/bảo dưỡng đúng cách. Hỗ trợ sau thi công để sàn luôn bền đẹp theo thời gian.',
+    title: 'Handover & warranty',
+    desc: 'We provide cleaning/maintenance guidance and post-installation support to keep your floor in top shape.',
   },
   {
     step: '06',
-    title: 'Tư vấn sau khi sử dụng',
-    desc: 'Nếu có câu hỏi hoặc cần bảo trì, Floring hỗ trợ để sàn duy trì hiệu suất tốt nhất.',
+    title: 'Aftercare support',
+    desc: 'If you have questions or need maintenance, Floring is here to help maintain long-term performance.',
   },
 ];
 
 const QUALITY_ITEMS: QualityItem[] = [
   {
-    title: 'Vật liệu phù hợp',
-    desc: 'Tư vấn đúng chủng loại sàn cho khí hậu và nhu cầu sử dụng thực tế.',
+    title: 'Right material fit',
+    desc: 'Recommendations aligned with climate conditions and real-world usage requirements.',
   },
   {
-    title: 'Thi công chuẩn',
-    desc: 'Kiểm soát giai đoạn chuẩn bị mặt bằng, lắp đặt và hoàn thiện bề mặt.',
+    title: 'Installation quality',
+    desc: 'Tight control over preparation, installation, and final surface finishing.',
   },
   {
-    title: 'Bảo dưỡng & hỗ trợ',
-    desc: 'Hướng dẫn cách vệ sinh, xử lý tình huống thường gặp để sàn bền đẹp lâu dài.',
+    title: 'Maintenance & support',
+    desc: 'Practical guidance for cleaning and common issues to preserve long-term floor quality.',
   },
 ];
 
 const FAQ_ITEMS: FAQItem[] = [
   {
-    q: 'Floring thi công những loại sàn nào?',
-    a: 'Floring cung cấp giải pháp thi công cho sàn gỗ, sàn nhựa LVT và SPC. Tuỳ hiện trạng công trình, đội ngũ sẽ tư vấn vật liệu phù hợp nhất.',
+    q: 'What types of flooring does Floring install?',
+    a: 'Floring provides installation solutions for timber floors, LVT, and SPC flooring. Based on site conditions, our team recommends the most suitable material.',
   },
   {
-    q: 'Thời gian khảo sát và thi công mất bao lâu?',
-    a: 'Thời gian cụ thể phụ thuộc phạm vi và tình trạng mặt bằng. Sau khi khảo sát, Floring sẽ lên timeline rõ ràng và cập nhật tiến độ trong suốt dự án.',
+    q: 'How long do survey and installation take?',
+    a: 'The exact duration depends on project scope and site condition. After survey, Floring provides a clear timeline and progress updates throughout the project.',
   },
   {
-    q: 'Có bảo hành sau thi công không?',
-    a: 'Có. Floring hỗ trợ sau bàn giao và hướng dẫn bảo dưỡng để sàn luôn bền đẹp. Tuỳ hạng mục, chính sách bảo hành sẽ được nêu rõ trong báo giá.',
+    q: 'Do you provide post-installation warranty?',
+    a: 'Yes. Floring supports after handover and provides maintenance guidance. Warranty terms are clearly stated in the quotation based on scope.',
   },
   {
-    q: 'Tôi cần chuẩn bị gì trước khi đội thi công đến?',
-    a: 'Bạn chỉ cần cung cấp thông tin nhu cầu và hiện trạng công trình. Đội ngũ sẽ hướng dẫn các bước chuẩn bị cần thiết để thi công diễn ra thuận lợi.',
+    q: 'What should I prepare before your team arrives?',
+    a: 'You only need to share your requirements and current site status. Our team will guide all required preparation steps for a smooth installation.',
   },
 ];
 
@@ -184,7 +184,7 @@ const TESTIMONIALS: Testimonial[] = [
     name: 'Ella Scott',
     role: 'House',
     quote:
-      'Strong communication and careful installation. We’re happy with both the look and the feel of the floor.',
+      "Strong communication and careful installation. We're happy with both the look and the feel of the floor.",
   },
   {
     name: 'Thomas Hill',
@@ -213,14 +213,14 @@ const TESTIMONIALS: Testimonial[] = [
 ];
 
 const CONTACT_HIGHLIGHTS = [
-  'Trả lời trong 1 ngày làm việc',
-  'Tư vấn rõ ràng về vật liệu & quy trình',
-  'Hỗ trợ lên kế hoạch thi công',
+  'Reply within 1 business day',
+  'Clear consultation on materials and workflow',
+  'Support for planning your installation',
 ] as const;
 
 export const metadata: Metadata = {
-  title: 'Floring | Sàn gỗ - LVT - SPC',
-  description: 'Floring cung cấp dịch vụ thi công sàn gỗ chất lượng cao và giải pháp bảo dưỡng bền đẹp.',
+  title: 'Floring | Timber Flooring - LVT - SPC',
+  description: 'Floring provides high-quality flooring installation and long-term maintenance solutions.',
 };
 
 export default async function Home() {
@@ -229,7 +229,7 @@ export default async function Home() {
   }).catch(() => null);
   const services = servicesRes?.data ?? [];
 
-  // Lấy nhiều bài để carousel lướt qua được toàn bộ
+  // Fetch more posts so carousel can loop smoothly
   const blogRes = await getBlogPosts(1, 12).catch(() => null);
   const blogPosts = blogRes?.data ?? [];
 
@@ -240,8 +240,11 @@ export default async function Home() {
   const projects = (projectsRes?.data ?? []).slice(0, 5);
 
 
-  const servicesGridCols =
-    services.length <= 2 ? 'sm:grid-cols-2 lg:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3';
+  const HERO_KPIS = [
+    { label: 'Completed projects', value: `${Math.max(projects.length * 17, 60)}+` },
+    { label: 'Flooring options advised', value: `${Math.max(services.length * 12, 24)}+` },
+    { label: 'Response time', value: 'Within 24h' },
+  ] as const;
 
   const renderProjectMosaicCard = (p: HomeProject, aspectClass: string) => {
     const cover = p.images?.[0]?.imageUrl;
@@ -283,53 +286,121 @@ export default async function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-transparent text-foreground">
-      <RevealOnScroll effect="fade">
-        <LuxurySlideshow intervalMs={4200} variant="hero" />
-      </RevealOnScroll>
+    <main className="min-h-screen bg-white text-zinc-900">
+      <section className="relative overflow-hidden border-b border-zinc-200/70 pb-16 pt-6">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_10%,rgba(16,185,129,0.14),transparent_40%),radial-gradient(circle_at_80%_0%,rgba(59,130,246,0.14),transparent_45%),linear-gradient(to_bottom,rgba(255,255,255,0.92),rgba(248,250,252,1))]" />
+        <Container>
+          <RevealOnScroll effect="fade">
+            <div className="relative z-10 grid gap-8 lg:grid-cols-12 lg:items-center">
+              <div className="lg:col-span-5">
+                <span className="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
+                  Floring Signature
+                </span>
+                <h1 className="mt-5 text-4xl font-semibold leading-tight tracking-tight text-zinc-900 sm:text-5xl lg:text-6xl">
+                  Premium spaces begin with refined flooring
+                </h1>
+                <p className="mt-5 max-w-xl text-base leading-7 text-zinc-600">
+                  High-standard flooring design and installation, with materials matched to your style for standout apartments, showrooms, and offices.
+                </p>
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <Link
+                    href="/projects"
+                    className="inline-flex items-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
+                  >
+                    View projects
+                  </Link>
+                  <Link
+                    href="/services"
+                    className="inline-flex items-center rounded-full border border-zinc-200 bg-white px-6 py-3 text-sm font-semibold text-zinc-900 shadow-sm transition hover:bg-zinc-50"
+                  >
+                    View services
+                  </Link>
+                </div>
+              </div>
 
+              <div className="lg:col-span-7 flex justify-center">
+                <div className="w-full max-w-5xl overflow-hidden rounded-[2rem] border border-zinc-200 bg-white shadow-[0_30px_120px_-60px_rgba(2,6,23,0.25)]">
+                  <LuxurySlideshow intervalMs={4200} variant="hero" imageOnly />
+                </div>
+              </div>
+            </div>
+          </RevealOnScroll>
 
-      <section className="bg-gradient-to-b from-transparent via-slate-50/60 to-transparent py-16">
-        <RevealOnScroll effect="up">
+          <RevealOnScroll effect="up" delayMs={80}>
+            <div className="relative z-10 mt-8 hidden gap-4 sm:grid sm:grid-cols-3">
+              {HERO_KPIS.map((kpi) => (
+                <article
+                  key={kpi.label}
+                  className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">{kpi.label}</p>
+                  <p className="mt-2 text-2xl font-semibold text-zinc-900">{kpi.value}</p>
+                </article>
+              ))}
+            </div>
+          </RevealOnScroll>
+        </Container>
+      </section>
+
+      <section className="relative overflow-hidden border-b border-zinc-200/70 bg-slate-50 py-16">
+        <RevealOnScroll effect="left" delayMs={80}>
           <Container>
-            <header className="mx-auto max-w-3xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-widest text-emerald-700">
-                Dịch vụ nổi bật
-              </p>
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
-                Thi công theo phong cách bạn
-              </h2>
-              <p className="mt-4 text-base leading-relaxed text-zinc-600">
-                Chọn một dịch vụ phù hợp, xem mẫu màu và gửi yêu cầu khảo sát để được tư vấn chi tiết.
-              </p>
-            </header>
+            <div className="pointer-events-none absolute inset-0 -z-10">
+              <div className="absolute left-0 top-10 h-72 w-72 rounded-full bg-emerald-200/50 blur-3xl" />
+              <div className="absolute right-0 top-1/3 h-80 w-80 rounded-full bg-cyan-200/50 blur-3xl" />
+            </div>
 
-            {services.length ? (
-              <div className="mt-12">
-                <ServicesTabsSection services={services} />
-              </div>
-            ) : (
-              <div className="mt-12 rounded-xl border border-zinc-200 bg-white p-8 text-sm text-zinc-700">
-                Hiện chưa có dịch vụ để hiển thị.
-              </div>
-            )}
+            <div className="mx-auto max-w-4xl text-center">
+              <p className="text-sm font-semibold uppercase tracking-[0.26em] text-emerald-700">
+                Curated Services
+              </p>
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl lg:text-5xl">
+                Choose the right flooring solution for your aesthetic and the experience you want your space to deliver
+              </h2>
+              <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-zinc-600 sm:text-base">
+                Floring does more than supply flooring. We help you choose the right material, feel, and investment level to elevate your overall space.
+              </p>
+            </div>
+
+            <div className="mx-auto mt-10 max-w-4xl">
+              {services.length ? (
+                <div className="rounded-[2rem] border border-zinc-200 bg-white p-4 shadow-sm sm:p-6">
+                  <div className="relative mb-5 flex items-center justify-center gap-4 px-2">
+                    <div className="text-center">
+                      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-500">
+                        Explore services
+                      </p>
+                    </div>
+                    <Link
+                      href="/services"
+                      className="hidden rounded-full border border-zinc-200 bg-white px-5 py-2 text-sm font-semibold text-zinc-900 transition hover:bg-zinc-50 sm:absolute sm:right-2 sm:top-1/2 sm:inline-flex sm:-translate-y-1/2"
+                    >
+                      View all
+                    </Link>
+                  </div>
+                  <ServicesTabsSection services={services} />
+                </div>
+              ) : (
+                <div className="rounded-2xl border border-zinc-200 bg-white p-8 text-sm text-zinc-600">
+                  No services are available to display yet.
+                </div>
+              )}
+            </div>
           </Container>
         </RevealOnScroll>
       </section>
-
-      {/* Featured projects */}
-      <section className="bg-gradient-to-b from-transparent via-slate-50/70 to-transparent py-16">
+      <section className="bg-white py-16">
         <RevealOnScroll effect="zoom" delayMs={60}>
           <Container>
             <header className="mx-auto max-w-3xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-widest text-indigo-700">
-                Dự án tiêu biểu
+              <p className="text-sm font-semibold uppercase tracking-widest text-sky-300">
+                Featured projects
               </p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
-                Những không gian đã được thi công thực tế
+                Real spaces completed by our team
               </h2>
               <p className="mt-4 text-base leading-relaxed text-zinc-600">
-                Xem hình ảnh minh hoạ và cảm nhận phong cách hoàn thiện mà Floring mang lại.
+                Browse visual references and discover the finishing style Floring delivers.
               </p>
             </header>
 
@@ -343,7 +414,7 @@ export default async function Home() {
                   {projects[1] ? renderProjectMosaicCard(projects[1], 'aspect-[16/11]') : null}
                 </div>
 
-                <div className="sm:col-start-2 sm:row-start-1 sm:row-span-2 flex w-full items-center">
+                <div className="flex w-full items-center sm:col-start-2 sm:row-start-1 sm:row-span-2">
                   {projects[2] ? renderProjectMosaicCard(projects[2], 'aspect-[4/5]') : null}
                 </div>
 
@@ -356,8 +427,8 @@ export default async function Home() {
                 </div>
               </div>
             ) : (
-              <div className="mt-12 rounded-xl border border-zinc-200 bg-white p-8 text-sm text-zinc-700">
-                Chưa có dự án để hiển thị.
+              <div className="mt-12 rounded-2xl border border-zinc-200 bg-white p-8 text-sm text-zinc-600">
+                No projects are available to display yet.
               </div>
             )}
 
@@ -366,192 +437,94 @@ export default async function Home() {
                 href="/projects"
                 className="inline-flex items-center rounded-full border border-zinc-200 bg-white px-6 py-3 text-sm font-semibold text-zinc-900 shadow-sm transition hover:bg-zinc-50"
               >
-                Xem toàn bộ dự án <span className="ml-2">→</span>
+                View all projects <span className="ml-2">→</span>
               </Link>
             </div>
           </Container>
         </RevealOnScroll>
       </section>
 
-      {/* Process */}
-      <section className="bg-gradient-to-b from-transparent via-indigo-50/40 to-transparent py-16">
-        <RevealOnScroll effect="left" delayMs={120}>
-          <Container>
-            <header className="mx-auto max-w-3xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-widest text-cyan-700">
-                Quy trình thi công
-              </p>
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
-                Quy Trình Làm Việc Hiệu Quả
-              </h2>
-              <p className="mt-4 text-base font-medium leading-relaxed text-zinc-700">
-                Minh bạch từ khảo sát đến bàn giao
-              </p>
-              <p className="mt-3 text-base leading-relaxed text-zinc-600">
-                Mọi bước đều được lên kế hoạch rõ ràng để bạn yên tâm về tiến độ và chất lượng.
-              </p>
-            </header>
-
-            <div className="mt-12 relative">
-              {/* Background accent (subtle) */}
-              <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-                <div className="absolute -top-10 left-0 h-72 w-72 rounded-full bg-indigo-200/18 blur-3xl" />
-                <div className="absolute -bottom-16 right-0 h-80 w-80 rounded-full bg-blue-200/14 blur-3xl" />
-              </div>
-
-              {/* Connector lines removed per request */}
-
-              <ol className="relative grid gap-10 pt-10 lg:grid-cols-3 lg:grid-rows-2 lg:gap-10">
-                {PROCESS_STEPS.map((item) => (
-                  <li
-                    key={item.step}
-                    className="group relative lg:justify-self-center lg:max-w-[320px]"
-                  >
-
-                    <div
-                      className={[
-                        'absolute top-0 z-10',
-                        'left-1/2 -translate-x-1/2',
-                        'h-14 w-14 -translate-y-1/2',
-                        'rounded-full bg-gradient-to-br from-indigo-500 via-violet-500 to-sky-400',
-                        'flex items-center justify-center',
-                        'text-white font-bold text-base',
-                        'shadow-[0_18px_55px_-28px_rgba(99,102,241,0.75)]',
-                        'ring-1 ring-white/30',
-                        'transition-transform duration-300 ease-out',
-                        'group-hover:scale-[1.06]',
-                      ].join(' ')}
-                      aria-label={`Bước ${item.step}`}
-                    >
-                      {item.step}
+      <section className="bg-slate-50 py-16">
+        <Container>
+          <div className="grid gap-6 lg:grid-cols-12 lg:items-stretch">
+            <RevealOnScroll effect="up" delayMs={40} className="w-full lg:col-span-4">
+              <div className="flex h-full flex-col rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm lg:p-7">
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-indigo-700">Execution Steps</p>
+                <h3 className="mt-3 max-w-sm text-3xl font-semibold tracking-tight text-zinc-900">
+                  Step-by-step quality control process
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-zinc-600">
+                  Each step includes checklists, records, and clear technical coordination to reduce errors and optimize schedule.
+                </p>
+                <div className="mt-6 space-y-3 lg:mt-8">
+                  {QUALITY_ITEMS.map((item) => (
+                    <div key={item.title} className="rounded-xl border border-zinc-200 bg-zinc-50 p-4 lg:p-5">
+                      <p className="text-sm font-semibold text-zinc-900">{item.title}</p>
+                      <p className="mt-1 text-xs leading-6 text-zinc-600">{item.desc}</p>
                     </div>
+                  ))}
+                </div>
+              </div>
+            </RevealOnScroll>
 
-                    <article
-                      className={[
-                        'rounded-2xl bg-white/90 backdrop-blur',
-                        'border border-white/60 shadow-sm',
-                        'px-6 pb-6 pt-12',
-                        'transition-all duration-300 ease-out',
-                        'group-hover:-translate-y-1 group-hover:shadow-lg',
-                      ].join(' ')}
-                    >
-                      <h3 className="text-base font-semibold text-zinc-900 lg:text-lg whitespace-nowrap overflow-hidden text-ellipsis text-center">
-                        {item.title}
-                      </h3>
-                      <p className="mt-3 min-h-[4.5rem] text-sm leading-6 text-zinc-600 text-center">
-                        {item.desc}
-                      </p>
-                    </article>
+            <RevealOnScroll effect="right" delayMs={100} className="w-full lg:col-span-8">
+              <ol className="grid h-full gap-4 md:grid-cols-2">
+                {PROCESS_STEPS.map((item) => (
+                  <li key={item.step} className="flex h-full min-h-[150px] flex-col rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm lg:min-h-[164px]">
+                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-emerald-500 text-sm font-bold text-white">
+                      {item.step}
+                    </span>
+                    <h4 className="mt-4 text-base font-semibold text-zinc-900">{item.title}</h4>
+                    <p className="mt-2 text-sm leading-6 text-zinc-600">{item.desc}</p>
                   </li>
                 ))}
               </ol>
-            </div>
-          </Container>
-        </RevealOnScroll>
+            </RevealOnScroll>
+          </div>
+        </Container>
       </section>
 
-      {/* Quality guarantees */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-transparent via-slate-50/60 to-transparent py-16">
-        <RevealOnScroll effect="right" delayMs={120}>
+      <section className="relative overflow-hidden border-y border-zinc-200/70 bg-white py-16">
+        <RevealOnScroll effect="fade">
           <Container>
-            <header className="mx-auto max-w-3xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-widest text-indigo-700">
-                Cam kết chất lượng
-              </p>
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
-                Làm đúng kỹ thuật, bền theo thời gian
-              </h2>
-            </header>
-
-            {/* Soft background shapes */}
             <div className="pointer-events-none absolute inset-0 -z-10">
-              <div className="absolute -top-14 left-10 h-72 w-72 rounded-full bg-indigo-200/15 blur-3xl" />
-              <div className="absolute -bottom-20 right-0 h-80 w-80 rounded-full bg-sky-200/15 blur-3xl" />
+              <div className="absolute left-0 top-12 h-72 w-72 rounded-full bg-teal-200/60 blur-3xl" />
+              <div className="absolute right-0 top-1/3 h-80 w-80 rounded-full bg-indigo-200/60 blur-3xl" />
             </div>
-
-            <div className="mt-12 grid gap-8 md:grid-cols-3 md:gap-10">
-              {QUALITY_ITEMS.map((item, idx) => (
-                <article
-                  key={item.title}
-                  className={[
-                    'group relative overflow-hidden rounded-2xl',
-                    'border border-white/60 bg-white/85 backdrop-blur',
-                    'shadow-sm transition-all duration-300 ease-out',
-                    'hover:-translate-y-1 hover:shadow-xl',
-                    idx === 1 ? 'md:-translate-y-2' : '',
-                  ].join(' ')}
-                >
-                  {/* subtle top highlight */}
-                  <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-emerald-50/60 to-transparent opacity-80" />
-
-                  <div className="p-8">
-                    <div className="flex items-center gap-3">
-                      <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 via-violet-500 to-sky-400 text-white shadow-[0_18px_55px_-28px_rgba(99,102,241,0.65)]">
-                        ✓
-                      </span>
-                      <h3 className="text-lg font-semibold tracking-tight text-zinc-900">
-                        {item.title}
-                      </h3>
-                    </div>
-
-                    <p className="mt-4 text-sm leading-7 text-zinc-600">{item.desc}</p>
-
-                    <div className="mt-6 flex items-center justify-between">
-                      <div className="h-px w-14 bg-gradient-to-r from-indigo-500/80 to-sky-400/70" />
-                      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-400">
-                        Guarantee
-                      </span>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </Container>
-        </RevealOnScroll>
-      </section>
-
-      {/* FAQ */}
-      <section className="bg-gradient-to-b from-transparent via-emerald-50/30 to-transparent py-16">
-        <RevealOnScroll effect="fade" delayMs={80}>
-          <Container>
-            <div className="grid items-start gap-10 lg:grid-cols-12">
-              {/* Left illustration (SVG) */}
-              <div className="relative hidden h-[440px] lg:col-span-5 lg:block">
-                <div className="absolute left-0 top-0 h-full w-full">
+            <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-10">
+              <div className="hidden lg:col-span-4 lg:block">
+                <div className="sticky top-24 overflow-hidden rounded-[2rem] border border-zinc-200 bg-white p-6 shadow-[0_24px_70px_-50px_rgba(2,6,23,0.15)]">
+                  <div className="pointer-events-none absolute inset-x-10 top-0 h-24 rounded-full bg-emerald-200/40 blur-3xl" />
                   <Image
                     src="/FAQ.png"
-                    alt="Minh hoạ tư vấn"
-                    fill
-                    className="object-contain"
-                    priority
+                    alt="Floring support"
+                    width={420}
+                    height={420}
+                    className="relative z-10 h-auto w-full object-contain"
                   />
                 </div>
               </div>
-
-              {/* Right content */}
-              <div className="lg:col-span-7">
-                <header className="mx-auto max-w-3xl text-center">
-                  <p className="text-sm font-semibold uppercase tracking-widest text-teal-700">
-                    Câu hỏi thường gặp
-                  </p>
-                  <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
-                    Bạn đang thắc mắc điều gì?
-                  </h2>
-                </header>
-
-                <div className="mx-auto mt-12 max-w-3xl space-y-4">
+              <div className="lg:col-span-8">
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-teal-700">FAQ</p>
+                <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
+                  Quick answers to help you decide faster
+                </h2>
+                <p className="mt-4 max-w-2xl text-sm leading-7 text-zinc-600 sm:text-base">
+                  The most common questions about survey, installation, and warranty so you can understand the process before getting started.
+                </p>
+                <div className="mt-8 space-y-3">
                   {FAQ_ITEMS.map((item) => (
                     <details
                       key={item.q}
-                      className="group rounded-2xl border border-zinc-200/60 bg-white/80 px-6 py-4 shadow-sm backdrop-blur"
+                      className="group rounded-2xl border border-zinc-200 bg-white px-5 py-4 shadow-sm transition-colors hover:bg-zinc-50 sm:px-6"
                     >
-                      <summary className="cursor-pointer list-none text-base font-semibold text-zinc-900">
-                        {item.q}
-                        <span className="ml-2 text-teal-700 group-open:rotate-180 transition-transform">
-                          ↓
+                      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-semibold text-zinc-900">
+                        <span>{item.q}</span>
+                        <span className="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 transition duration-200 group-open:rotate-45 group-open:border-emerald-200 group-open:bg-emerald-50 group-open:text-emerald-700">
+                          +
                         </span>
                       </summary>
-                      <p className="mt-3 text-sm leading-6 text-zinc-600">{item.a}</p>
+                      <p className="mt-3 border-t border-zinc-200 pt-3 text-sm leading-7 text-zinc-600">{item.a}</p>
                     </details>
                   ))}
                 </div>
@@ -561,63 +534,53 @@ export default async function Home() {
         </RevealOnScroll>
       </section>
 
-      {/* Testimonials (static) */}
-      <section className="bg-gradient-to-b from-transparent via-slate-50/60 to-transparent py-16">
-        <RevealOnScroll effect="blur" delayMs={120}>
+      <section className="bg-slate-50 py-16">
+        <RevealOnScroll effect="blur">
           <Container>
-            <header className="mx-auto max-w-3xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-widest text-zinc-500">
-                Khách hàng chia sẻ
-              </p>
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
-                Tin tưởng từ những trải nghiệm thực tế
-              </h2>
-            </header>
-
-            <TestimonialsSection testimonials={TESTIMONIALS} initialCount={3} />
+            <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
+              <div className="lg:col-span-4">
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-600">Client Voice</p>
+                <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900">
+                  Credibility proven by real customer experiences
+                </h2>
+                <p className="mt-4 max-w-sm text-sm leading-7 text-zinc-600">
+                  Real feedback from clients after consultation, installation, and completion.
+                </p>
+              </div>
+              <div className="lg:col-span-8">
+                <TestimonialsSection testimonials={TESTIMONIALS} initialCount={3} />
+              </div>
+            </div>
           </Container>
         </RevealOnScroll>
       </section>
 
-      {/* Contact on home */}
-      <section className="bg-gradient-to-r from-slate-100/70 via-emerald-50/50 to-slate-100/70 py-16">
-        <RevealOnScroll effect="blur" delayMs={160}>
+      <section className="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.12),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(34,211,238,0.10),transparent_32%),linear-gradient(135deg,#ffffff_0%,#f8fafc_52%,#ffffff_100%)] py-16">
+        <RevealOnScroll effect="blur" delayMs={100}>
           <Container>
-            <div className="mx-auto grid gap-8 lg:grid-cols-12 lg:items-start">
+            <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
               <div className="lg:col-span-5">
-                <header>
-                  <p className="text-sm font-semibold uppercase tracking-widest text-emerald-700">
-                    Gửi yêu cầu nhanh
-                  </p>
+                <div className="max-w-xl rounded-[2rem] border border-zinc-200 bg-white p-6 shadow-[0_24px_80px_-60px_rgba(2,6,23,0.18)] sm:p-8">
+                  <p className="text-sm font-semibold uppercase tracking-[0.22em] text-emerald-700">Book a consultation</p>
                   <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900">
-                    Floring sẽ liên hệ để lên lịch khảo sát
+                    Book a free survey and get expert guidance on the best flooring structure
                   </h2>
-                  <p className="mt-4 text-base leading-relaxed text-zinc-600">
-                    Điền thông tin cơ bản. Chúng tôi sẽ phản hồi để xác nhận thời gian khảo sát và tư vấn phương án phù hợp.
+                  <p className="mt-4 max-w-lg text-sm leading-7 text-zinc-600 sm:text-base">
+                    Floring helps define the right installation approach from day one, from material selection to timeline and execution.
                   </p>
-                </header>
-
-                <div className="mt-8 space-y-3">
-                  {CONTACT_HIGHLIGHTS.map((x) => (
-                    <div
-                      key={x}
-                      className="flex items-start gap-3 rounded-2xl border border-zinc-200/60 bg-white/80 p-4 shadow-sm backdrop-blur"
-                    >
-                      <span className="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-white">
-                        ✓
-                      </span>
-                      <p className="text-sm leading-6 text-zinc-600">{x}</p>
-                    </div>
-                  ))}
+                  <div className="mt-6 space-y-3">
+                    {CONTACT_HIGHLIGHTS.map((x) => (
+                      <div key={x} className="flex items-start gap-3 rounded-2xl border border-zinc-200 bg-zinc-50 p-4">
+                        <span className="mt-0.5 inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">✓</span>
+                        <p className="text-sm text-zinc-700">{x}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-
               <div className="lg:col-span-7">
-                <div className="rounded-3xl border border-zinc-200/60 bg-white/80 p-8 shadow-sm backdrop-blur">
-                  <ContactRequestForm
-                    className="grid gap-4"
-                    submitLabel="Gửi yêu cầu khảo sát"
-                  />
+                <div className="rounded-[2rem] border border-zinc-200 bg-white p-6 shadow-[0_30px_90px_-60px_rgba(2,6,23,0.20)] sm:p-8">
+                  <ContactRequestForm className="grid gap-4" submitLabel="Send survey request" />
                 </div>
               </div>
             </div>
@@ -625,17 +588,15 @@ export default async function Home() {
         </RevealOnScroll>
       </section>
 
-      {/* Featured blog posts */}
-      <section className="bg-gradient-to-b from-slate-50 via-white to-transparent py-16">
-        <RevealOnScroll effect="left" delayMs={120}>
+      <section className="bg-white py-16">
+        <RevealOnScroll effect="left">
           <Container>
-            <header className="mx-auto max-w-3xl text-center">
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-700 shadow-sm ring-1 ring-zinc-200/60 backdrop-blur">
-                <span aria-hidden="true">▦</span>
-                Tin tức
-              </div>
-            </header>
-
+            <div className="mb-7 flex items-end justify-between gap-4">
+              <h2 className="text-3xl font-semibold tracking-tight text-zinc-900">Blog</h2>
+              <Link href="/blogs" className="text-sm font-semibold text-emerald-700 hover:text-emerald-800">
+                View all posts
+              </Link>
+            </div>
             {blogPosts.length ? (
               <BlogCarouselSection
                 posts={blogPosts.map((p) => ({
@@ -646,7 +607,7 @@ export default async function Home() {
                   imageUrl: p.imageUrl,
                   createdAt: p.createdAt,
                   author: 'Floring',
-                  category: 'Tin tức',
+                  category: 'News',
                 }))}
               />
             ) : null}
@@ -656,3 +617,10 @@ export default async function Home() {
     </main>
   );
 }
+
+
+
+
+
+
+

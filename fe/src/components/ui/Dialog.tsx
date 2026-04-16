@@ -15,7 +15,7 @@ export function Dialog({ open, onClose, title, children, className }: DialogProp
     const panelRef = useRef<HTMLDivElement | null>(null);
     const onCloseRef = useRef(onClose);
 
-    // Luôn dùng onClose mới nhất mà không cần re-run effect chính.
+    // Always use the latest onClose without re-running the main effect.
     useEffect(() => {
         onCloseRef.current = onClose;
     }, [onClose]);
@@ -50,8 +50,8 @@ export function Dialog({ open, onClose, title, children, className }: DialogProp
 
     if (!open) return null;
 
-    // Render qua portal để đảm bảo `position: fixed` luôn bám vào viewport,
-    // tránh bị lệch khi component cha có `transform`.
+    // Render through a portal so `position: fixed` always stays on the viewport,
+    // avoiding offset issues when a parent has `transform`.
     if (typeof document === 'undefined') return null;
 
     return createPortal(
@@ -63,7 +63,7 @@ export function Dialog({ open, onClose, title, children, className }: DialogProp
         >
             <button
                 type="button"
-                aria-label="Đóng"
+                aria-label="Close"
                 onClick={() => onCloseRef.current()}
                 className="absolute inset-0 z-0 cursor-default bg-black/40"
             />
@@ -82,7 +82,7 @@ export function Dialog({ open, onClose, title, children, className }: DialogProp
                             type="button"
                             onClick={() => onCloseRef.current()}
                             className="rounded-lg p-2 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700"
-                            aria-label="Đóng"
+                            aria-label="Close"
                         >
                             ✕
                         </button>

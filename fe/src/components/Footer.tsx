@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { Container } from '@/components/Container';
 
 const companyLinks = [
-    { href: '/about', label: 'Giới thiệu' },
-    { href: '/projects', label: 'Dự án' },
+    { href: '/about', label: 'About' },
+    { href: '/projects', label: 'Projects' },
     { href: '/blogs', label: 'Blog' },
 ];
 
@@ -29,15 +29,15 @@ export function Footer() {
                             </div>
                         </div>
                         <p className="mt-4 text-sm leading-6 text-slate-300">
-                            Tư vấn vật liệu sàn phù hợp, thi công đúng kỹ thuật, nghiệm thu rõ
-                            ràng và bảo hành minh bạch.
+                            Material-first consultation, technically correct installation,
+                            clear handover, and transparent warranty.
                         </p>
                     </div>
 
 
                     <div className="lg:col-span-2">
                         <div className="text-sm font-semibold text-white">
-                            Liên kết
+                            Links
                         </div>
                         <ul className="mt-4 space-y-2 text-sm">
                             {companyLinks.map((l) => (
@@ -56,7 +56,7 @@ export function Footer() {
                     {/* Contact Info */}
                     <div className="lg:col-span-3">
                         <div className="text-sm font-semibold text-white">
-                            Thông tin liên hệ
+                            Contact information
                         </div>
                         <div className="mt-4 space-y-3 text-sm text-slate-300">
                             <div className="flex items-start justify-center gap-2 lg:justify-start">
@@ -155,12 +155,12 @@ export function Footer() {
                     {/* Quick CTA */}
                     <div className="lg:col-span-4">
                         <div className="text-sm font-semibold text-white">
-                            Liên hệ nhanh
+                            Quick contact
                         </div>
                         <div className="mt-4 rounded-2xl border border-slate-700 bg-slate-900 p-4 shadow-sm backdrop-blur">
                             <p className="text-sm leading-6 text-slate-200">
-                                Bạn muốn nhận tư vấn đúng nhu cầu? Chỉ cần bấm nút để gửi yêu cầu khảo sát,
-                                Floring sẽ liên hệ sớm nhất.
+                                Need tailored consultation? Click below to send a survey request,
+                                and Floring will contact you as soon as possible.
                             </p>
 
                             <div className="mt-4 flex flex-wrap gap-3 lg:flex-nowrap lg:gap-2">
@@ -168,19 +168,19 @@ export function Footer() {
                                     href="/contact"
                                     className="inline-flex items-center justify-center whitespace-nowrap rounded-full bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
                                 >
-                                    Gửi yêu cầu
+                                    Send request
                                 </Link>
 
                                 <Link
                                     href="/projects"
                                     className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-slate-600 bg-slate-800 px-4 py-2 text-sm font-semibold text-slate-100 shadow-sm transition hover:bg-slate-700"
                                 >
-                                    Xem dự án
+                                    View projects
                                 </Link>
                             </div>
 
                             <div className="mt-4 text-xs text-slate-400">
-                                Phản hồi thường trong vòng 1 ngày làm việc.
+                                Typical response within 1 business day.
                             </div>
                         </div>
                     </div>

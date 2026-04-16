@@ -13,7 +13,7 @@ type Props = {
 
 export function ContactRequestForm({
   className,
-  submitLabel = 'Gửi yêu cầu khảo sát',
+  submitLabel = 'Send survey request',
 }: Props) {
   const router = useRouter();
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
@@ -72,54 +72,54 @@ export function ContactRequestForm({
           setUploadError('');
           setNotice({
             type: 'success',
-            message: 'Gửi thành công! Floring sẽ liên hệ sớm để xác nhận lịch khảo sát.',
+            message: 'Submitted successfully! Floring will contact you soon to confirm the survey schedule.',
           });
         } catch (err) {
           setStatus('error');
           const msg = err instanceof Error ? err.message : toApiErrorMessage(err);
           setError(msg);
-          setNotice({ type: 'error', message: msg || 'Gửi thất bại, vui lòng thử lại.' });
+          setNotice({ type: 'error', message: msg || 'Submission failed. Please try again.' });
         }
       }}
     >
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="text-sm font-medium">Họ và tên</label>
+          <label className="text-sm font-medium">Full name</label>
           <input
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="mt-2 h-11 w-full rounded-2xl border border-zinc-200 bg-white px-4 text-sm outline-none focus:border-emerald-200 focus:ring-4 focus:ring-emerald-200/40 dark:border-zinc-800 dark:bg-zinc-950 dark:focus:border-emerald-900/60 dark:focus:ring-emerald-900/20"
-            placeholder="Nhập họ và tên"
+            placeholder="Enter your full name"
           />
         </div>
 
         <div>
-          <label className="text-sm font-medium">Số điện thoại</label>
+          <label className="text-sm font-medium">Phone number</label>
           <input
             required
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             className="mt-2 h-11 w-full rounded-2xl border border-zinc-200 bg-white px-4 text-sm outline-none focus:border-emerald-200 focus:ring-4 focus:ring-emerald-200/40 dark:border-zinc-800 dark:bg-zinc-950 dark:focus:border-emerald-900/60 dark:focus:ring-emerald-900/20"
-            placeholder="Nhập số điện thoại"
+            placeholder="Enter your phone number"
           />
         </div>
       </div>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="text-sm font-medium">Email (tuỳ chọn)</label>
+          <label className="text-sm font-medium">Email (optional)</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="mt-2 h-11 w-full rounded-2xl border border-zinc-200 bg-white px-4 text-sm outline-none focus:border-emerald-200 focus:ring-4 focus:ring-emerald-200/40 dark:border-zinc-800 dark:bg-zinc-950 dark:focus:border-emerald-900/60 dark:focus:ring-emerald-900/20"
-            placeholder="Nhập email của bạn"
+            placeholder="Enter your email"
           />
         </div>
 
         <div>
-          <label className="text-sm font-medium">Upload hiện trạng ảnh (tuỳ chọn)</label>
+          <label className="text-sm font-medium">Upload site photos (optional)</label>
           <input
             type="file"
             multiple
@@ -142,7 +142,7 @@ export function ContactRequestForm({
                     body: fd,
                   });
 
-                  if (!res.ok) throw new Error('Upload ảnh thất bại');
+                  if (!res.ok) throw new Error('Image upload failed');
                   const data = await res.json();
                   if (data?.url) uploaded.push(data.url as string);
                 }
@@ -151,7 +151,7 @@ export function ContactRequestForm({
               } catch (err) {
                 const msg = err instanceof Error ? err.message : toApiErrorMessage(err);
                 setUploadError(msg);
-                setNotice({ type: 'error', message: msg || 'Upload ảnh thất bại.' });
+                setNotice({ type: 'error', message: msg || 'Image upload failed.' });
               } finally {
                 setUploadingImages(false);
               }
@@ -161,7 +161,7 @@ export function ContactRequestForm({
           />
 
           {uploadingImages ? (
-            <div className="mt-2 text-xs text-zinc-500">Đang upload ảnh...</div>
+            <div className="mt-2 text-xs text-zinc-500">Uploading images...</div>
           ) : null}
           {uploadError ? <div className="mt-2 text-xs text-rose-700">{uploadError}</div> : null}
 
@@ -180,19 +180,19 @@ export function ContactRequestForm({
           ) : null}
 
           <div className="mt-1 text-xs text-zinc-500">
-            Upload ảnh hiện trạng căn hộ/khu vực cần thi công để đội kỹ thuật dễ đánh giá hơn.
+            Upload photos of your apartment/site area so our technical team can assess more accurately.
           </div>
         </div>
       </div>
 
       <div className="mt-4">
-        <label className="text-sm font-medium">Nội dung</label>
+        <label className="text-sm font-medium">Message</label>
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           rows={5}
           className="mt-2 w-full resize-none rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-200 focus:ring-4 focus:ring-emerald-200/40 dark:border-zinc-800 dark:bg-zinc-950 dark:focus:border-emerald-900/60 dark:focus:ring-emerald-900/20"
-          placeholder="Mô tả nhu cầu thi công..."
+          placeholder="Describe your installation requirements..."
         />
       </div>
 
@@ -202,20 +202,20 @@ export function ContactRequestForm({
           disabled={status === 'submitting' || !canSubmit}
           className="inline-flex h-11 items-center justify-center rounded-full bg-emerald-600 px-6 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {status === 'submitting' ? 'Đang gửi...' : submitLabel}
+          {status === 'submitting' ? 'Sending...' : submitLabel}
         </button>
 
         {status === 'success' ? (
           <div className="text-sm text-emerald-700 dark:text-emerald-300">
-            Đã gửi! Floring sẽ liên hệ để lên lịch khảo sát & thi công sớm nhất.
+            Submitted! Floring will contact you shortly to schedule survey and installation.
           </div>
         ) : status === 'error' ? (
           <div className="text-sm text-red-600 dark:text-red-400">
-            {error || 'Gửi thất bại, vui lòng thử lại.'}
+            {error || 'Submission failed. Please try again.'}
           </div>
         ) : (
           <div className="text-sm text-zinc-500 dark:text-zinc-400">
-            Thường phản hồi trong vòng 1 ngày làm việc.
+            Typical response within 1 business day.
           </div>
         )}
       </div>

@@ -3,9 +3,9 @@ import { Container } from '@/components/Container';
 import { ServiceContactRequestForm } from '@/components/service/ServiceContactRequestForm';
 
 export const metadata: Metadata = {
-  title: 'Giới thiệu - Floring Melbourne | Thi công sàn gỗ',
+  title: 'About - Floring Melbourne | Flooring Installation',
   description:
-    'Floring là đơn vị thi công sàn gỗ uy tín tại Melbourne (Australia), chuyên lắp đặt, sửa chữa và bảo trì sàn gỗ cho căn hộ và không gian thương mại.',
+    'Floring is a trusted flooring contractor in Melbourne (Australia), specializing in installation, repair, and maintenance for residential and commercial spaces.',
 };
 
 export default function AboutPage() {
@@ -15,15 +15,15 @@ export default function AboutPage() {
         <Container>
           <div className="mx-auto max-w-6xl text-center">
             <p className="text-sm font-semibold uppercase tracking-widest text-amber-600">
-              Giới thiệu Floring
+              About Floring
             </p>
             <h1 className="mt-4 text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">
-              Đơn vị thi công sàn gỗ uy tín tại Melbourne
+              Trusted flooring installation team in Melbourne
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-zinc-600">
-              Floring đồng hành toàn diện từ tư vấn chọn vật liệu, thi công chuyên nghiệp đến hướng
-              dẫn chăm sóc/bảo trì sau lắp đặt. Chúng tôi tập trung vào 3 yếu tố xuyên suốt:
-              thi công sạch sẽ, trao đổi rõ ràng và hoàn thiện bền đẹp theo thời gian.
+              Floring supports your project end-to-end, from material consultation and professional
+              installation to post-installation care guidance. We focus on three core values:
+              clean execution, clear communication, and long-lasting quality finishes.
             </p>
           </div>
         </Container>
@@ -34,17 +34,17 @@ export default function AboutPage() {
           <article className="grid gap-12 lg:grid-cols-12 lg:items-start">
             <div className="lg:col-span-6">
               <h2 className="text-2xl font-semibold tracking-tight text-zinc-900">
-                Chúng tôi là ai
+                Who we are
               </h2>
               <p className="mt-6 text-base leading-relaxed text-zinc-600">
-                Floring là đội ngũ thi công sàn gỗ tại Melbourne với kinh nghiệm thực tế triển khai
-                cả dự án dân dụng và thương mại. Chúng tôi lắp đặt sàn gỗ timber, sàn hybrid và sàn
-                laminate theo tiêu chuẩn thi công đã được kiểm chứng.
+                Floring is a Melbourne-based flooring team with hands-on experience across
+                residential and commercial projects. We install timber, hybrid, and laminate
+                flooring to proven installation standards.
               </p>
               <p className="mt-4 text-base leading-relaxed text-zinc-600">
-                Cho dù bạn nâng cấp một phòng hay thực hiện cả công trình, quy trình luôn rõ ràng và
-                dễ dự đoán: scope, timeline và kỳ vọng được trao đổi từ đầu. Kết quả là một bề mặt
-                hiện đại, hoàn thiện tinh gọn — kèm hướng dẫn sau thi công để bạn yên tâm sử dụng lâu dài.
+                Whether you are upgrading one room or delivering a full project, our process stays clear
+                and predictable: scope, timeline, and expectations are aligned from day one. The result is
+                a modern, polished finish with practical aftercare guidance for long-term confidence.
               </p>
             </div>
 
@@ -130,66 +130,66 @@ export default function AboutPage() {
         <Container>
           <header className="mx-auto max-w-4xl text-center">
             <h2 className="text-2xl font-semibold tracking-tight text-zinc-900">
-              Tiêu chuẩn dịch vụ
+              Service standards
             </h2>
             <p className="mt-4 text-base leading-relaxed text-zinc-600">
-              Chúng tôi cung cấp dịch vụ thi công sàn gỗ tiêu chuẩn “nhà thầu” — phù hợp điều kiện
-              công trình tại Australia và đúng kỳ vọng của khách hàng, với kiểm tra chất lượng ở mọi giai đoạn.
+              We provide contractor-grade flooring services designed for Australian project conditions
+              and client expectations, with quality checks at every stage.
             </p>
           </header>
 
           <div className="mt-12 grid gap-8 md:grid-cols-2">
             <article className="rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm">
-              <h3 className="text-xl font-semibold text-zinc-900">Chúng tôi mang đến</h3>
+              <h3 className="text-xl font-semibold text-zinc-900">What we deliver</h3>
               <p className="mt-4 text-zinc-600">
-                Giải pháp thi công sàn trọn gói dựa trên giao tiếp rõ ràng và tay nghề ổn định.
+                End-to-end flooring solutions built on clear communication and consistent craftsmanship.
               </p>
               <ul className="mt-6 space-y-3 text-sm text-zinc-600">
                 <li className="flex gap-3">
                   <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 text-white">
                     ✓
                   </span>
-                  <span>Thi công & thay thế sàn gỗ timber</span>
+                  <span>Timber floor installation and replacement</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 text-white">
                     ✓
                   </span>
-                  <span>Chà nhám, phục hồi & tân trang bề mặt</span>
+                  <span>Sanding, restoration, and surface refinishing</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 text-white">
                     ✓
                   </span>
-                  <span>Hỗ trợ dự án dân dụng & thương mại</span>
+                  <span>Support for residential and commercial projects</span>
                 </li>
               </ul>
             </article>
 
             <article className="rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm">
-              <h3 className="text-xl font-semibold text-zinc-900">Cách chúng tôi làm việc</h3>
+              <h3 className="text-xl font-semibold text-zinc-900">How we work</h3>
               <p className="mt-4 text-zinc-600">
-                Mỗi dự án đều được triển khai với kế hoạch thực tế, chú trọng an toàn và tập trung vào những chi tiết
-                tạo nên khác biệt.
+                Every project is executed with a practical plan, strong safety focus, and attention to
+                the details that create meaningful quality.
               </p>
               <ul className="mt-6 space-y-3 text-sm text-zinc-600">
                 <li className="flex gap-3">
                   <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 text-white">
                     ✓
                   </span>
-                  <span>Khảo sát hiện trạng & chuẩn bị mặt bằng</span>
+                  <span>Site survey and floor preparation</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 text-white">
                     ✓
                   </span>
-                  <span>Báo giá minh bạch & timeline hợp lý</span>
+                  <span>Transparent quotation and realistic timeline</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 text-white">
                     ✓
                   </span>
-                  <span>Hướng dẫn sau thi công & mẹo bảo dưỡng</span>
+                  <span>After-installation guidance and maintenance tips</span>
                 </li>
               </ul>
             </article>
@@ -204,14 +204,14 @@ export default function AboutPage() {
             <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
               <div className="text-center md:text-left">
                 <p className="text-sm font-semibold uppercase tracking-widest text-emerald-700">
-                  Liên hệ
+                  Contact
                 </p>
                 <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900">
-                  Cho chúng tôi biết nhu cầu — Floring sẽ hướng dẫn bước tiếp theo.
+                  Tell us your needs — Floring will guide the next step.
                 </h2>
                 <p className="mt-4 text-base leading-relaxed text-zinc-600">
-                  Chia sẻ thông tin về nhu cầu của bạn và (nếu cần) upload ảnh hiện trạng để đội ngũ đánh giá công trình
-                  và lên kế hoạch rõ ràng.
+                  Share your requirements and, if needed, upload site photos so our team can assess the project
+                  and prepare a clear execution plan.
                 </p>
               </div>
 
@@ -221,7 +221,7 @@ export default function AboutPage() {
                   serviceId={null}
                   serviceName={null}
                   productVariantId={null}
-                  triggerLabel="Liên hệ"
+                  triggerLabel="Contact"
                   triggerVariant="form"
                   triggerClassName="inline-flex w-full items-center justify-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 md:w-auto"
                 />
@@ -235,35 +235,35 @@ export default function AboutPage() {
         <Container>
           <div className="mx-auto max-w-4xl text-center">
             <h2 className="text-2xl font-semibold tracking-tight text-zinc-900">
-              Vì sao khách hàng chọn Floring
+              Why clients choose Floring
             </h2>
             <p className="mt-4 text-base leading-relaxed text-zinc-600">
-              Floring kết hợp lịch triển khai đáng tin cậy, chuyên môn kỹ thuật và chất lượng hoàn thiện cao cấp để mang đến
-              những dự án thi công sàn “đáng tin” — từ lần liên hệ đầu tiên đến bàn giao và hỗ trợ duy trì bền đẹp.
+              Floring combines reliable scheduling, technical expertise, and premium finishing quality to deliver
+              trustworthy flooring projects from first contact to handover and long-term support.
             </p>
           </div>
 
           <div className="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             {[
               {
-                title: 'Chất lượng chuẩn nhà thầu',
+                title: 'Contractor-grade quality',
                 description:
-                  'Thi công theo tiêu chuẩn chuẩn nhà thầu, kèm kiểm tra chất lượng cẩn thận trong từng giai đoạn.',
+                  'Installation to contractor-level standards with careful quality checks at every stage.',
               },
               {
-                title: 'Trao đổi rõ ràng',
+                title: 'Clear communication',
                 description:
-                  'Bạn sẽ nhận được cập nhật rõ ràng về scope, timeline và ngân sách trong suốt quá trình thực hiện.',
+                  'You receive clear updates on scope, timeline, and budget throughout delivery.',
               },
               {
-                title: 'Đúng tiến độ',
+                title: 'On schedule',
                 description:
-                  'Đội ngũ theo quy trình có cấu trúc để hạn chế phát sinh và bàn giao đúng lịch.',
+                  'Our structured process helps minimize surprises and achieve on-time handover.',
               },
               {
-                title: 'Hỗ trợ sau thi công',
+                title: 'After-installation support',
                 description:
-                  'Chúng tôi cung cấp hướng dẫn bảo dưỡng thực tế để sàn luôn ở trạng thái tốt nhất theo thời gian.',
+                  'We provide practical maintenance guidance so your flooring stays in top condition over time.',
               },
             ].map((item) => (
               <article
@@ -285,7 +285,7 @@ export default function AboutPage() {
           <div className="grid gap-8 lg:grid-cols-12 lg:items-start">
             <article className="rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm lg:col-span-5">
               <h2 className="text-2xl font-semibold tracking-tight text-zinc-900">
-                Đến văn phòng Melbourne
+                Visit our Melbourne office
               </h2>
               <p className="mt-4 text-zinc-600">
                 Floring Australia Pty Ltd
@@ -300,7 +300,7 @@ export default function AboutPage() {
                 rel="noreferrer"
                 className="mt-6 inline-flex rounded-xl bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-700"
               >
-                Mở Google Maps
+                Open in Google Maps
               </a>
             </article>
 

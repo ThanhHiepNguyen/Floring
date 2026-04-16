@@ -42,8 +42,8 @@ export async function generateMetadata({
 
   if (!service) {
     return {
-      title: 'Dịch vụ không tìm thấy | Floring',
-      description: 'Dịch vụ bạn tìm không tồn tại. Vui lòng quay lại trang khác.',
+      title: 'Service not found | Floring',
+      description: 'The service you are looking for does not exist. Please go back to another page.',
     };
   }
 
@@ -68,14 +68,14 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
     return (
       <main className="min-h-screen bg-background text-foreground">
         <Container className="py-20">
-          <h1 className="text-3xl font-semibold text-zinc-900">Dịch vụ không tìm thấy</h1>
-          <p className="mt-4 text-zinc-600">Dịch vụ bạn tìm không tồn tại.</p>
+          <h1 className="text-3xl font-semibold text-zinc-900">Service not found</h1>
+          <p className="mt-4 text-zinc-600">The service you are looking for does not exist.</p>
 
           <Link
             href="/"
             className="mt-6 inline-flex items-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700"
           >
-            Quay về trang chủ
+            Back to homepage
           </Link>
         </Container>
       </main>

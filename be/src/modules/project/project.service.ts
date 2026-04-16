@@ -62,8 +62,19 @@ export class ProjectService {
                 skip,
                 take: safeLimit,
                 orderBy: { createdAt: 'desc' },
-                include: {
-                    images: true,
+                select: {
+                    id: true,
+                    title: true,
+                    slug: true,
+                    description: true,
+                    totalAreaM2: true,
+                    createdAt: true,
+                    images: {
+                        select: {
+                            id: true,
+                            imageUrl: true,
+                        },
+                    },
                 },
             }),
             this.prisma.project.count({ where: { isActive: true } }),
@@ -81,10 +92,19 @@ export class ProjectService {
     async getProjectBySlug(slug: string) {
         const project = await this.prisma.project.findUnique({
             where: { slug },
-            include: {
-                images: true,
-                service: {
-                    select: { id: true, name: true, slug: true, imageUrl: true },
+            select: {
+                id: true,
+                title: true,
+                slug: true,
+                description: true,
+                totalAreaM2: true,
+                createdAt: true,
+                isActive: true,
+                images: {
+                    select: {
+                        id: true,
+                        imageUrl: true,
+                    },
                 },
             },
         });
@@ -93,7 +113,8 @@ export class ProjectService {
             throw new NotFoundException('Dự án không tồn tại');
         }
 
-        return project;
+        const { isActive: _isActive, ...output } = project;
+        return output;
     }
 
     async updateProject(id: string, data: UpdateProjectDto) {

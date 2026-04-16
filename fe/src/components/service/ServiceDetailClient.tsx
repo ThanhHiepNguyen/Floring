@@ -129,13 +129,13 @@ export function ServiceDetailClient({ service, products }: Props) {
     service.imageUrl;
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
-      <section className="border-b border-zinc-200 bg-white py-6">
+    <main className="min-h-screen bg-white text-zinc-900">
+      <section className="border-b border-zinc-200/70 bg-white py-6">
         <Container>
           <Breadcrumbs
             items={[
-              { label: 'Trang chủ', href: '/' },
-              { label: 'Dịch vụ' },
+              { label: 'Home', href: '/' },
+              { label: 'Services' },
               { label: service.name },
             ]}
           />
@@ -143,7 +143,7 @@ export function ServiceDetailClient({ service, products }: Props) {
       </section>
 
       <section className="relative">
-        <div className="relative aspect-[16/7] w-full overflow-hidden bg-zinc-900">
+        <div className="relative h-[320px] w-full overflow-hidden bg-zinc-100 sm:h-[420px] lg:h-[520px]">
           {heroImage ? (
             <Image
               src={normalizeImageUrl(heroImage)}
@@ -156,13 +156,16 @@ export function ServiceDetailClient({ service, products }: Props) {
           ) : (
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.16),_rgba(255,255,255,0)_35%),linear-gradient(135deg,#18181b_0%,#27272a_45%,#3f3f46_100%)]" />
           )}
-          <div className="absolute inset-0 bg-black/45" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.10)_0%,rgba(255,255,255,0.30)_35%,rgba(255,255,255,0.70)_100%)]" />
           <div className="absolute inset-0 z-10 flex items-center justify-center p-6 text-center">
             <div className="max-w-4xl">
-              <h1 className="text-4xl font-semibold leading-tight tracking-tight text-white sm:text-6xl">
+              <div className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
+                Service
+              </div>
+              <h1 className="mt-4 text-4xl font-semibold leading-tight tracking-tight text-zinc-900 sm:text-6xl">
                 {service.name}
               </h1>
-              <p className="mt-4 text-base leading-7 text-white/90 sm:text-xl">
+              <p className="mx-auto mt-4 max-w-3xl text-base leading-7 text-zinc-600 sm:text-xl">
                 {service.description}
               </p>
 
@@ -171,54 +174,103 @@ export function ServiceDetailClient({ service, products }: Props) {
         </div>
       </section>
 
-      <section className="relative py-10">
+      <section className="relative bg-slate-50 py-10">
         <Container>
-          <div className="grid gap-8">
-            <div>
-              <div className="mb-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                <div className="relative w-full md:flex-1">
-                  <svg
-                    className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-zinc-400"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                  >
-                    <circle cx="11" cy="11" r="8" />
-                    <path d="M21 21l-4.35-4.35" />
-                  </svg>
-                  <input
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Search by product or colour..."
-                    className="w-full rounded-md border border-zinc-300 bg-white pl-9 pr-4 py-2.5 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
-                  />
+          <div className="grid gap-8 lg:grid-cols-12">
+            <aside className="lg:col-span-4">
+              <div className="sticky top-24 space-y-4">
+                <div className="rounded-[2rem] border border-zinc-200 bg-white p-6 shadow-sm">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Selected overview</p>
+                  <p className="mt-2 text-lg font-semibold text-zinc-900">{service.name}</p>
+                  {selectedState?.variant?.title ? (
+                    <p className="mt-1 text-sm text-zinc-600">{selectedState.variant.title}</p>
+                  ) : null}
+
+                  {heroImage ? (
+                    <div className="mt-4 overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-100">
+                      <div className="relative aspect-[16/10]">
+                        <Image
+                          src={normalizeImageUrl(heroImage)}
+                          alt={selectedState?.variant.title || service.name}
+                          fill
+                          className="object-cover"
+                          unoptimized
+                        />
+                      </div>
+                    </div>
+                  ) : null}
+
+                  <div className="mt-5">
+                    <ServiceContactRequestForm
+                      mode="dialog"
+                      serviceId={service.id}
+                      serviceName={service.name}
+                      productVariantId={selectedVariantId}
+                      triggerLabel="Get consultation"
+                      triggerVariant="form"
+                      triggerClassName="inline-flex w-full items-center justify-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
+                    />
+                  </div>
                 </div>
 
-                <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-end md:w-auto">
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value as 'name-asc' | 'name-desc')}
-                    className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2.5 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 sm:w-[220px]"
-                  >
-                    <option value="name-asc">Price: Low to high</option>
-                    <option value="name-desc">Price: High to low</option>
-                  </select>
+                <div className="rounded-[2rem] border border-zinc-200 bg-white p-6 shadow-sm">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Quick filters</p>
+                  <div className="mt-3 space-y-3">
+                    <div className="relative">
+                      <svg
+                        className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-zinc-400"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                      >
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="M21 21l-4.35-4.35" />
+                      </svg>
+                      <input
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        placeholder="Search by product or colour..."
+                        className="w-full rounded-2xl border border-zinc-200 bg-white py-2.5 pl-9 pr-4 text-sm outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100/60"
+                      />
+                    </div>
 
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setQuery('');
-                      setSortBy('name-asc');
-                    }}
-                    className="rounded-md border border-zinc-300 bg-white px-4 py-2.5 text-sm text-zinc-700 transition hover:bg-zinc-50"
-                  >
-                    Reset
-                  </button>
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value as 'name-asc' | 'name-desc')}
+                      className="w-full rounded-2xl border border-zinc-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100/60"
+                    >
+                      <option value="name-asc">Price: Low to high</option>
+                      <option value="name-desc">Price: High to low</option>
+                    </select>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setQuery('');
+                        setSortBy('name-asc');
+                      }}
+                      className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-2.5 text-sm font-semibold text-zinc-700 shadow-sm transition hover:bg-zinc-50"
+                    >
+                      Reset
+                    </button>
+                  </div>
                 </div>
+              </div>
+            </aside>
+
+            <div className="lg:col-span-8">
+              <div className="mb-4 flex items-end justify-between gap-4">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Product list</p>
+                  <h2 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-900">
+                    Pick your style & color
+                  </h2>
+                </div>
+                <p className="text-sm text-zinc-600">{filteredProducts.length} products</p>
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -240,15 +292,16 @@ export function ServiceDetailClient({ service, products }: Props) {
                     const productHref = item.permalink ? `/products/${item.permalink}` : null;
                     const permalink = item.permalink ?? null;
                     const isFav = permalink ? favoritePermalinks.has(permalink) : false;
+                    const isTogglingThis = permalink ? togglingPermalink === permalink : false;
 
                     return (
                       <article
                         key={item.id}
                         className={[
-                          'group overflow-hidden rounded-md border p-2 transition',
+                          'group overflow-hidden rounded-2xl border bg-white p-3 shadow-sm transition',
                           selectedInCard?.id === selectedVariantId
-                            ? 'border-emerald-500 bg-emerald-50/40'
-                            : 'border-zinc-200 bg-white',
+                            ? 'border-emerald-400 bg-emerald-50/50'
+                            : 'border-zinc-200 hover:bg-zinc-50',
                         ].join(' ')}
                       >
                         <div
@@ -265,7 +318,7 @@ export function ServiceDetailClient({ service, products }: Props) {
                             }
                           }}
                         >
-                          <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-zinc-100">
+                          <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-zinc-100">
                             {cardImage ? (
                               <Image
                                 src={cardImage}
@@ -278,74 +331,79 @@ export function ServiceDetailClient({ service, products }: Props) {
                               <div className="absolute inset-0 bg-gradient-to-br from-zinc-200 via-zinc-100 to-zinc-50" />
                             )}
 
-                          {permalink ? (
-                            <button
-                              type="button"
-                              aria-label={isFav ? 'Bỏ yêu thích' : 'Yêu thích'}
-                              title={isFav ? 'Bỏ yêu thích' : 'Yêu thích'}
-                              onClick={async (e) => {
-                                e.stopPropagation();
-                                e.preventDefault();
-                                if (togglingPermalink === permalink) return;
+                            {permalink ? (
+                              <button
+                                type="button"
+                                aria-label={isFav ? 'Remove favorite' : 'Add to favorites'}
+                                title={isFav ? 'Remove favorite' : 'Add to favorites'}
+                                disabled={isTogglingThis}
+                                onClick={async (e) => {
+                                  e.stopPropagation();
+                                  e.preventDefault();
+                                  if (togglingPermalink === permalink) return;
 
-                                setTogglingPermalink(permalink);
-                                try {
-                                  const res = await favoritesApi.toggleFavorite(permalink);
-                                  const nextIsFav = res.data.isFavorite;
-                                  setFavoritePermalinks((prev) => {
-                                    const next = new Set(prev);
-                                    if (nextIsFav) next.add(permalink);
-                                    else next.delete(permalink);
-                                    return next;
-                                  });
-                                } catch {
-                                  // keep UI unchanged if request fails (e.g. not authenticated)
-                                } finally {
-                                  setTogglingPermalink(null);
-                                }
-                              }}
-                              className={[
-                                'absolute right-2 top-2 z-20 inline-flex size-9 items-center justify-center rounded-full border bg-white/85 shadow-sm backdrop-blur transition',
-                                'opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 hover:bg-white',
-                                isFav ? 'border-rose-200 text-rose-600 bg-rose-50/80' : 'border-zinc-200 text-zinc-700',
-                              ].join(' ')}
-                            >
-                              <svg
-                                viewBox="0 0 24 24"
-                                fill={isFav ? 'currentColor' : 'none'}
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                className="size-5"
-                                aria-hidden="true"
+                                  setTogglingPermalink(permalink);
+                                  try {
+                                    const res = await favoritesApi.toggleFavorite(permalink);
+                                    const nextIsFav = res.data.isFavorite;
+                                    setFavoritePermalinks((prev) => {
+                                      const next = new Set(prev);
+                                      if (nextIsFav) next.add(permalink);
+                                      else next.delete(permalink);
+                                      return next;
+                                    });
+                                  } catch {
+                                    // keep UI unchanged if request fails (e.g. not authenticated)
+                                  } finally {
+                                    setTogglingPermalink(null);
+                                  }
+                                }}
+                                className={[
+                                  'absolute right-2 top-2 z-20 inline-flex size-9 items-center justify-center rounded-full border bg-white/90 shadow-sm backdrop-blur transition-all duration-300 ease-out',
+                                  'transform-gpu active:scale-90 disabled:cursor-not-allowed',
+                                  'opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 hover:bg-white',
+                                  isTogglingThis ? 'scale-95 opacity-100' : 'hover:scale-105',
+                                  isFav
+                                    ? 'border-rose-200 text-rose-600 bg-rose-50/80'
+                                    : 'border-zinc-200 text-zinc-700',
+                                ].join(' ')}
                               >
-                                <path d="M19.5 12.1L12 19.6l-7.5-7.5a5.2 5.2 0 0 1 0-7.4 5.2 5.2 0 0 1 7.4 0L12 4.8l.1-.1a5.2 5.2 0 0 1 7.4 0 5.2 5.2 0 0 1 0 7.4Z" />
-                              </svg>
-                            </button>
-                          ) : null}
+                                <svg
+                                  viewBox="0 0 24 24"
+                                  fill={isFav ? 'currentColor' : 'none'}
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  className={[
+                                    'size-5 transition-transform duration-300 ease-out',
+                                    isTogglingThis ? 'scale-110 animate-pulse' : 'scale-100',
+                                  ].join(' ')}
+                                  aria-hidden="true"
+                                >
+                                  <path d="M19.5 12.1L12 19.6l-7.5-7.5a5.2 5.2 0 0 1 0-7.4 5.2 5.2 0 0 1 7.4 0L12 4.8l.1-.1a5.2 5.2 0 0 1 7.4 0 5.2 5.2 0 0 1 0 7.4Z" />
+                                </svg>
+                              </button>
+                            ) : null}
 
-                            <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition group-hover:opacity-100 group-hover:bg-black/35">
-                              <div
-                                onClick={(e) => e.stopPropagation()}
-                                className="opacity-100"
-                              >
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition group-hover:opacity-100 group-hover:bg-black/20">
+                              <div onClick={(e) => e.stopPropagation()} className="opacity-100">
                                 <ServiceContactRequestForm
                                   serviceId={service.id}
                                   serviceName={service.name}
                                   productVariantId={selectedInCard?.id ?? selectedVariantId}
                                   mode="dialog"
-                                  triggerLabel="Liên hệ"
-                                  triggerClassName="rounded-md bg-white/90 px-3 py-1 text-sm font-semibold text-zinc-900 hover:bg-white"
+                                  triggerLabel="Contact"
+                                  triggerClassName="rounded-full bg-white/95 px-4 py-2 text-sm font-semibold text-zinc-900 shadow-sm hover:bg-white"
                                   triggerVariant="form"
                                 />
                               </div>
                             </div>
                           </div>
 
-                          <h3 className="mt-2 line-clamp-2 text-[13px] font-medium text-zinc-900">
+                          <h3 className="mt-3 line-clamp-2 text-sm font-semibold text-zinc-900">
                             {item.title}
                           </h3>
-                          <p className="mt-1 text-[11px] text-zinc-500">Other colours in this range</p>
-                          <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                          <p className="mt-1 text-xs text-zinc-500">Other colours in this range</p>
+                          <div className="mt-3 flex flex-wrap items-center gap-2">
                             {swatches.map((variant) => {
                               const active = variant.id === selectedVariantId;
                               const swatchUrl = variant.swatchImage || variant.image;
@@ -365,10 +423,10 @@ export function ServiceDetailClient({ service, products }: Props) {
                                   style={
                                     swatchUrl
                                       ? {
-                                        backgroundImage: `url(${swatchUrl})`,
-                                        backgroundSize: 'cover',
-                                        backgroundPosition: 'center',
-                                      }
+                                          backgroundImage: `url(${swatchUrl})`,
+                                          backgroundSize: 'cover',
+                                          backgroundPosition: 'center',
+                                        }
                                       : undefined
                                   }
                                 />
@@ -380,12 +438,11 @@ export function ServiceDetailClient({ service, products }: Props) {
                     );
                   })
                 ) : (
-                  <div className="col-span-full rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-6 text-sm text-zinc-600">
-                    Không có product phù hợp với bộ lọc hiện tại.
+                  <div className="col-span-full rounded-2xl border border-zinc-200 bg-white px-4 py-6 text-sm text-zinc-600 shadow-sm">
+                    No products match the current filters.
                   </div>
                 )}
               </div>
-
             </div>
           </div>
         </Container>

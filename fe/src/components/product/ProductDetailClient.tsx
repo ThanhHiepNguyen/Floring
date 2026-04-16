@@ -58,6 +58,7 @@ export function ProductDetailClient({
 
     const permalink = product.permalink ?? null;
     const isFav = !!permalink && favoritePermalinks.has(permalink);
+    const isTogglingFavorite = !!permalink && togglingPermalink === permalink;
 
     const relatedVisible = useMemo(() => relatedProducts ?? [], [relatedProducts]);
     const relatedDoubled = useMemo(() => {
@@ -65,7 +66,7 @@ export function ProductDetailClient({
         return [...relatedVisible, ...relatedVisible];
     }, [relatedVisible]);
     const relatedDurationSec = useMemo(() => {
-        // tốc độ tương tự section "Khách hàng chia sẻ": ít item thì vẫn mượt, nhiều item thì không quá nhanh
+        // Keep marquee speed smooth for both short and long lists.
         return Math.max(18, relatedVisible.length * 3.8);
     }, [relatedVisible.length]);
 
@@ -95,8 +96,8 @@ export function ProductDetailClient({
                 <Container>
                     <Breadcrumbs
                         items={[
-                            { label: 'Trang chủ', href: '/' },
-                            { label: 'Sản phẩm' },
+                            { label: 'Home', href: '/' },
+                            { label: 'Products' },
                             { label: product.title },
                         ]}
                     />
@@ -122,8 +123,9 @@ export function ProductDetailClient({
                     {permalink ? (
                         <button
                             type="button"
-                            aria-label={isFav ? 'Bỏ yêu thích' : 'Yêu thích'}
-                            title={isFav ? 'Bỏ yêu thích' : 'Yêu thích'}
+                            aria-label={isFav ? 'Remove from favorites' : 'Add to favorites'}
+                            title={isFav ? 'Remove from favorites' : 'Add to favorites'}
+                            disabled={isTogglingFavorite}
                             onClick={async (e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
@@ -145,8 +147,10 @@ export function ProductDetailClient({
                                 }
                             }}
                             className={[
-                                'absolute right-4 top-4 z-[11] inline-flex size-10 items-center justify-center rounded-full border bg-white/85 shadow-sm backdrop-blur transition',
+                                'absolute right-4 top-4 z-[11] inline-flex size-10 items-center justify-center rounded-full border bg-white/85 shadow-sm backdrop-blur transition-all duration-300 ease-out',
+                                'transform-gpu active:scale-90 disabled:cursor-not-allowed',
                                 'opacity-0 group-hover:opacity-100',
+                                isTogglingFavorite ? 'scale-95 opacity-100' : 'hover:scale-105',
                                 isFav ? 'border-rose-200 text-rose-600 bg-rose-50/80' : 'border-zinc-200 text-zinc-700 hover:bg-white',
                             ].join(' ')}
                         >
@@ -155,7 +159,10 @@ export function ProductDetailClient({
                                 fill={isFav ? 'currentColor' : 'none'}
                                 stroke="currentColor"
                                 strokeWidth="2"
-                                className="size-5"
+                                className={[
+                                    'size-5 transition-transform duration-300 ease-out',
+                                    isTogglingFavorite ? 'scale-110 animate-pulse' : 'scale-100',
+                                ].join(' ')}
                                 aria-hidden="true"
                             >
                                 <path d="M19.5 12.1L12 19.6l-7.5-7.5a5.2 5.2 0 0 1 0-7.4 5.2 5.2 0 0 1 7.4 0L12 4.8l.1-.1a5.2 5.2 0 0 1 7.4 0 5.2 5.2 0 0 1 0 7.4Z" />
@@ -182,7 +189,7 @@ export function ProductDetailClient({
                     <div className="rounded-2xl border border-zinc-200 bg-white p-6 sm:p-8">
                         <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
                             <div className="min-w-0 flex-1">
-                                <h2 className="text-2xl font-semibold text-zinc-900">Chọn màu</h2>
+                                <h2 className="text-2xl font-semibold text-zinc-900">Choose color</h2>
                                 {product.description ? (
                                     <p className="mt-2 text-sm leading-relaxed text-zinc-600">{product.description}</p>
                                 ) : null}
@@ -194,13 +201,13 @@ export function ProductDetailClient({
                                     serviceName={product.serviceName ?? ''}
                                     productVariantId={selectedVariantId}
                                     mode="dialog"
-                                    triggerLabel="Liên hệ"
+                                    triggerLabel="Contact"
                                     triggerClassName="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700"
                                     triggerVariant="form"
                                 />
                             ) : (
                                 <div className="rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-600">
-                                    Chưa có thông tin service để gửi yêu cầu.
+                                    Service information is not available for submitting a request.
                                 </div>
                             )}
                         </div>
@@ -218,7 +225,7 @@ export function ProductDetailClient({
                                             'h-10 w-10 overflow-hidden rounded-full border transition',
                                             active ? 'border-emerald-600 ring-2 ring-emerald-200' : 'border-zinc-300 hover:border-zinc-500',
                                         ].join(' ')}
-                                        aria-label={`Chọn: ${v.title}`}
+                                        aria-label={`Choose: ${v.title}`}
                                         title={v.title}
                                     >
                                         {swatch ? (
@@ -230,7 +237,7 @@ export function ProductDetailClient({
                         </div>
 
                         <div className="mt-8">
-                            <h3 className="text-lg font-semibold text-zinc-900">Các lựa chọn màu</h3>
+                            <h3 className="text-lg font-semibold text-zinc-900">Color options</h3>
                             <div className="mt-3 flex flex-wrap gap-2">
                                 {product.variants.map((v) => (
                                     <span
@@ -248,8 +255,8 @@ export function ProductDetailClient({
                         <div className="mt-12">
                             <div className="flex items-end justify-between gap-4">
                                 <div>
-                                    <h2 className="text-2xl font-semibold text-zinc-900">Sản phẩm cùng dịch vụ</h2>
-                                    <p className="mt-1 text-sm text-zinc-600">Lướt ngang để xem thêm các mẫu.</p>
+                                    <h2 className="text-2xl font-semibold text-zinc-900">Related products</h2>
+                                    <p className="mt-1 text-sm text-zinc-600">Scroll horizontally to view more samples.</p>
                                 </div>
                             </div>
 
@@ -286,7 +293,7 @@ export function ProductDetailClient({
                                                 <div className="mt-3">
                                                     <div className="line-clamp-2 text-sm font-semibold text-zinc-900">{p.title}</div>
                                                     {v?.title ? (
-                                                        <div className="mt-1 text-xs text-zinc-500">Màu: {v.title}</div>
+                                                        <div className="mt-1 text-xs text-zinc-500">Color: {v.title}</div>
                                                     ) : null}
                                                 </div>
                                             </Link>

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 
 import { Container } from '@/components/Container';
@@ -9,7 +10,7 @@ import { ServicesDropdown } from '@/components/nav/ServicesDropdown';
 import { ContactDropdown } from '@/components/nav/ContactDropdown';
 
 const navItems = [
-    { href: '/projects', label: 'Dự án' },
+    { href: '/projects', label: 'Projects' },
     { href: '/blogs', label: 'Blog' },
 ];
 
@@ -24,7 +25,7 @@ export function Header() {
                         type="button"
                         onClick={() => setMobileOpen((v) => !v)}
                         className="inline-flex md:hidden items-center justify-center rounded-full p-2 text-slate-700 hover:bg-emerald-100/80 hover:text-emerald-700 dark:text-slate-300 dark:hover:bg-emerald-950/40 dark:hover:text-emerald-300"
-                        aria-label="Mở menu"
+                        aria-label="Open menu"
                         aria-expanded={mobileOpen}
                     >
                         <svg
@@ -51,9 +52,16 @@ export function Header() {
                         </svg>
                     </button>
 
-                    <Link href="/" className="flex items-center gap-2 mr-6">
-                        <span className="inline-flex size-9 items-center justify-center rounded-xl bg-emerald-600 text-sm font-semibold text-white dark:bg-emerald-500 dark:text-white">
-                            F
+                    <Link href="/" className="mr-6 flex items-center gap-2.5">
+                        <span className="inline-flex size-9 items-center justify-center overflow-hidden rounded-xl shadow-sm ring-1 ring-emerald-100">
+                            <Image
+                                src="/logo-mark.svg"
+                                alt="Floring logo"
+                                width={36}
+                                height={36}
+                                className="size-9 object-cover"
+                                priority
+                            />
                         </span>
                         <span className="text-sm font-semibold tracking-tight text-slate-900 dark:text-slate-50">
                             Floring
@@ -67,7 +75,7 @@ export function Header() {
                                 href="/about"
                                 className="group relative text-sm font-medium text-slate-700 transition-colors hover:text-emerald-700 dark:text-slate-300 dark:hover:text-emerald-300"
                             >
-                                Giới thiệu
+                                About
                                 <span className="pointer-events-none absolute -bottom-1 left-0 h-px w-0 bg-emerald-600 transition-all group-hover:w-full dark:bg-emerald-400" />
                             </Link>
 
@@ -94,7 +102,7 @@ export function Header() {
 
                         <Link
                             href="/favorites"
-                            aria-label="Yêu thích"
+                            aria-label="Favorites"
                             className="rounded-full p-2 text-slate-700 hover:bg-emerald-100/80 hover:text-emerald-700 dark:text-slate-300 dark:hover:bg-emerald-950/40 dark:hover:text-emerald-300"
                         >
                             <svg
@@ -120,14 +128,14 @@ export function Header() {
                                 onClick={() => setMobileOpen(false)}
                                 className="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-900/50"
                             >
-                                Giới thiệu
+                                About
                             </Link>
                             <Link
                                 href="/projects"
                                 onClick={() => setMobileOpen(false)}
                                 className="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-900/50"
                             >
-                                Dự án
+                                Projects
                             </Link>
                             <Link
                                 href="/blogs"
@@ -141,7 +149,7 @@ export function Header() {
                                 onClick={() => setMobileOpen(false)}
                                 className="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-900/50"
                             >
-                                Liên hệ
+                                Contact
                             </Link>
                         </nav>
                     </div>

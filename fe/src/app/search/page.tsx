@@ -27,9 +27,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     return (
         <main className="min-h-[70vh] bg-background text-foreground">
             <Container className="py-10">
-                <h1 className="text-2xl font-semibold tracking-tight">Tìm kiếm</h1>
+                <h1 className="text-2xl font-semibold tracking-tight">Search</h1>
                 <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-                    Từ khoá: <span className="font-medium text-foreground">{query}</span>
+                    Keyword: <span className="font-medium text-foreground">{query}</span>
                 </p>
 
                 {filtered.length ? (
@@ -55,7 +55,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                                             {p.name}
                                         </h2>
                                         <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-                                            {p.description || 'Xem chi tiết sản phẩm.'}
+                                            {p.description || 'View product details.'}
                                         </p>
                                     </div>
                                 </Link>
@@ -64,7 +64,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                     </div>
                 ) : (
                     <div className="mt-6 rounded-xl border border-zinc-200 bg-white p-6 text-sm text-zinc-700 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300">
-                        {trimmed ? 'Không tìm thấy dịch vụ phù hợp.' : 'Chưa có dịch vụ nào.'}
+                        {trimmed ? 'No matching services found.' : 'No services available yet.'}
                     </div>
                 )}
             </Container>

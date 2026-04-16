@@ -34,7 +34,7 @@ export function HeaderSearch() {
           name="q"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Tìm sản phẩm, dự án..."
+          placeholder="Search products, projects..."
           className="h-10 w-full rounded-full border border-zinc-200 bg-white/85 pl-9 pr-4 text-sm text-zinc-900 outline-none ring-0 placeholder:text-zinc-400 transition-shadow focus:border-emerald-200 focus:ring-4 focus:ring-emerald-200/40 dark:border-zinc-800 dark:bg-zinc-950/60 dark:text-zinc-100 dark:focus:border-emerald-900/60 dark:focus:ring-emerald-900/20"
         />
       </div>

@@ -31,10 +31,7 @@ const PRODUCT_SELECT = {
       colorCode: true,
       swatchImage: true,
       primaryImage: true,
-      permalink: true,
       price: true,
-      rrp: true,
-      sku: true,
     },
   },
 } as const;
@@ -75,10 +72,7 @@ export class ProductService {
     colorCode: string | null;
     swatchImage: string | null;
     primaryImage: string | null;
-    permalink: string | null;
     price: number | null;
-    rrp: number | null;
-    sku: string | null;
   }) {
     return {
       id: v.id,
@@ -86,11 +80,7 @@ export class ProductService {
       image: v.imageUrl,
       primaryImage: v.primaryImage ?? v.imageUrl,
       swatchImage: v.swatchImage ?? v.imageUrl,
-      permalink: v.permalink ?? '',
-      rrp: v.rrp ?? null,
       price: v.price ?? null,
-      sku: v.sku ?? null,
-      quantityAvailable: 0,
       colour: v.colorCode ?? null,
     };
   }
@@ -114,10 +104,7 @@ export class ProductService {
       colorCode: string | null;
       swatchImage: string | null;
       primaryImage: string | null;
-      permalink: string | null;
       price: number | null;
-      rrp: number | null;
-      sku: string | null;
     }>;
   }) {
     const variants = p.variants.map((v) => this.mapVariant(v));
@@ -127,27 +114,18 @@ export class ProductService {
       id: p.id,
       title: p.name,
       description: p.description ?? '',
-      descriptionHtml: p.description ?? '',
       image: p.imageUrl,
       permalink: p.slug,
       priceRange: {
         maxPrice: variants.length ? Math.max(...prices) : null,
         minPrice: variants.length ? Math.min(...prices) : null,
       },
-      productType: p.service?.name ?? '',
       serviceId: p.service?.id ?? null,
       serviceName: p.service?.name ?? null,
-      tags: [],
       currentVariant: variants[0] ?? null,
       variants,
-      collections: [],
-      range: p.range ?? null,
       brand: p.brand ?? null,
-      priceGuide: p.priceGuide ?? null,
-      priceSortOrder: p.priceSortOrder ?? 0,
-      lifestyle: null,
       style: p.style ?? 'Plank',
-      rooms: [],
     };
   }
 
@@ -210,11 +188,6 @@ export class ProductService {
         totalPages: Math.ceil(totalItems / safeLimit),
         hasMoreItems: safePage < Math.ceil(totalItems / safeLimit),
       },
-      status: {
-        code: 200,
-        message: 'Success',
-        description: 'OK',
-      },
     };
   }
 
@@ -229,11 +202,6 @@ export class ProductService {
 
     return {
       data: { products: [mapped] },
-      status: {
-        code: 200,
-        message: 'Success',
-        description: 'OK',
-      },
     };
   }
 

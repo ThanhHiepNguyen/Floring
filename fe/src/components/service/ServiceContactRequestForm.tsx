@@ -233,7 +233,7 @@ export function ServiceContactRequestForm({
       });
     } catch (err: unknown) {
       setState('error');
-      const msg = err instanceof Error ? err.message : 'Có lỗi xảy ra';
+      const msg = err instanceof Error ? err.message : 'An error occurred';
       setError(msg);
       setNotice({ type: 'error', message: msg || 'Submit failed, please try again.' });
     }
@@ -370,9 +370,9 @@ export function ServiceContactRequestForm({
           <label className="space-y-2 text-sm font-medium text-zinc-700">
             <div className="  gap-2 lg:flex-row lg:items-start lg:justify-between">
               <div className="min-w-0 flex-1">
-                Upload ảnh hiện trạng (tuỳ chọn)
+                Upload site photos (optional)
                 <div className="mt-1 text-xs font-normal text-zinc-500">
-                  Tải ảnh tình trạng & khu vực cần thi công.
+                  Upload current-condition photos and the target installation area.
                 </div>
               </div>
 

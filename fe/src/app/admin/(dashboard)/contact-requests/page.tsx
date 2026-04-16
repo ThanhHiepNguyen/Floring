@@ -125,7 +125,7 @@ export default function AdminContactRequestsPage() {
           <thead>
             <tr className="border-b border-zinc-200 text-xs font-semibold uppercase tracking-wide text-zinc-500">
               <th className="py-3 pr-4">Khách</th>
-              <th className="py-3 pr-4">Liên hệ</th>
+              <th className="py-3 pr-4">Contact</th>
               <th className="py-3 pr-4">Nội dung</th>
               <th className="py-3 pr-4">Trạng thái</th>
               <th className="py-3 pr-4">Ngày</th>

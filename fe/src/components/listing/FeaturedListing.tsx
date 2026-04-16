@@ -49,7 +49,7 @@ export function FeaturedListing({
                     <h1 className="sr-only">{heading}</h1>
                     {(!featured && recent.length === 0) ? (
                         <div className="rounded-3xl border border-zinc-200 bg-white p-10 text-sm text-zinc-600 shadow-sm">
-                            Không có nội dung.
+                            No content available.
                         </div>
                     ) : (
                         <>

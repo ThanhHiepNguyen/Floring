@@ -28,11 +28,13 @@ type SlideApiRow = {
 type LuxurySlideshowProps = {
   intervalMs?: number;
   variant?: 'default' | 'hero';
+  imageOnly?: boolean;
 };
 
 export function LuxurySlideshow({
   intervalMs = 4200,
   variant = 'default',
+  imageOnly = false,
 }: LuxurySlideshowProps) {
   const [slides, setSlides] = useState<Slide[]>([]);
   const [active, setActive] = useState(0);
@@ -106,7 +108,7 @@ export function LuxurySlideshow({
 
   return (
     <div
-      className="relative overflow-hidden group"
+      className="group relative overflow-hidden rounded-[2rem]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
@@ -115,7 +117,7 @@ export function LuxurySlideshow({
       <div
         className={[
           'relative w-full',
-          isHero ? 'aspect-[16/8] sm:aspect-[16/7]' : 'aspect-[16/7]',
+          isHero ? 'h-[300px] sm:h-[400px] lg:h-[500px]' : 'aspect-[16/7]',
         ].join(' ')}
       >
         <AnimatePresence initial={false} mode="wait">
@@ -138,53 +140,57 @@ export function LuxurySlideshow({
                 alt={current.title}
                 fill
                 priority
-                className="object-cover"
+                className="object-cover object-center"
                 unoptimized={isRemote}
                 referrerPolicy={isRemote ? 'no-referrer' : undefined}
               />
             </motion.div>
 
-            <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/25 to-black/10 z-[2]" />
+            {imageOnly ? null : (
+              <>
+                <div className="absolute inset-0 z-[2] bg-gradient-to-r from-black/65 via-black/25 to-black/10" />
 
-            <div className="absolute inset-0 z-10 flex items-end p-6 sm:p-10">
-              <motion.div
-                className={isHero ? 'max-w-2xl' : 'max-w-xl'}
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 8 }}
-                transition={{ duration: 0.6, ease: 'easeOut' }}
-              >
-                {isHero ? (
-                  <h1 className="mt-3 text-3xl font-semibold leading-tight tracking-tight text-white sm:text-5xl lg:text-7xl">
-                    {current.title}
-                  </h1>
-                ) : (
-                  <div className="mt-3 line-clamp-2 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                    {current.title}
-                  </div>
-                )}
-                <p
-                  className={
-                    isHero
-                      ? 'mt-3 text-base leading-7 text-white/80 sm:text-lg'
-                      : 'mt-3 text-sm leading-7 text-white/80'
-                  }
-                >
-                  {current.description}
-                </p>
-                {current.cta ? (
-                  <div className="mt-6">
-                    <ButtonLink
-                      href={current.cta.href}
-                      variant="primary"
-                      className="bg-emerald-600 text-white hover:bg-emerald-700"
+                <div className="absolute inset-0 z-10 flex items-end p-6 sm:p-10">
+                  <motion.div
+                    className={isHero ? 'max-w-2xl' : 'max-w-xl'}
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.6, ease: 'easeOut' }}
+                  >
+                    {isHero ? (
+                      <h1 className="mt-3 text-3xl font-semibold leading-tight tracking-tight text-white sm:text-5xl lg:text-7xl">
+                        {current.title}
+                      </h1>
+                    ) : (
+                      <div className="mt-3 line-clamp-2 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+                        {current.title}
+                      </div>
+                    )}
+                    <p
+                      className={
+                        isHero
+                          ? 'mt-3 text-base leading-7 text-white/80 sm:text-lg'
+                          : 'mt-3 text-sm leading-7 text-white/80'
+                      }
                     >
-                      {current.cta.label}
-                    </ButtonLink>
-                  </div>
-                ) : null}
-              </motion.div>
-            </div>
+                      {current.description}
+                    </p>
+                    {current.cta ? (
+                      <div className="mt-6">
+                        <ButtonLink
+                          href={current.cta.href}
+                          variant="primary"
+                          className="bg-emerald-600 text-white hover:bg-emerald-700"
+                        >
+                          {current.cta.label}
+                        </ButtonLink>
+                      </div>
+                    ) : null}
+                  </motion.div>
+                </div>
+              </>
+            )}
           </motion.div>
         </AnimatePresence>
 
@@ -208,7 +214,7 @@ export function LuxurySlideshow({
       <div className="pointer-events-none absolute inset-x-0 top-1/2 z-20 flex -translate-y-1/2 items-center justify-between px-3 sm:px-5">
         <button
           type="button"
-          aria-label="Slide trước"
+          aria-label="Previous slide"
           onClick={() => go(-1)}
           className="pointer-events-auto inline-flex size-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur transition opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible hover:bg-white/20"
         >
@@ -227,7 +233,7 @@ export function LuxurySlideshow({
 
         <button
           type="button"
-          aria-label="Slide tiếp theo"
+          aria-label="Next slide"
           onClick={() => go(1)}
           className="pointer-events-auto inline-flex size-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur transition opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible hover:bg-white/20"
         >
@@ -251,7 +257,7 @@ export function LuxurySlideshow({
             <button
               key={i}
               type="button"
-              aria-label={`Chuyển đến slide ${i + 1}`}
+              aria-label={`Go to slide ${i + 1}`}
               onClick={() => setActive(i)}
               className={[
                 'h-2.5 w-2.5 rounded-full border border-white/30 transition',

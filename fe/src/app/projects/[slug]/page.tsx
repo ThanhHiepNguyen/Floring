@@ -21,8 +21,8 @@ export async function generateMetadata({
 
   if (!project) {
     return {
-      title: 'Dự án không tìm thấy | Floring',
-      description: 'Dự án không tồn tại hoặc hệ thống chưa sẵn sàng.',
+      title: 'Project not found | Floring',
+      description: 'This project does not exist or the system is unavailable.',
     };
   }
 
@@ -48,21 +48,21 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           <Container>
             <Breadcrumbs
               items={[
-                { label: 'Trang chu', href: '/' },
-                { label: 'Dự án', href: '/projects' },
+                { label: 'Home', href: '/' },
+                { label: 'Projects', href: '/projects' },
                 { label: slug },
               ]}
             />
 
             <div className="mt-8 max-w-2xl">
               <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-zinc-500">
-                Không tìm thấy
+                Not found
               </p>
               <h1 className="mt-3 text-4xl font-semibold tracking-tight text-zinc-950">
-                Dự án không tồn tại
+                Project does not exist
               </h1>
               <p className="mt-4 text-sm leading-7 text-zinc-600">
-                Không tìm thấy dự án với slug <span className="font-mono text-zinc-900">{slug}</span>.
+                Could not find a project with slug <span className="font-mono text-zinc-900">{slug}</span>.
               </p>
             </div>
           </Container>
@@ -72,20 +72,20 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           <Container>
             <div className="rounded-[30px] border border-black/5 bg-white/80 p-8 shadow-[0_20px_50px_rgba(24,24,27,0.08)] backdrop-blur">
               <div className="text-sm text-zinc-600">
-                Bạn có thể quay lại danh sách dự án hoặc xem thêm sản phẩm.
+                You can return to the project list or browse more products.
               </div>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
                   href="/projects"
                   className="inline-flex h-11 items-center justify-center rounded-full border border-zinc-200 bg-white px-5 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50"
                 >
-                  Về danh sách dự án
+                  Back to projects
                 </Link>
                 <Link
                   href="/search"
                   className="inline-flex h-11 items-center justify-center rounded-full bg-emerald-600 px-5 text-sm font-semibold text-white transition hover:bg-emerald-700"
                 >
-                  Xem sản phẩm
+                  View products
                 </Link>
               </div>
             </div>
@@ -123,8 +123,8 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         <Container>
           <Breadcrumbs
             items={[
-              { label: 'Trang chủ', href: '/' },
-              { label: 'Dự án', href: '/projects' },
+              { label: 'Home', href: '/' },
+              { label: 'Projects', href: '/projects' },
               { label: project.title },
             ]}
           />
@@ -132,7 +132,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end">
             <div className="max-w-6xl lg:col-span-2">
               <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-emerald-700">
-                Dự án thi công
+                Installation project
               </p>
               <h1 className="mt-3 text-4xl font-semibold leading-none tracking-[-0.045em] text-zinc-950 sm:text-5xl lg:text-5xl text-balance lg:whitespace-nowrap">
                 {project.title}
@@ -145,10 +145,10 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
               <div className="mt-6 flex flex-wrap gap-3">
                 <div className="rounded-full border border-black/5 bg-white/70 px-4 py-2 text-sm font-semibold text-zinc-950 shadow-sm backdrop-blur">
-                  {project.location || 'Đang cập nhật'}
+                  {project.location || 'Updating'}
                 </div>
                 <div className="rounded-full border border-black/5 bg-white/70 px-4 py-2 text-sm font-semibold text-zinc-950 shadow-sm backdrop-blur">
-                  {typeof project.totalAreaM2 === 'number' ? `${project.totalAreaM2} m2` : 'Diện tích đang cập nhật'}
+                  {typeof project.totalAreaM2 === 'number' ? `${project.totalAreaM2} m2` : 'Area updating'}
                 </div>
               </div>
             </div>
@@ -164,10 +164,10 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 <div className="mb-5 flex items-end justify-between gap-4">
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-zinc-500">
-                      Hình ảnh dự án
+                      Project images
                     </p>
                     <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-950">
-                      Bộ sưu tập thi công
+                      Installation gallery
                     </h2>
                   </div>
                 </div>
@@ -197,14 +197,14 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 <div className="grid gap-6">
                   <div className="rounded-[24px] bg-zinc-50 p-5">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-zinc-500">
-                      Tổng quan
+                      Overview
                     </p>
                     <h2 className="mt-3 text-2xl font-semibold tracking-tight text-zinc-950">
-                      Hoàn thiện theo yêu cầu thực tế
+                      Finished for real-world requirements
                     </h2>
                     <p className="mt-3 text-sm leading-7 text-zinc-600">
                       {project.description ||
-                        'Dự án được trình bày theo hướng gọn gàng, tập trung vào hình ảnh thi công thực tế.'}
+                        'The project is presented clearly, focusing on real installation visuals.'}
                     </p>
                   </div>
                 </div>
@@ -214,14 +214,14 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
             <aside className="space-y-6">
               <div className="rounded-[30px] border border-black/5 bg-white/82 p-6 shadow-[0_20px_50px_rgba(24,24,27,0.07)] backdrop-blur">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-zinc-500">
-                  Tiếp theo
+                  Next
                 </p>
                 <h3 className="mt-3 text-2xl font-semibold tracking-tight text-zinc-950">
-                  Muốn làm dự án tương tự?
+                  Want a similar project?
                 </h3>
                 <p className="mt-3 text-sm leading-7 text-zinc-600">
-                  Gửi yêu cầu để nhận tư vấn vật liệu, cách xử lý mặt bằng và phong cách hoàn thiện phù hợp
-                  với không gian của bạn.
+                  Send a request for advice on materials, site treatment, and a finishing style
+                  that fits your space.
                 </p>
 
                 <div className="mt-5">
@@ -230,7 +230,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                     serviceId={null}
                     serviceName={null}
                     productVariantId={null}
-                    triggerLabel="Liên hệ tư vấn"
+                    triggerLabel="Contact for consultation"
                     triggerVariant="form"
                     triggerClassName="inline-flex w-full items-center justify-center rounded-full bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700"
                   />
@@ -241,13 +241,13 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                     href="/search"
                     className="inline-flex h-11 items-center justify-center rounded-full border border-zinc-200 bg-white px-5 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50"
                   >
-                    Xem sản phẩm
+                    View products
                   </Link>
                   <Link
                     href="/projects"
                     className="inline-flex h-11 items-center justify-center rounded-full border border-zinc-200 bg-white px-5 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50"
                   >
-                    Tất cả dự án
+                    All projects
                   </Link>
                 </div>
               </div>
@@ -255,13 +255,13 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               <div className="rounded-[30px] border border-black/5 bg-white/82 p-6 shadow-[0_20px_50px_rgba(24,24,27,0.07)] backdrop-blur">
                 <div className="flex items-center justify-between gap-3">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-zinc-500">
-                    Dự án liên quan
+                    Related projects
                   </p>
                   <Link
                     href="/projects"
                     className="text-sm font-medium text-emerald-700 transition hover:text-emerald-800"
                   >
-                    Xem tất cả
+                    View all
                   </Link>
                 </div>
 
@@ -301,7 +301,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                     ))
                   ) : (
                     <div className="rounded-2xl bg-zinc-50 p-4 text-sm text-zinc-600">
-                      Chưa có dự án liên quan.
+                      No related projects yet.
                     </div>
                   )}
                 </div>

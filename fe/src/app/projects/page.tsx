@@ -5,9 +5,9 @@ import type { FeaturedItem } from '@/types/listing';
 import type { Project, ProjectsResponse } from '@/types/projects';
 
 export const metadata: Metadata = {
-  title: 'Du an thi cong - Floring',
+  title: 'Installation Projects - Floring',
   description:
-    'Xem cac du an Floring da thuc hien: can ho, showroom, van phong va nhieu khong gian duoc hoan thien voi san go, LVT va SPC.',
+    'Explore completed Floring projects: apartments, showrooms, offices, and many spaces finished with timber, LVT, and SPC flooring.',
 };
 
 export default async function ProjectsPage() {
@@ -39,9 +39,9 @@ export default async function ProjectsPage() {
       curated={curated}
       recent={recent}
       basePath="/projects"
-      recentHeading="Dự án gần đây"
-      curatedHeading="Các dự án nổi bật khác"
-      allLinkLabel="Xem tất cả dự án"
+      recentHeading="Recent projects"
+      curatedHeading="Other featured projects"
+      allLinkLabel="View all projects"
     />
   );
 }

@@ -19,19 +19,30 @@ export function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
               {!isLast && item.href ? (
                 <Link
                   href={item.href}
-                  className="font-medium text-zinc-700 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white"
+                  className="max-w-[22rem] truncate font-medium text-zinc-700 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white"
                 >
                   {item.label}
                 </Link>
               ) : (
-                <span className="font-medium text-zinc-900 dark:text-zinc-100">
+                <span className="max-w-[22rem] truncate font-semibold text-zinc-900 dark:text-zinc-100">
                   {item.label}
                 </span>
               )}
               {!isLast && (
-                <span aria-hidden="true" className="text-zinc-400">
-                  /
-                </span>
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  className="h-4 w-4 text-zinc-400"
+                >
+                  <path
+                    d="M7.5 15l5-5-5-5"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               )}
             </li>
           );

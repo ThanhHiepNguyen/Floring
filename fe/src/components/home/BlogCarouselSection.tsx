@@ -53,7 +53,7 @@ export function BlogCarouselSection({
 
     return (
         <div className={className}>
-            <div className="group relative mt-12 md:px-14">
+            <div className="group relative md:px-10">
                 {/* Prev / Next */}
                 {canScroll ? (
                     <>
@@ -108,18 +108,18 @@ export function BlogCarouselSection({
 
                 <div
                     ref={scrollerRef}
-                    className="no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-3 md:px-0"
+                    className="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-3 md:px-0"
                 >
                     {visible.map((p) => (
                         <article
                             key={p.id}
-                            className="snap-start shrink-0 basis-[85%] sm:basis-[60%] md:basis-[44%] lg:basis-[calc((100%_-_3rem)/3)]"
+                            className="snap-start shrink-0 basis-[86%] sm:basis-[58%] md:basis-[46%] lg:basis-[calc((100%_-_2.5rem)/3)]"
                         >
                             <Link
                                 href={`/blogs/${p.slug}`}
-                                className="group block overflow-hidden rounded-2xl bg-white shadow-lg transition duration-300 ease-out hover:-translate-y-1.5 hover:shadow-xl"
+                                className="group block h-full overflow-hidden rounded-2xl border border-zinc-200/90 bg-white shadow-[0_10px_30px_-24px_rgba(2,6,23,0.35)] transition duration-300 ease-out hover:-translate-y-1 hover:border-zinc-300 hover:shadow-[0_16px_38px_-22px_rgba(2,6,23,0.38)]"
                             >
-                                <div className="relative m-5 overflow-hidden rounded-xl bg-zinc-100">
+                                <div className="relative m-4 overflow-hidden rounded-xl bg-zinc-100">
                                     <div className="relative aspect-[16/9]">
                                         {p.imageUrl ? (
                                             <Image
@@ -140,20 +140,46 @@ export function BlogCarouselSection({
                                     </div>
                                 </div>
 
-                                <div className="px-6 pb-6">
+                                <div className="px-5 pb-5">
                                     {/* Meta row */}
-                                    <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-zinc-500">
-                                        <div className="inline-flex items-center gap-2">
-                                            <span aria-hidden="true">📅</span>
+                                    <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-zinc-500">
+                                        <div className="inline-flex items-center gap-1.5">
+                                            <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                className="h-3.5 w-3.5 text-emerald-700/80"
+                                                aria-hidden="true"
+                                            >
+                                                <path
+                                                    d="M8 3v3M16 3v3M4 9h16M6 5h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"
+                                                    stroke="currentColor"
+                                                    strokeWidth="1.8"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                />
+                                            </svg>
                                             <span>{formatDate(p.createdAt) ?? '—'}</span>
                                         </div>
-                                        <div className="inline-flex items-center gap-2">
-                                            <span aria-hidden="true">👤</span>
+                                        <div className="inline-flex items-center gap-1.5">
+                                            <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                className="h-3.5 w-3.5 text-emerald-700/80"
+                                                aria-hidden="true"
+                                            >
+                                                <path
+                                                    d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4 20a8 8 0 0 1 16 0"
+                                                    stroke="currentColor"
+                                                    strokeWidth="1.8"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                />
+                                            </svg>
                                             <span>By {p.author || 'Floring'}</span>
                                         </div>
                                     </div>
 
-                                    <h3 className="mt-4 line-clamp-2 text-lg font-bold tracking-tight text-zinc-900 sm:text-xl">
+                                    <h3 className="mt-3 line-clamp-2 text-[1.65rem] font-semibold leading-tight tracking-tight text-zinc-900">
                                         {p.title}
                                     </h3>
                                     {p.excerpt ? (
@@ -162,14 +188,25 @@ export function BlogCarouselSection({
                                         </p>
                                     ) : null}
 
-                                    <div className="mt-5">
-                                        <span className="inline-flex items-center gap-2 text-sm font-semibold text-indigo-600">
-                                            <span className="underline decoration-transparent underline-offset-4 transition-colors duration-300 group-hover:decoration-indigo-600">
-                                                Xem thêm
+                                    <div className="mt-4">
+                                        <span className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-700">
+                                            <span className="underline decoration-transparent underline-offset-4 transition-colors duration-300 group-hover:decoration-emerald-700">
+                                                Read more
                                             </span>
-                                            <span className="inline-block transition-transform duration-300 ease-out group-hover:translate-x-1">
-                                                ››
-                                            </span>
+                                            <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                className="h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-x-1"
+                                                aria-hidden="true"
+                                            >
+                                                <path
+                                                    d="M13 6l6 6-6 6M5 12h14"
+                                                    stroke="currentColor"
+                                                    strokeWidth="1.8"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                />
+                                            </svg>
                                         </span>
                                     </div>
                                 </div>

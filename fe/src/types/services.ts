@@ -17,8 +17,6 @@ export type ServiceRow = {
     description?: string | null;
     imageUrl?: string | null;
     isActive: boolean;
-    createdAt: string;
-    updatedAt: string;
 };
 
 export type ServiceListResponse = {

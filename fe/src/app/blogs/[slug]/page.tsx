@@ -91,7 +91,7 @@ export async function generateMetadata({
   } catch {
     return {
       title: 'Blog | Floring',
-      description: 'Bài viết không tồn tại hoặc hệ thống chưa sẵn sàng.',
+      description: 'The article does not exist or the system is unavailable.',
     };
   }
 }
@@ -107,10 +107,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <Container>
             <div className="max-w-2xl">
               <h1 className="text-4xl font-semibold tracking-tight text-zinc-950">
-                Bài viết không tồn tại
+                Article does not exist
               </h1>
               <p className="mt-4 text-sm leading-7 text-zinc-600">
-                Không tìm thấy bài viết với slug{' '}
+                Could not find an article with slug{' '}
                 <span className="font-mono text-zinc-900">{slug}</span>.
               </p>
             </div>
@@ -120,19 +120,19 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <section className="py-12">
           <Container>
             <div className="rounded-3xl border border-zinc-200 bg-white p-8 text-sm text-zinc-600 shadow-sm">
-              <div>Bạn có thể quay lại danh sách blog hoặc xem thêm dự án.</div>
+              <div>You can return to the blog list or explore more projects.</div>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
                   href="/blogs"
                   className="inline-flex h-11 items-center justify-center rounded-full border border-zinc-200 bg-white px-5 font-semibold text-zinc-700 transition hover:bg-zinc-50"
                 >
-                  Về danh sách blog
+                  Back to blogs
                 </Link>
                 <Link
                   href="/projects"
                   className="inline-flex h-11 items-center justify-center rounded-full bg-emerald-600 px-5 font-semibold text-white transition hover:bg-emerald-700"
                 >
-                  Xem dự án
+                  View projects
                 </Link>
               </div>
             </div>
@@ -158,7 +158,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <aside className="hidden lg:block">
               <div className="sticky top-6 max-h-[calc(100vh-2rem)] overflow-y-auto rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-sm">
                 <div className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                  Mục lục
+                  Table of contents
                 </div>
                 <div className="space-y-2">
                   {tocItems.length ? (
@@ -173,7 +173,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     ))
                   ) : (
                     <p className="text-sm leading-6 text-zinc-500">
-                      Chưa có mục lục .
+                      No table of contents yet.
                     </p>
                   )}
                 </div>
@@ -188,7 +188,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 <span aria-hidden="true" className="text-base leading-none">
                   ←
                 </span>
-                <span>Tất cả bài viết</span>
+                <span>All posts</span>
               </Link>
 
               <header className="mt-5">
@@ -205,7 +205,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   </span>
                   <span>{formatDateVn(post.createdAt)}</span>
                   <span aria-hidden="true" className="text-zinc-300">•</span>
-                  <span>{readingMinutes} phút đọc</span>
+                  <span>{readingMinutes} min read</span>
                 </div>
               </header>
 
@@ -243,7 +243,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
             <aside className="hidden xl:block">
               <div className="sticky top-6">
-                <h2 className="text-2xl font-semibold leading-none text-zinc-950">Bài viết liên quan</h2>
+                <h2 className="text-2xl font-semibold leading-none text-zinc-950">Related posts</h2>
                 <div className="mt-6 max-h-[76vh] space-y-3 overflow-y-auto pr-2">
                   {relatedPosts.length ? (
                     relatedPosts.map((item) => (
@@ -276,7 +276,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                       </article>
                     ))
                   ) : (
-                    <p className="text-sm text-zinc-500">Chưa có bài viết liên quan.</p>
+                    <p className="text-sm text-zinc-500">No related posts yet.</p>
                   )}
                 </div>
               </div>

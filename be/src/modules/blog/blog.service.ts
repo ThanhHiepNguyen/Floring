@@ -27,9 +27,7 @@ export class BlogService {
           excerpt: true,
           content: true,
           imageUrl: true,
-          isActive: true,
           createdAt: true,
-          updatedAt: true,
         },
       }),
       this.prisma.blogPost.count({ where }),
@@ -56,12 +54,12 @@ export class BlogService {
         imageUrl: true,
         isActive: true,
         createdAt: true,
-        updatedAt: true,
       },
     });
 
     if (!post || !post.isActive) throw new NotFoundException('Bài viết không tồn tại');
-    return post;
+    const { isActive: _isActive, ...output } = post;
+    return output;
   }
 
   async getAllAdmin() {

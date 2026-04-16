@@ -6,7 +6,7 @@ if (!envBase) {
 }
 let resolvedBase = envBase;
 
-// Đảm bảo luôn có hậu tố /api/v1
+// Ensure the base URL always ends with /api/v1
 if (!/\/api\/v1\/?$/.test(resolvedBase)) {
     resolvedBase = resolvedBase.replace(/\/+$/, '') + '/api/v1';
 }

@@ -1,8 +1,8 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import type { HomeService } from '@/types/home';
 import { normalizeImageUrl } from '@/lib/asset';
@@ -20,7 +20,13 @@ export function ServicesTabsSection({
     const firstMountRef = useRef(true);
 
     useEffect(() => {
-        // Tránh fade ở lần render đầu tiên, chỉ fade khi người dùng bấm đổi tab
+        setActiveIdx((idx) => {
+            const maxIdx = Math.max(items.length - 1, 0);
+            return Math.min(Math.max(idx, 0), maxIdx);
+        });
+    }, [items.length]);
+
+    useEffect(() => {
         if (firstMountRef.current) {
             firstMountRef.current = false;
             return;
@@ -31,119 +37,106 @@ export function ServicesTabsSection({
         return () => window.clearTimeout(t);
     }, [activeIdx]);
 
-    const active = items[activeIdx] ?? items[0];
-    const other = items[activeIdx === 0 ? 1 : 0];
+    const active = items[activeIdx];
+    const other = items.length > 1 ? items[activeIdx === 0 ? 1 : 0] : null;
     const panelId = 'services-tabs-panel';
+    const activeImageUrl = active?.imageUrl ? normalizeImageUrl(active.imageUrl) : null;
 
     if (!active) return null;
 
     return (
         <div className={className}>
-            <div className="relative grid gap-8 lg:gap-8 lg:grid-cols-12 lg:items-center items-stretch">
-                {/* Subtle background accents */}
+            <div className="relative">
                 <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
                     <div className="absolute -top-16 left-1/3 h-72 w-72 rounded-full bg-emerald-200/14 blur-3xl" />
                     <div className="absolute -bottom-20 right-1/4 h-80 w-80 rounded-full bg-amber-200/12 blur-3xl" />
                 </div>
-                {/* Visual */}
-                <div className="lg:col-span-6">
-                    <Link
-                        href={`/services/${active.slug}`}
-                        className="group block h-full"
-                        aria-label={`Xem dịch vụ: ${active.name}`}
-                    >
-                        <div className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/60 bg-white/60 backdrop-blur transition-all duration-300 ease-out hover:-translate-y-1 hover:border-white/90 hover:shadow-[0_12px_48px_-14px_rgba(0,0,0,0.12)] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
-                            <div className="relative aspect-[16/11] bg-zinc-100">
-                                {active.imageUrl ? (
-                                    <Image
-                                        src={normalizeImageUrl(active.imageUrl)}
-                                        alt={active.name}
-                                        fill
-                                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.045]"
-                                        sizes="(max-width: 1024px) 100vw, 50vw"
-                                        unoptimized
-                                    />
-                                ) : (
-                                    <div className="absolute inset-0 bg-emerald-100" />
-                                )}
 
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-black/0 to-black/0" />
-                                <div className="pointer-events-none absolute -top-16 -left-16 h-52 w-52 rounded-full bg-white/20 blur-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                <div className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/15 bg-white/5 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] backdrop-blur">
+                    {activeImageUrl ? (
+                        <>
+                            <div className="absolute inset-0">
+                                <Image
+                                    src={activeImageUrl}
+                                    alt={active.name}
+                                    fill
+                                    className="object-cover"
+                                    unoptimized
+                                />
                             </div>
-                        </div>
-                    </Link>
-                </div>
+                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_25%,rgba(255,255,255,0.16),transparent_50%),linear-gradient(180deg,rgba(17,24,39,0.14)_0%,rgba(17,24,39,0.26)_35%,rgba(17,24,39,0.52)_100%)]" />
+                        </>
+                    ) : null}
 
-                {/* Content */}
-                <div className="lg:col-span-6">
-                    {/* Tabs */}
-                    <div className="flex h-full flex-col overflow-hidden rounded-3xl border border-white/60 bg-white/85 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] backdrop-blur">
-                        <div className="p-4 sm:p-6">
-                            <div
-                                className="grid grid-cols-2 gap-2 rounded-2xl bg-[#F3F4F6] p-1"
-                                role="tablist"
-                                aria-label="Chọn gói dịch vụ"
-                            >
-                                {[items[0], items[1]].map((s, idx) => (
-                                    <button
-                                        key={s?.id ?? idx}
-                                        type="button"
-                                        disabled={!s}
-                                        onClick={() => setActiveIdx(idx)}
-                                        role="tab"
-                                        aria-selected={idx === activeIdx}
-                                        aria-controls={panelId}
-                                        id={`services-tab-${idx}`}
-                                        className={[
-                                            'rounded-xl px-4 py-3 text-left text-sm font-semibold transition-all duration-300 outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white/90',
-                                            idx === activeIdx
-                                                ? 'bg-white text-zinc-900 shadow-[0_2px_8px_rgba(0,0,0,0.05)]'
-                                                : 'bg-transparent text-[#6B7280] hover:bg-white/70',
-                                            !s ? 'opacity-50 cursor-not-allowed' : '',
-                                        ].join(' ')}
-                                    >
-
-                                        <div className="mt-1 line-clamp-1">
-                                            {s?.name ?? (idx === 0 ? 'Dịch vụ 1' : 'Dịch vụ 2')}
-                                        </div>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
+                    <div className="p-4 sm:p-6">
                         <div
-                            id={panelId}
-                            role="tabpanel"
-                            aria-labelledby={`services-tab-${activeIdx}`}
-                            className={`flex-1 min-h-[220px] p-6 sm:p-8 pt-0 transition-opacity duration-150 ${isSwitching ? 'opacity-0' : 'opacity-100'}`}
+                            className="relative grid h-12 grid-cols-2 overflow-hidden rounded-full border border-white/15 bg-white/10 p-1 shadow-inner shadow-black/10"
+                            role="tablist"
+                            aria-label="Select service package"
                         >
-                            <h3 className="mb-4 text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
-                                {active.name}
-                            </h3>
-                            <p className="mb-6 max-w-prose text-sm leading-[1.7] text-[#4B5563]">
-                                {active.description ||
-                                    'Xem chi tiết dịch vụ và các tuỳ chọn phù hợp cho không gian của bạn.'}
-                            </p>
+                            <div
+                                aria-hidden="true"
+                                className="pointer-events-none absolute inset-y-1 left-1 rounded-full bg-white/90 shadow-[0_12px_28px_-18px_rgba(255,255,255,0.95)] transition-transform duration-300 ease-out"
+                                style={{
+                                    width: `calc(${100 / items.length}% - 0.5rem)`,
+                                    transform: `translateX(${activeIdx * 100}%)`,
+                                }}
+                            />
+                            {items.map((s, idx) => (
+                                <button
+                                    key={s.id}
+                                    type="button"
+                                    onClick={() => setActiveIdx(idx)}
+                                    role="tab"
+                                    aria-selected={idx === activeIdx}
+                                    aria-controls={panelId}
+                                    aria-label={s.name}
+                                    id={`services-tab-${idx}`}
+                                    className={[
+                                        'relative z-10 rounded-full px-4 py-3 text-center text-sm font-semibold text-transparent transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black/40',
+                                        idx === activeIdx ? 'text-transparent' : 'text-transparent',
+                                    ].join(' ')}
+                                />
+                            ))}
+                        </div>
+                    </div>
 
-                            <div className="flex flex-wrap items-center gap-4">
-                                <Link
-                                    href={`/services/${active.slug}`}
-                                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-emerald-700 hover:shadow-[0_18px_40px_-18px_rgba(16,185,129,0.7)]"
-                                >
-                                    Tìm hiểu thêm
-                                    <span className="inline-block transition-transform duration-500 ease-out group-hover:translate-x-0.5">
-                                        →
-                                    </span>
-                                </Link>
+                    <div
+                        id={panelId}
+                        role="tabpanel"
+                        aria-labelledby={`services-tab-${activeIdx}`}
+                        className={`relative flex-1 overflow-hidden rounded-[1.75rem] p-6 pt-0 sm:p-8 sm:pt-0 transition-opacity duration-150 ${
+                            isSwitching ? 'opacity-0' : 'opacity-100'
+                        }`}
+                    >
+                        {activeImageUrl ? null : (
+                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.10),transparent_45%),linear-gradient(135deg,rgba(255,255,255,0.10),rgba(255,255,255,0.04))]" />
+                        )}
 
-                                {other ? (
+                        <div className="relative mx-auto flex min-h-[240px] max-w-3xl flex-col items-center justify-center text-center">
+                            <div className="rounded-[1.75rem] border border-white/14 bg-black/15 px-6 py-7 shadow-[0_30px_80px_-50px_rgba(0,0,0,0.75)] backdrop-blur-md sm:px-10">
+                                <h3 className="mb-4 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                                    {active.name}
+                                </h3>
+
+                                <div className="flex flex-wrap items-center justify-center gap-4">
                                     <Link
-                                        href={`/services/${other.slug}`}
-                                        className="inline-flex items-center justify-center rounded-lg border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-zinc-900 shadow-sm transition-all duration-300 hover:bg-[#F3F4F6]"
+                                        href={`/services/${active.slug}`}
+                                        className="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-emerald-700 hover:shadow-[0_18px_40px_-18px_rgba(16,185,129,0.7)]"
                                     >
-                                        Xem dịch vụ còn lại
+                                        Learn more
+                                        <span className="inline-block">→</span>
                                     </Link>
-                                ) : null}
+
+                                    {other ? (
+                                        <Link
+                                            href={`/services/${other.slug}`}
+                                            className="inline-flex items-center justify-center rounded-lg border border-white/18 bg-white/14 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-white/20"
+                                        >
+                                            View the other service
+                                        </Link>
+                                    ) : null}
+                                </div>
                             </div>
                         </div>
                     </div>
