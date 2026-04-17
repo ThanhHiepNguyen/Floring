@@ -195,7 +195,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 <div className="mb-4 inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700 ring-1 ring-emerald-100">
                   Blog Floring
                 </div>
-                <h1 className="max-w-4xl text-4xl font-semibold leading-tight tracking-tight text-zinc-900 sm:text-5xl lg:text-[3.15rem]">
+                <h1 className="max-w-4xl text-3xl font-semibold leading-tight tracking-tight text-zinc-900 sm:text-4xl lg:text-[3.15rem]">
                   {post.title}
                 </h1>
 
@@ -208,6 +208,31 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   <span>{readingMinutes} min read</span>
                 </div>
               </header>
+
+              <section className="mt-6 lg:hidden">
+                <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-sm">
+                  <div className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                    Table of contents
+                  </div>
+                  <div className="space-y-1.5">
+                    {tocItems.length ? (
+                      tocItems.map((item) => (
+                        <a
+                          key={item.id}
+                          href={`#${item.id}`}
+                          className={`block truncate rounded-lg px-2 py-1.5 text-sm leading-6 text-zinc-700 transition hover:bg-zinc-100 hover:text-zinc-950 ${getTocItemClass(item.level)}`}
+                        >
+                          {item.label}
+                        </a>
+                      ))
+                    ) : (
+                      <p className="text-sm leading-6 text-zinc-500">
+                        No table of contents yet.
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </section>
 
               <div className="mt-10 pb-10 lg:pb-16">
                 {post.excerpt ? (
@@ -239,6 +264,45 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   />
                 </div>
               </div>
+
+              <section className="xl:hidden">
+                <h2 className="text-2xl font-semibold leading-none text-zinc-950">Related posts</h2>
+                <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                  {relatedPosts.length ? (
+                    relatedPosts.slice(0, 4).map((item) => (
+                      <article key={item.id} className="group rounded-2xl border border-zinc-200/70 bg-white p-3">
+                        <Link href={`/blogs/${item.slug}`} className="flex items-start gap-3">
+                          <div className="relative h-[70px] w-[112px] shrink-0 overflow-hidden rounded-md bg-zinc-100">
+                            {item.imageUrl ? (
+                              <Image
+                                src={normalizeImageUrl(item.imageUrl)}
+                                alt={item.title}
+                                fill
+                                className="object-cover transition duration-500 group-hover:scale-[1.04]"
+                                sizes="75px"
+                                unoptimized
+                              />
+                            ) : (
+                              <div className="absolute inset-0 bg-gradient-to-br from-zinc-200 via-zinc-100 to-zinc-50" />
+                            )}
+                          </div>
+
+                          <div className="min-w-0">
+                            <h3 className="line-clamp-2 text-base font-semibold leading-6 text-zinc-900 transition group-hover:text-emerald-700">
+                              {item.title}
+                            </h3>
+                            <p className="mt-1 text-xs text-zinc-500">
+                              {formatDateVn(item.createdAt)}
+                            </p>
+                          </div>
+                        </Link>
+                      </article>
+                    ))
+                  ) : (
+                    <p className="text-sm text-zinc-500">No related posts yet.</p>
+                  )}
+                </div>
+              </section>
             </article>
 
             <aside className="hidden xl:block">

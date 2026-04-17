@@ -1,8 +1,11 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
+import { api } from '@/api/http';
 import { Container } from '@/components/Container';
+import { ServiceContactRequestForm } from '@/components/service/ServiceContactRequestForm';
 
 const companyLinks = [
     { href: '/about', label: 'About' },
@@ -10,17 +13,108 @@ const companyLinks = [
     { href: '/blogs', label: 'Blog' },
 ];
 
+type ServiceItem = {
+    id: string;
+    name: string;
+    slug: string;
+};
+
 
 
 export function Footer() {
+    const [serviceLinks, setServiceLinks] = useState<ServiceItem[]>([]);
+
+    useEffect(() => {
+        let cancelled = false;
+        const controller = new AbortController();
+
+        (async () => {
+            try {
+                const res = await api.get<{ data?: ServiceItem[] }>('/service', {
+                    params: { page: 1, limit: 50 },
+                    signal: controller.signal,
+                });
+                const data = Array.isArray(res.data?.data) ? res.data.data : [];
+                if (!cancelled) {
+                    setServiceLinks(
+                        data.sort((a, b) => a.name.localeCompare(b.name)).slice(0, 2),
+                    );
+                }
+            } catch {
+                if (!cancelled) setServiceLinks([]);
+            }
+        })();
+
+        return () => {
+            cancelled = true;
+            controller.abort();
+        };
+    }, []);
+
     return (
         <footer className="border-t border-slate-200 bg-slate-950 text-slate-200 dark:border-slate-800 dark:bg-slate-950">
 
             <Container className="py-12">
-                <div className="grid gap-10 text-center lg:grid-cols-12 lg:items-start lg:text-left">
+                <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 md:hidden">
+                    <div className="flex items-center gap-2">
+                        <span className="inline-flex size-9 items-center justify-center rounded-xl bg-emerald-500 text-sm font-semibold text-white">
+                            F
+                        </span>
+                        <div className="text-sm font-semibold tracking-tight text-white">Floring</div>
+                    </div>
+                    <p className="mt-3 text-sm leading-6 text-slate-300">
+                        Material-first consultation and clean installation.
+                    </p>
+
+                    <div className="mt-4 grid gap-2">
+                        <ServiceContactRequestForm
+                            mode="dialog"
+                            serviceId={null}
+                            serviceName={null}
+                            productVariantId={null}
+                            triggerLabel="Send request"
+                            triggerVariant="form"
+                            triggerClassName="inline-flex w-full items-center justify-center rounded-full bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
+                        />
+                        <Link
+                            href="/projects"
+                            className="inline-flex w-full items-center justify-center rounded-full border border-slate-700 bg-slate-800 px-4 py-2.5 text-sm font-semibold text-slate-100 transition hover:bg-slate-700"
+                        >
+                            View projects
+                        </Link>
+                    </div>
+
+                    <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-400">
+                        <a className="hover:text-emerald-300" href="mailto:hello@floring.vn">
+                            hello@floring.vn
+                        </a>
+                        <span>+61 000 000 000</span>
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-3 text-xs">
+                        <Link href="/services" className="text-slate-300 hover:text-emerald-300">
+                            Services
+                        </Link>
+                        {serviceLinks.map((service) => (
+                            <Link
+                                key={service.id}
+                                href={`/services/${service.slug}`}
+                                className="text-slate-400 hover:text-emerald-300"
+                            >
+                                {service.name}
+                            </Link>
+                        ))}
+                        {companyLinks.map((l) => (
+                            <Link key={l.href} href={l.href} className="text-slate-300 hover:text-emerald-300">
+                                {l.label}
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="hidden gap-8 text-left md:grid lg:grid-cols-12 lg:items-start">
                     {/* Brand */}
                     <div className="lg:col-span-3">
-                        <div className="flex items-center justify-center gap-2 lg:justify-start">
+                        <div className="flex items-center gap-2">
                             <span className="inline-flex size-10 items-center justify-center rounded-2xl bg-emerald-500 text-sm font-semibold text-white">
                                 F
                             </span>
@@ -39,12 +133,30 @@ export function Footer() {
                         <div className="text-sm font-semibold text-white">
                             Links
                         </div>
-                        <ul className="mt-4 space-y-2 text-sm">
+                        <ul className="mt-3 grid grid-cols-2 gap-2 text-sm sm:grid-cols-1">
+                            <li>
+                                <Link
+                                    href="/services"
+                                    className="inline-flex rounded-lg px-2 py-1 text-slate-300 transition hover:bg-slate-900 hover:text-emerald-300"
+                                >
+                                    Services
+                                </Link>
+                            </li>
+                            {serviceLinks.map((service) => (
+                                <li key={service.id}>
+                                    <Link
+                                        href={`/services/${service.slug}`}
+                                        className="inline-flex rounded-lg px-2 py-1 text-slate-400 transition hover:bg-slate-900 hover:text-emerald-300"
+                                    >
+                                        {service.name}
+                                    </Link>
+                                </li>
+                            ))}
                             {companyLinks.map((l) => (
                                 <li key={l.href}>
                                     <Link
                                         href={l.href}
-                                        className="text-slate-300 hover:text-emerald-300"
+                                        className="inline-flex rounded-lg px-2 py-1 text-slate-300 transition hover:bg-slate-900 hover:text-emerald-300"
                                     >
                                         {l.label}
                                     </Link>
@@ -59,7 +171,7 @@ export function Footer() {
                             Contact information
                         </div>
                         <div className="mt-4 space-y-3 text-sm text-slate-300">
-                            <div className="flex items-start justify-center gap-2 lg:justify-start">
+                            <div className="flex items-start gap-2">
                                 <span className="mt-0.5 inline-flex size-6 items-center justify-center rounded-full bg-slate-800 text-slate-200">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="size-4">
                                         <path d="M12 21s7-4.4 7-11a7 7 0 1 0-14 0c0 6.6 7 11 7 11Z" />
@@ -68,7 +180,7 @@ export function Footer() {
                                 </span>
                                 <div>Australia</div>
                             </div>
-                            <div className="flex items-start justify-center gap-2 lg:justify-start">
+                            <div className="flex items-start gap-2">
                                 <span className="mt-0.5 inline-flex size-6 items-center justify-center rounded-full bg-slate-800 text-slate-200">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="size-4">
                                         <path d="M4 4h16v16H4z" opacity="0" />
@@ -80,7 +192,7 @@ export function Footer() {
                                     hello@floring.vn
                                 </a>
                             </div>
-                            <div className="flex items-start justify-center gap-2 lg:justify-start">
+                            <div className="flex items-start gap-2">
                                 <span className="mt-0.5 inline-flex size-6 items-center justify-center rounded-full bg-slate-800 text-slate-200">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="size-4">
                                         <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .6 3a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c1 .3 2 .5 3 .6a2 2 0 0 1 1.7 2Z" />
@@ -89,7 +201,7 @@ export function Footer() {
                                 <div>+61 000 000 000</div>
                             </div>
 
-                            <div className="mt-4 flex items-center justify-center gap-2 lg:justify-start">
+                            <div className="mt-4 flex items-center gap-2">
                                 <a
                                     href="#"
                                     aria-label="Facebook"
@@ -157,23 +269,26 @@ export function Footer() {
                         <div className="text-sm font-semibold text-white">
                             Quick contact
                         </div>
-                        <div className="mt-4 rounded-2xl border border-slate-700 bg-slate-900 p-4 shadow-sm backdrop-blur">
+                        <div className="mt-3 rounded-2xl border border-slate-700 bg-slate-900 p-4 shadow-sm backdrop-blur">
                             <p className="text-sm leading-6 text-slate-200">
                                 Need tailored consultation? Click below to send a survey request,
                                 and Floring will contact you as soon as possible.
                             </p>
 
-                            <div className="mt-4 flex flex-wrap gap-3 lg:flex-nowrap lg:gap-2">
-                                <Link
-                                    href="/contact"
-                                    className="inline-flex items-center justify-center whitespace-nowrap rounded-full bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
-                                >
-                                    Send request
-                                </Link>
+                            <div className="mt-4 grid gap-2 sm:flex sm:flex-wrap lg:flex-nowrap lg:gap-2">
+                                <ServiceContactRequestForm
+                                    mode="dialog"
+                                    serviceId={null}
+                                    serviceName={null}
+                                    productVariantId={null}
+                                    triggerLabel="Send request"
+                                    triggerVariant="form"
+                                    triggerClassName="inline-flex w-full items-center justify-center whitespace-nowrap rounded-full bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 sm:w-auto"
+                                />
 
                                 <Link
                                     href="/projects"
-                                    className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-slate-600 bg-slate-800 px-4 py-2 text-sm font-semibold text-slate-100 shadow-sm transition hover:bg-slate-700"
+                                    className="inline-flex w-full items-center justify-center whitespace-nowrap rounded-full border border-slate-600 bg-slate-800 px-4 py-2 text-sm font-semibold text-slate-100 shadow-sm transition hover:bg-slate-700 sm:w-auto"
                                 >
                                     View projects
                                 </Link>
@@ -186,7 +301,7 @@ export function Footer() {
                     </div>
                 </div>
 
-                <div className="mt-12 border-t border-slate-800 pt-6 text-center text-xs text-slate-400">
+                <div className="mt-10 border-t border-slate-800 pt-6 text-center text-xs text-slate-400">
                     © {new Date().getFullYear()} Floring. All rights reserved.
                 </div>
             </Container>

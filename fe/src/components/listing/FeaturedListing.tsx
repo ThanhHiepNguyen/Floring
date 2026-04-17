@@ -44,7 +44,7 @@ export function FeaturedListing({
 }: FeaturedListingProps) {
     return (
         <main className="min-h-screen bg-white text-zinc-950">
-            <section className="py-6 sm:py-8">
+            <section className="py-5 sm:py-8">
                 <Container>
                     <h1 className="sr-only">{heading}</h1>
                     {(!featured && recent.length === 0) ? (
@@ -53,7 +53,88 @@ export function FeaturedListing({
                         </div>
                     ) : (
                         <>
-                            <section>
+                            <section className="lg:hidden">
+                                {featured ? (
+                                    <article className="group">
+                                        <Link href={`${basePath}/${featured.slug}`} className="block">
+                                            <div className="relative overflow-hidden rounded-2xl border border-zinc-200">
+                                                <div className="relative aspect-[16/10]">
+                                                    <Thumb title={featured.title} imageUrl={featured.imageUrl} sizes="100vw" />
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
+                                                    <div className="absolute inset-x-0 bottom-0 px-4 py-3">
+                                                        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-200">
+                                                            Featured
+                                                        </p>
+                                                        <h2 className="mt-1 line-clamp-2 text-xl font-semibold leading-tight text-white">
+                                                            {featured.title}
+                                                        </h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Link>
+                                    </article>
+                                ) : null}
+
+                                {curated.length ? (
+                                    <div className="mt-5">
+                                        <h2 className="text-lg font-semibold leading-none">{curatedHeading}</h2>
+                                        <div className="mt-3 flex gap-3 overflow-x-auto pb-1">
+                                            {curated.map((item) => (
+                                                <Link
+                                                    key={item.id}
+                                                    href={`${basePath}/${item.slug}`}
+                                                    className="w-[220px] shrink-0"
+                                                >
+                                                    <article className="rounded-xl border border-zinc-200 bg-white p-2">
+                                                        <div className="relative aspect-[16/10] overflow-hidden rounded-lg bg-zinc-100">
+                                                            <Thumb title={item.title} imageUrl={item.imageUrl} sizes="220px" />
+                                                        </div>
+                                                        <h3 className="mt-2 line-clamp-2 text-sm font-semibold leading-5 text-zinc-900">
+                                                            {item.title}
+                                                        </h3>
+                                                    </article>
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ) : null}
+
+                                <div className="mt-6">
+                                    <div className="mb-3 flex items-center justify-between gap-4">
+                                        <h2 className="text-xl font-semibold leading-none">{recentHeading}</h2>
+                                        <Link
+                                            href={basePath}
+                                            className="inline-flex h-7 items-center rounded-full border border-zinc-300 px-3 text-[11px] font-medium text-zinc-900 transition hover:bg-zinc-50"
+                                        >
+                                            {allLinkLabel}
+                                        </Link>
+                                    </div>
+
+                                    <div className="space-y-3">
+                                        {recent.map((item) => (
+                                            <Link key={item.id} href={`${basePath}/${item.slug}`} className="block">
+                                                <article className="flex items-start gap-3 rounded-xl border border-zinc-200 bg-white p-2.5">
+                                                    <div className="relative h-[78px] w-[110px] shrink-0 overflow-hidden rounded-lg bg-zinc-100">
+                                                        <Thumb title={item.title} imageUrl={item.imageUrl} sizes="110px" />
+                                                    </div>
+                                                    <div className="min-w-0">
+                                                        <h3 className="line-clamp-2 text-[15px] font-semibold leading-5 text-zinc-900">
+                                                            {item.title}
+                                                        </h3>
+                                                        {item.excerpt ? (
+                                                            <p className="mt-1 line-clamp-2 text-xs leading-5 text-zinc-600">
+                                                                {item.excerpt}
+                                                            </p>
+                                                        ) : null}
+                                                    </div>
+                                                </article>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section className="hidden lg:block">
                                 <div className="grid gap-4 lg:grid-cols-[minmax(0,2fr)_420px] lg:gap-5">
                                     <div>
                                         {featured ? (
@@ -63,8 +144,8 @@ export function FeaturedListing({
                                                         <div className="relative aspect-[16/9]">
                                                             <Thumb title={featured.title} imageUrl={featured.imageUrl} sizes="(max-width: 1024px) 100vw, 70vw" />
                                                             <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent" />
-                                                            <div className="absolute inset-x-0 bottom-0 px-5 py-4 sm:px-6 sm:py-5">
-                                                                <h2 className="line-clamp-2 text-2xl font-semibold leading-tight text-white sm:text-[2.2rem]">
+                                                            <div className="absolute inset-x-0 bottom-0 px-6 py-5">
+                                                                <h2 className="line-clamp-2 text-[2.2rem] font-semibold leading-tight text-white">
                                                                     {featured.title}
                                                                 </h2>
                                                             </div>
@@ -100,7 +181,7 @@ export function FeaturedListing({
                                 </div>
                             </section>
 
-                            <section className="mt-6 sm:mt-8">
+                            <section className="mt-8 hidden lg:block">
                                 <div className="mb-3 flex items-center justify-between gap-4">
                                     <h2 className="text-3xl font-semibold leading-none">{recentHeading}</h2>
                                     <Link

@@ -143,7 +143,7 @@ export function ServiceDetailClient({ service, products }: Props) {
       </section>
 
       <section className="relative">
-        <div className="relative h-[320px] w-full overflow-hidden bg-zinc-100 sm:h-[420px] lg:h-[520px]">
+        <div className="relative h-[280px] w-full overflow-hidden bg-zinc-100 sm:h-[380px] lg:h-[520px]">
           {heroImage ? (
             <Image
               src={normalizeImageUrl(heroImage)}
@@ -162,10 +162,10 @@ export function ServiceDetailClient({ service, products }: Props) {
               <div className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
                 Service
               </div>
-              <h1 className="mt-4 text-4xl font-semibold leading-tight tracking-tight text-zinc-900 sm:text-6xl">
+              <h1 className="mt-4 text-3xl font-semibold leading-tight tracking-tight text-zinc-900 sm:text-5xl lg:text-6xl">
                 {service.name}
               </h1>
-              <p className="mx-auto mt-4 max-w-3xl text-base leading-7 text-zinc-600 sm:text-xl">
+              <p className="mx-auto mt-4 max-w-3xl text-sm leading-7 text-zinc-700 sm:text-lg">
                 {service.description}
               </p>
 

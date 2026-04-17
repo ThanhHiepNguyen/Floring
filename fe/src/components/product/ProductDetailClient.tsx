@@ -105,7 +105,7 @@ export function ProductDetailClient({
             </section>
 
             <section className="relative">
-                <div className="group relative aspect-[16/7] w-full overflow-hidden bg-zinc-900">
+                <div className="group relative h-[280px] w-full overflow-hidden bg-zinc-900 sm:h-[360px] lg:aspect-[16/7] lg:h-auto">
                     {heroImage ? (
                         <Image
                             src={normalizeImageUrl(heroImage)}
@@ -171,7 +171,7 @@ export function ProductDetailClient({
                     ) : null}
                     <div className="absolute inset-0 z-10 flex items-center justify-center p-6 text-center">
                         <div className="max-w-4xl">
-                            <h1 className="text-4xl font-semibold leading-tight tracking-tight text-white sm:text-5xl">
+                            <h1 className="text-3xl font-semibold leading-tight tracking-tight text-white sm:text-5xl">
                                 {product.title}
                             </h1>
                             {selectedVariant?.title ? (
@@ -260,8 +260,33 @@ export function ProductDetailClient({
                                 </div>
                             </div>
 
+                            <div className="mt-6 overflow-x-auto pb-2 md:hidden">
+                                <div className="flex w-max gap-3">
+                                    {relatedVisible.map((p) => {
+                                        const v = p.currentVariant ?? p.variants?.[0] ?? null;
+                                        const img = v?.primaryImage || v?.swatchImage || v?.image || p.image || null;
+                                        const href = p.permalink ? `/products/${p.permalink}` : '#';
+                                        return (
+                                            <Link
+                                                key={p.id}
+                                                href={href}
+                                                className="w-[220px] flex-shrink-0 rounded-xl border border-zinc-200 bg-white p-3 transition hover:border-zinc-300"
+                                            >
+                                                <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-zinc-100">
+                                                    {img ? <Image src={img} alt={p.title} fill className="object-cover" unoptimized /> : null}
+                                                </div>
+                                                <div className="mt-3">
+                                                    <div className="line-clamp-2 text-sm font-semibold text-zinc-900">{p.title}</div>
+                                                    {v?.title ? <div className="mt-1 text-xs text-zinc-500">Color: {v.title}</div> : null}
+                                                </div>
+                                            </Link>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+
                             <div
-                                className="mt-6 overflow-hidden pb-2"
+                                className="mt-6 hidden overflow-hidden pb-2 md:block"
                                 onMouseEnter={() => setIsRelatedPaused(true)}
                                 onMouseLeave={() => setIsRelatedPaused(false)}
                                 onTouchStart={() => setIsRelatedPaused(true)}
@@ -286,15 +311,11 @@ export function ProductDetailClient({
                                                 className="w-[220px] flex-shrink-0 rounded-xl border border-zinc-200 bg-white p-3 transition hover:border-zinc-300"
                                             >
                                                 <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-zinc-100">
-                                                    {img ? (
-                                                        <Image src={img} alt={p.title} fill className="object-cover" unoptimized />
-                                                    ) : null}
+                                                    {img ? <Image src={img} alt={p.title} fill className="object-cover" unoptimized /> : null}
                                                 </div>
                                                 <div className="mt-3">
                                                     <div className="line-clamp-2 text-sm font-semibold text-zinc-900">{p.title}</div>
-                                                    {v?.title ? (
-                                                        <div className="mt-1 text-xs text-zinc-500">Color: {v.title}</div>
-                                                    ) : null}
+                                                    {v?.title ? <div className="mt-1 text-xs text-zinc-500">Color: {v.title}</div> : null}
                                                 </div>
                                             </Link>
                                         );

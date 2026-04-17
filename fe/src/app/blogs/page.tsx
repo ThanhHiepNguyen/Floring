@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { getBlogPosts } from '@/api/blog.api';
+import { backendGet } from '@/lib/backend';
 import { FeaturedListing } from '@/components/listing/FeaturedListing';
 import type { FeaturedItem } from '@/types/listing';
+import type { BlogListResponse } from '@/api/blog.api';
 
 export const metadata: Metadata = {
   title: 'Blog Floring - Kien thuc san go, LVT, SPC',
@@ -10,7 +12,15 @@ export const metadata: Metadata = {
 };
 
 export default async function BlogIndexPage() {
-  const { data: posts } = await getBlogPosts(1, 12).catch(() => ({ data: [] }));
+  const primary = await getBlogPosts(1, 12).catch(() => ({ data: [] } as BlogListResponse));
+  const fallback =
+    primary.data.length === 0
+      ? await backendGet<BlogListResponse>('/blog/public', {
+          searchParams: { page: 1, limit: 12 },
+        }).catch(() => ({ data: [] } as BlogListResponse))
+      : null;
+
+  const posts = (fallback?.data?.length ? fallback.data : primary.data) ?? [];
   const featured = posts[0] as FeaturedItem | undefined;
   const curated = posts.slice(1, 6) as FeaturedItem[];
   const recent = posts.slice(0, 9) as FeaturedItem[];

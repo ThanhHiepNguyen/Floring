@@ -11,11 +11,17 @@ export const metadata: Metadata = {
 };
 
 export default async function ProjectsPage() {
-  const res = await backendGet<ProjectsResponse>('/project', {
+  const primary = await backendGet<ProjectsResponse>('/project', {
     searchParams: { page: 1, limit: 12 },
   }).catch(() => null);
+  const fallback =
+    !primary?.data?.length
+      ? await backendGet<ProjectsResponse>('/project/public', {
+          searchParams: { page: 1, limit: 12 },
+        }).catch(() => null)
+      : null;
 
-  const projects = res?.data ?? [];
+  const projects = (fallback?.data?.length ? fallback.data : primary?.data) ?? [];
   const featuredProject = projects[0];
   const sideProjects = projects.slice(1, 6);
   const recentProjects = projects.slice(0, 9);

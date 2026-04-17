@@ -2,20 +2,69 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
+import { api } from '@/api/http';
 import { Container } from '@/components/Container';
 import { HeaderSearch } from '@/components/HeaderSearch';
 import { ServicesDropdown } from '@/components/nav/ServicesDropdown';
 import { ContactDropdown } from '@/components/nav/ContactDropdown';
+import { ServiceContactRequestForm } from '@/components/service/ServiceContactRequestForm';
 
 const navItems = [
     { href: '/projects', label: 'Projects' },
     { href: '/blogs', label: 'Blog' },
 ];
 
+const mobileNavItems = [
+    { href: '/about', label: 'About' },
+    { href: '/projects', label: 'Projects' },
+    { href: '/blogs', label: 'Blog' },
+    { href: '/contact', label: 'Contact' },
+];
+
+type ServiceItem = {
+    id: string;
+    name: string;
+    slug: string;
+};
+
 export function Header() {
+    const pathname = usePathname();
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+    const [mobileServices, setMobileServices] = useState<ServiceItem[]>([]);
+
+    useEffect(() => {
+        let cancelled = false;
+        const controller = new AbortController();
+
+        (async () => {
+            try {
+                const res = await api.get<{ data?: ServiceItem[] }>('/service', {
+                    params: { page: 1, limit: 50 },
+                    signal: controller.signal,
+                });
+                const data = Array.isArray(res.data?.data) ? res.data.data : [];
+                if (!cancelled) {
+                    setMobileServices(data.sort((a, b) => a.name.localeCompare(b.name)));
+                }
+            } catch {
+                if (!cancelled) setMobileServices([]);
+            }
+        })();
+
+        return () => {
+            cancelled = true;
+            controller.abort();
+        };
+    }, []);
+
+    useEffect(() => {
+        setMobileOpen(false);
+        setMobileServicesOpen(false);
+    }, [pathname]);
 
     return (
         <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 shadow-sm backdrop-blur dark:border-slate-800/70 dark:bg-slate-950/80">
@@ -122,35 +171,64 @@ export function Header() {
 
                 {mobileOpen ? (
                     <div className="mt-3 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm md:hidden dark:border-slate-800 dark:bg-slate-950">
-                        <nav className="grid gap-1">
-                            <Link
-                                href="/about"
-                                onClick={() => setMobileOpen(false)}
-                                className="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-900/50"
-                            >
-                                About
-                            </Link>
-                            <Link
-                                href="/projects"
-                                onClick={() => setMobileOpen(false)}
-                                className="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-900/50"
-                            >
-                                Projects
-                            </Link>
-                            <Link
-                                href="/blogs"
-                                onClick={() => setMobileOpen(false)}
-                                className="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-900/50"
-                            >
-                                Blog
-                            </Link>
-                            <Link
-                                href="/contact"
-                                onClick={() => setMobileOpen(false)}
-                                className="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-900/50"
-                            >
-                                Contact
-                            </Link>
+                        <div className="mb-2 px-1">
+                            <HeaderSearch mobile onSubmitComplete={() => setMobileOpen(false)} />
+                        </div>
+                        <nav className="flex flex-col gap-1 px-1 py-1">
+                            {mobileNavItems.map((item) => (
+                                <div key={item.href}>
+                                    {item.href === '/contact' ? (
+                                        <ServiceContactRequestForm
+                                            mode="dialog"
+                                            serviceId={null}
+                                            serviceName={null}
+                                            productVariantId={null}
+                                            triggerLabel={item.label}
+                                            triggerVariant="form"
+                                            triggerClassName="group relative rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:text-emerald-700 dark:text-slate-200 dark:hover:text-emerald-300"
+                                        />
+                                    ) : (
+                                        <Link
+                                            href={item.href}
+                                            onClick={() => setMobileOpen(false)}
+                                            className="group relative rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:text-emerald-700 dark:text-slate-200 dark:hover:text-emerald-300"
+                                        >
+                                            {item.label}
+                                            <span className="pointer-events-none absolute -bottom-0.5 left-3 h-px w-0 bg-emerald-600 transition-all group-hover:w-10 dark:bg-emerald-400" />
+                                        </Link>
+                                    )}
+
+                                    {item.href === '/about' ? (
+                                        <div className="mt-0.5 pl-3">
+                                            <button
+                                                type="button"
+                                                onClick={() => setMobileServicesOpen((v) => !v)}
+                                                className="group relative inline-flex items-center gap-2 py-2 text-left text-sm font-medium text-slate-700 transition-colors hover:text-emerald-700 dark:text-slate-200 dark:hover:text-emerald-300"
+                                            >
+                                                <span>Services</span>
+                                                <span className="text-xs">{mobileServicesOpen ? '▴' : '▾'}</span>
+                                                <span className="pointer-events-none absolute -bottom-0.5 left-0 h-px w-0 bg-emerald-600 transition-all group-hover:w-10 dark:bg-emerald-400" />
+                                            </button>
+
+                                            {mobileServicesOpen ? (
+                                                <div className="mt-1 grid gap-1 pb-1 pl-2">
+                                                    {mobileServices.map((service) => (
+                                                        <Link
+                                                            key={service.id}
+                                                            href={`/services/${service.slug}`}
+                                                            onClick={() => setMobileOpen(false)}
+                                                            className="group relative rounded-lg px-2 py-1.5 text-sm text-slate-600 transition hover:text-emerald-700 dark:text-slate-300 dark:hover:text-emerald-300"
+                                                        >
+                                                            {service.name}
+                                                            <span className="pointer-events-none absolute -bottom-0.5 left-2 h-px w-0 bg-emerald-600 transition-all group-hover:w-8 dark:bg-emerald-400" />
+                                                        </Link>
+                                                    ))}
+                                                </div>
+                                            ) : null}
+                                        </div>
+                                    ) : null}
+                                </div>
+                            ))}
                         </nav>
                     </div>
                 ) : null}

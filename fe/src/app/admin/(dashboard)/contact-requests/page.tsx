@@ -202,11 +202,7 @@ export default function AdminContactRequestsPage() {
             {status === 'idle' && items.length === 0 ? (
               <tr>
                 <td colSpan={6} className="py-6 text-sm text-zinc-500">
-                  Chưa có yêu cầu nào.{' '}
-                  <Link href="/contact" className="underline underline-offset-4">
-                    Tạo thử từ trang Contact
-                  </Link>
-                  .
+                  Chưa có yêu cầu nào. Hãy tạo thử từ nút Contact (dialog) ở header hoặc footer.
                 </td>
               </tr>
             ) : null}

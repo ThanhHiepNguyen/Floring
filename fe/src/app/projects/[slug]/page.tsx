@@ -134,7 +134,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-emerald-700">
                 Installation project
               </p>
-              <h1 className="mt-3 text-4xl font-semibold leading-none tracking-[-0.045em] text-zinc-950 sm:text-5xl lg:text-5xl text-balance lg:whitespace-nowrap">
+              <h1 className="mt-3 text-4xl font-semibold leading-tight tracking-[-0.045em] text-zinc-950 sm:text-5xl lg:text-5xl text-balance">
                 {project.title}
               </h1>
               {project.description ? (
@@ -174,7 +174,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
                 <div className="relative overflow-hidden rounded-[28px] border border-black/5 bg-zinc-950">
                   {cover ? (
-                    <div className="relative aspect-[16/7] sm:aspect-[16/8]">
+                    <div className="relative aspect-[4/3] sm:aspect-[16/8]">
                       <Image
                         src={normalizeImageUrl(cover)}
                         alt={project.title}
@@ -187,7 +187,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
                     </div>
                   ) : (
-                    <div className="relative aspect-[16/7] sm:aspect-[16/8] bg-zinc-950" />
+                    <div className="relative aspect-[4/3] sm:aspect-[16/8] bg-zinc-950" />
                   )}
                 </div>
 

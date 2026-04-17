@@ -8,32 +8,98 @@ export const metadata: Metadata = {
     'Floring is a trusted flooring contractor in Melbourne (Australia), specializing in installation, repair, and maintenance for residential and commercial spaces.',
 };
 
+const trustStats = [
+  { value: '500+', label: 'Projects delivered' },
+  { value: '10+', label: 'Years in flooring' },
+  { value: '98%', label: 'On-time completion' },
+];
+
+const capabilities = [
+  'Timber, hybrid, and laminate installation',
+  'Sanding, restoration, and refinishing',
+  'Residential and commercial delivery',
+  'Subfloor preparation and moisture control',
+];
+
+const processSteps = [
+  {
+    title: 'Site review',
+    description: 'Assess condition, measure scope, and align material direction for your space.',
+  },
+  {
+    title: 'Clear proposal',
+    description: 'Receive transparent pricing, timeline windows, and practical project milestones.',
+  },
+  {
+    title: 'Precision install',
+    description: 'Installation is completed with clean workmanship and quality checks at each stage.',
+  },
+  {
+    title: 'Aftercare guidance',
+    description: 'Handover includes maintenance recommendations to protect finish and durability.',
+  },
+];
+
+const valueCards = [
+  {
+    title: 'Contractor-grade quality',
+    description:
+      'Installation to contractor-level standards with careful quality checks at every stage.',
+  },
+  {
+    title: 'Clear communication',
+    description:
+      'You receive clear updates on scope, timeline, and budget throughout delivery.',
+  },
+  {
+    title: 'On schedule',
+    description:
+      'Our structured process helps minimize surprises and achieve on-time handover.',
+  },
+  {
+    title: 'After-installation support',
+    description:
+      'Practical maintenance guidance keeps your floor in excellent condition long after completion.',
+  },
+];
+
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-transparent text-foreground">
-      <section className="bg-gradient-to-b from-transparent via-slate-50/60 to-transparent py-14">
+      <section className="py-16 sm:py-20">
         <Container>
-          <div className="mx-auto max-w-6xl text-center">
-            <p className="text-sm font-semibold uppercase tracking-widest text-amber-600">
+          <div className="mx-auto max-w-5xl">
+            <p className="text-center text-xs font-semibold uppercase tracking-[0.22em] text-emerald-700">
               About Floring
             </p>
-            <h1 className="mt-4 text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">
-              Trusted flooring installation team in Melbourne
+            <h1 className="mx-auto mt-4 max-w-4xl text-center text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">
+              A Melbourne flooring team focused on finish quality
             </h1>
-            <p className="mt-6 text-lg leading-relaxed text-zinc-600">
-              Floring supports your project end-to-end, from material consultation and professional
-              installation to post-installation care guidance. We focus on three core values:
-              clean execution, clear communication, and long-lasting quality finishes.
+            <p className="mx-auto mt-6 max-w-3xl text-center text-lg leading-relaxed text-zinc-600">
+              We handle flooring projects end-to-end with clear communication, disciplined
+              workmanship, and reliable delivery from first consultation to final handover.
             </p>
+
+            <div className="mt-10 grid gap-4 sm:grid-cols-3">
+              {trustStats.map((item) => (
+                <article
+                  key={item.label}
+                  className="rounded-2xl border border-zinc-200 bg-white p-5 text-center"
+                >
+                  <p className="text-2xl font-semibold tracking-tight text-zinc-900">{item.value}</p>
+                  <p className="mt-1 text-sm text-zinc-600">{item.label}</p>
+                </article>
+              ))}
+            </div>
           </div>
         </Container>
       </section>
 
-      <section className="bg-gradient-to-b from-transparent via-white to-transparent py-16">
+      <section className="py-16">
         <Container>
-          <article className="grid gap-12 lg:grid-cols-12 lg:items-start">
+          <article className="grid gap-10 lg:grid-cols-12 lg:items-center">
             <div className="lg:col-span-6">
-              <h2 className="text-2xl font-semibold tracking-tight text-zinc-900">
+              <h2 className="text-3xl font-semibold tracking-tight text-zinc-900">
                 Who we are
               </h2>
               <p className="mt-6 text-base leading-relaxed text-zinc-600">
@@ -46,10 +112,21 @@ export default function AboutPage() {
                 and predictable: scope, timeline, and expectations are aligned from day one. The result is
                 a modern, polished finish with practical aftercare guidance for long-term confidence.
               </p>
+
+              <ul className="mt-7 space-y-3 text-sm text-zinc-700">
+                {capabilities.map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <span className="mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-600 text-xs text-white">
+                      ✓
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
 
-            <div className="relative lg:col-span-6">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm">
+            <div className="lg:col-span-6">
+              <div className="overflow-hidden rounded-3xl border border-zinc-200 bg-white">
                 <svg
                   viewBox="0 0 1200 900"
                   className="h-full w-full"
@@ -101,7 +178,6 @@ export default function AboutPage() {
                   <rect width="1200" height="900" fill="url(#bg)" />
                   <g transform="rotate(-8 600 450)">
                     <rect width="1200" height="900" fill="url(#planks)" opacity="0.95" />
-                    {/* subtle diagonal joints */}
                     <g opacity="0.18" stroke="#5a2f14" strokeWidth="2">
                       {Array.from({ length: 16 }).map((_, i) => {
                         const x = i * 95 - 80;
@@ -120,98 +196,54 @@ export default function AboutPage() {
                   <rect width="1200" height="900" fill="url(#vignette)" />
                 </svg>
               </div>
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white/90 to-transparent" />
             </div>
           </article>
         </Container>
       </section>
 
-      <section className="bg-gradient-to-b from-transparent via-slate-50/70 to-transparent py-16">
+      <section className="py-16">
         <Container>
           <header className="mx-auto max-w-4xl text-center">
-            <h2 className="text-2xl font-semibold tracking-tight text-zinc-900">
-              Service standards
+            <h2 className="text-3xl font-semibold tracking-tight text-zinc-900">
+              How we deliver
             </h2>
             <p className="mt-4 text-base leading-relaxed text-zinc-600">
-              We provide contractor-grade flooring services designed for Australian project conditions
-              and client expectations, with quality checks at every stage.
+              A structured workflow helps us reduce delays, protect quality, and keep every project
+              transparent from brief to handover.
             </p>
           </header>
 
-          <div className="mt-12 grid gap-8 md:grid-cols-2">
-            <article className="rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm">
-              <h3 className="text-xl font-semibold text-zinc-900">What we deliver</h3>
-              <p className="mt-4 text-zinc-600">
-                End-to-end flooring solutions built on clear communication and consistent craftsmanship.
-              </p>
-              <ul className="mt-6 space-y-3 text-sm text-zinc-600">
-                <li className="flex gap-3">
-                  <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 text-white">
-                    ✓
-                  </span>
-                  <span>Timber floor installation and replacement</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 text-white">
-                    ✓
-                  </span>
-                  <span>Sanding, restoration, and surface refinishing</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 text-white">
-                    ✓
-                  </span>
-                  <span>Support for residential and commercial projects</span>
-                </li>
-              </ul>
-            </article>
-
-            <article className="rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm">
-              <h3 className="text-xl font-semibold text-zinc-900">How we work</h3>
-              <p className="mt-4 text-zinc-600">
-                Every project is executed with a practical plan, strong safety focus, and attention to
-                the details that create meaningful quality.
-              </p>
-              <ul className="mt-6 space-y-3 text-sm text-zinc-600">
-                <li className="flex gap-3">
-                  <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 text-white">
-                    ✓
-                  </span>
-                  <span>Site survey and floor preparation</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 text-white">
-                    ✓
-                  </span>
-                  <span>Transparent quotation and realistic timeline</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 text-white">
-                    ✓
-                  </span>
-                  <span>After-installation guidance and maintenance tips</span>
-                </li>
-              </ul>
-            </article>
+          <div className="mt-12 grid gap-4 md:grid-cols-2">
+            {processSteps.map((step, index) => (
+              <article
+                key={step.title}
+                className="rounded-2xl border border-zinc-200 bg-white p-6"
+              >
+                <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-sm font-semibold text-emerald-800">
+                  {String(index + 1).padStart(2, '0')}
+                </div>
+                <h3 className="mt-4 text-xl font-semibold text-zinc-900">{step.title}</h3>
+                <p className="mt-3 text-zinc-600">{step.description}</p>
+              </article>
+            ))}
           </div>
         </Container>
       </section>
 
-      {/* CTA */}
-      <section className="bg-gradient-to-r from-slate-100/70 via-emerald-50/50 to-slate-100/70 py-16">
+      <section className="py-16">
         <Container>
-          <div className="mx-auto max-w-6xl rounded-3xl border border-zinc-200/70 bg-white/70 p-8 shadow-sm backdrop-blur">
+          <div className="mx-auto max-w-6xl rounded-3xl border border-zinc-200 bg-white p-8 md:p-10">
             <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
               <div className="text-center md:text-left">
-                <p className="text-sm font-semibold uppercase tracking-widest text-emerald-700">
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-700">
                   Contact
                 </p>
                 <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900">
-                  Tell us your needs — Floring will guide the next step.
+                  Tell us your project, we plan it properly.
                 </h2>
                 <p className="mt-4 text-base leading-relaxed text-zinc-600">
-                  Share your requirements and, if needed, upload site photos so our team can assess the project
-                  and prepare a clear execution plan.
+                  Share your requirements and optional site photos so our team can prepare a realistic
+                  recommendation with clear next actions.
                 </p>
               </div>
 
@@ -231,10 +263,10 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <section className="bg-gradient-to-b from-transparent via-white to-transparent py-16">
+      <section className="py-16">
         <Container>
           <div className="mx-auto max-w-4xl text-center">
-            <h2 className="text-2xl font-semibold tracking-tight text-zinc-900">
+            <h2 className="text-3xl font-semibold tracking-tight text-zinc-900">
               Why clients choose Floring
             </h2>
             <p className="mt-4 text-base leading-relaxed text-zinc-600">
@@ -243,32 +275,11 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-            {[
-              {
-                title: 'Contractor-grade quality',
-                description:
-                  'Installation to contractor-level standards with careful quality checks at every stage.',
-              },
-              {
-                title: 'Clear communication',
-                description:
-                  'You receive clear updates on scope, timeline, and budget throughout delivery.',
-              },
-              {
-                title: 'On schedule',
-                description:
-                  'Our structured process helps minimize surprises and achieve on-time handover.',
-              },
-              {
-                title: 'After-installation support',
-                description:
-                  'We provide practical maintenance guidance so your flooring stays in top condition over time.',
-              },
-            ].map((item) => (
+          <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {valueCards.map((item) => (
               <article
                 key={item.title}
-                className="rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+                className="rounded-2xl border border-zinc-200 bg-white p-6"
               >
                 <h3 className="text-lg font-semibold text-zinc-900">
                   {item.title}
@@ -280,10 +291,10 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <section className="bg-gradient-to-b from-transparent via-slate-50/60 to-transparent pb-16">
+      <section className="pb-16 sm:pb-20">
         <Container>
           <div className="grid gap-8 lg:grid-cols-12 lg:items-start">
-            <article className="rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm lg:col-span-5">
+            <article className="rounded-3xl border border-zinc-200 bg-white p-8 lg:col-span-5">
               <h2 className="text-2xl font-semibold tracking-tight text-zinc-900">
                 Visit our Melbourne office
               </h2>
@@ -304,7 +315,7 @@ export default function AboutPage() {
               </a>
             </article>
 
-            <div className="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm lg:col-span-7">
+            <div className="overflow-hidden rounded-3xl border border-zinc-200 bg-white lg:col-span-7">
               <iframe
                 title="Floring Melbourne location map"
                 src="https://www.google.com/maps?q=456+Collins+Street,+Melbourne+VIC+3000,+Australia&output=embed"

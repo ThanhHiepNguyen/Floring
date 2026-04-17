@@ -3,7 +3,12 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-export function HeaderSearch() {
+type HeaderSearchProps = {
+  mobile?: boolean;
+  onSubmitComplete?: () => void;
+};
+
+export function HeaderSearch({ mobile = false, onSubmitComplete }: HeaderSearchProps) {
   const router = useRouter();
   const [q, setQ] = useState('');
 
@@ -12,10 +17,11 @@ export function HeaderSearch() {
       onSubmit={(e) => {
         e.preventDefault();
         router.push(`/search?q=${encodeURIComponent(q.trim())}`);
+        onSubmitComplete?.();
       }}
-      className="hidden flex-1 justify-center px-4 md:flex"
+      className={mobile ? 'w-full' : 'hidden flex-1 justify-center px-4 md:flex'}
     >
-      <div className="relative w-full max-w-sm">
+      <div className={mobile ? 'relative w-full' : 'relative w-full max-w-sm'}>
         <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-zinc-400">
           <svg
             viewBox="0 0 24 24"
@@ -34,7 +40,7 @@ export function HeaderSearch() {
           name="q"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Search products, projects..."
+          placeholder="Search services, products, projects..."
           className="h-10 w-full rounded-full border border-zinc-200 bg-white/85 pl-9 pr-4 text-sm text-zinc-900 outline-none ring-0 placeholder:text-zinc-400 transition-shadow focus:border-emerald-200 focus:ring-4 focus:ring-emerald-200/40 dark:border-zinc-800 dark:bg-zinc-950/60 dark:text-zinc-100 dark:focus:border-emerald-900/60 dark:focus:ring-emerald-900/20"
         />
       </div>
