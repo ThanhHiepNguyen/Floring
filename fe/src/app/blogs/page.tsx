@@ -11,13 +11,21 @@ export const metadata: Metadata = {
     'Cap nhat kien thuc ve san go, LVT va SPC: cach chon vat lieu, thi cong chuan ky thuat va bao duong de san ben dep lau dai.',
 };
 
+const EMPTY_BLOG_LIST_RESPONSE: BlogListResponse = {
+  data: [],
+  totalItems: 0,
+  totalPages: 0,
+  page: 1,
+  limit: 12,
+};
+
 export default async function BlogIndexPage() {
-  const primary = await getBlogPosts(1, 12).catch(() => ({ data: [] } as BlogListResponse));
+  const primary = await getBlogPosts(1, 12).catch(() => EMPTY_BLOG_LIST_RESPONSE);
   const fallback =
     primary.data.length === 0
       ? await backendGet<BlogListResponse>('/blog/public', {
           searchParams: { page: 1, limit: 12 },
-        }).catch(() => ({ data: [] } as BlogListResponse))
+        }).catch(() => EMPTY_BLOG_LIST_RESPONSE)
       : null;
 
   const posts = (fallback?.data?.length ? fallback.data : primary.data) ?? [];
